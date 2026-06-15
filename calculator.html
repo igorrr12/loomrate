@@ -3577,6 +3577,21 @@
             }
         }
 
+        function setButtonLoading(formId, isLoading, defaultText) {
+            const form = document.getElementById(formId);
+            if (!form) return;
+            const btn = form.querySelector('button[type="submit"]');
+            if (!btn) return;
+            if (isLoading) {
+                btn.disabled = true;
+                btn.dataset.originalText = btn.innerText;
+                btn.innerText = defaultText || 'Loading...';
+            } else {
+                btn.disabled = false;
+                btn.innerText = btn.dataset.originalText || btn.innerText;
+            }
+        }
+
         async function handleSignIn(e) {
             e.preventDefault();
             if (!supabaseClient) {
@@ -3587,7 +3602,9 @@
             const email = document.getElementById('signin_email').value;
             const password = document.getElementById('signin_password').value;
             
+            setButtonLoading('signin_form', true, 'Signing In...');
             const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
+            setButtonLoading('signin_form', false);
             if (error) {
                 showAuthMessage(error.message, 'error');
             } else {
@@ -3608,7 +3625,9 @@
             const email = document.getElementById('signup_email').value;
             const password = document.getElementById('signup_password').value;
             
+            setButtonLoading('signup_form', true, 'Creating Account...');
             const { error } = await supabaseClient.auth.signUp({ email, password });
+            setButtonLoading('signup_form', false);
             if (error) {
                 showAuthMessage(error.message, 'error');
             } else {
@@ -3625,9 +3644,11 @@
             clearAuthMessage();
             const email = document.getElementById('reset_email').value;
             
+            setButtonLoading('reset_form', true, 'Sending Link...');
             const { error } = await supabaseClient.auth.resetPasswordForEmail(email, {
                 redirectTo: window.location.origin + window.location.pathname
             });
+            setButtonLoading('reset_form', false);
             if (error) {
                 showAuthMessage(error.message, 'error');
             } else {
@@ -3652,7 +3673,9 @@
             const password = document.getElementById('recovery_password').value;
             const msg = document.getElementById('recovery_message');
             
+            setButtonLoading('recovery_form', true, 'Updating...');
             const { error } = await supabaseClient.auth.updateUser({ password });
+            setButtonLoading('recovery_form', false);
             if (error) {
                 if (msg) {
                     msg.innerText = error.message;
