@@ -1,0 +1,2968 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loomrate: Premium Freelance Profit &amp; Quote Analyzer</title>
+    <meta name="description"
+        content="Calculate your true hourly rate, net profit, scope creep costs, monthly overheads, client analytics, and plan quotes.">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap"
+        rel="stylesheet">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+    <!-- SVG grain texture filter (hidden) -->
+    <svg style="position:absolute;width:0;height:0" aria-hidden="true">
+        <filter id="grain">
+            <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch" />
+            <feColorMatrix type="saturate" values="0" />
+        </filter>
+    </svg>
+
+    <style>
+        /* =============================================
+           LIGHT MODE (default): Parchment & Amber
+           ============================================= */
+        :root {
+            --bg: #f3ede2;
+            --card: #fefcf7;
+            --card-raised: #ffffff;
+            --card-border: rgba(146, 64, 14, 0.09);
+            --card-border-hover: rgba(146, 64, 14, 0.22);
+            --accent: #92400e;
+            --accent-hover: #78350f;
+            --accent-dim: rgba(146, 64, 14, 0.08);
+            --accent-glow: rgba(146, 64, 14, 0.16);
+            --gold: #ca8a04;
+            --gold-dim: rgba(202, 138, 4, 0.08);
+            --text: #451a03;
+            --text-dim: #78350f;
+            --text-muted: #a18072;
+            --border: rgba(120, 53, 15, 0.08);
+            --input-bg: #faf5eb;
+            --input-border: rgba(120, 53, 15, 0.12);
+            --input-focus-border: var(--accent);
+            --input-focus-shadow: rgba(146, 64, 14, 0.14);
+            --shadow: 0 1px 3px rgba(69, 26, 3, 0.04), 0 4px 16px rgba(69, 26, 3, 0.05);
+            --shadow-md: 0 4px 12px rgba(69, 26, 3, 0.06), 0 12px 40px rgba(69, 26, 3, 0.08);
+            --gradient-line: linear-gradient(90deg, var(--accent), var(--gold), transparent);
+
+            --mint: #166534;
+            --mint-bg: rgba(22, 101, 52, 0.06);
+            --mint-border: rgba(22, 101, 52, 0.16);
+            --mint-glow: rgba(22, 101, 52, 0.06);
+            --amber: #854d0e;
+            --amber-bg: rgba(133, 77, 14, 0.06);
+            --amber-border: rgba(133, 77, 14, 0.16);
+            --amber-glow: rgba(133, 77, 14, 0.06);
+            --rose: #9f1239;
+            --rose-bg: rgba(159, 18, 57, 0.05);
+            --rose-border: rgba(159, 18, 57, 0.14);
+            --rose-glow: rgba(159, 18, 57, 0.04);
+
+            --better: #166534;
+            --better-bg: rgba(22, 101, 52, 0.07);
+            --better-border: rgba(22, 101, 52, 0.14);
+            --worse: #9f1239;
+            --worse-bg: rgba(159, 18, 57, 0.06);
+            --worse-border: rgba(159, 18, 57, 0.12);
+
+            --bg-glow1: rgba(146, 64, 14, 0.04);
+            --bg-glow2: rgba(202, 138, 4, 0.035);
+            --bg-glow3: rgba(22, 101, 52, 0.015);
+
+            --toggle-bg: rgba(120, 53, 15, 0.06);
+            --toggle-hover: rgba(120, 53, 15, 0.12);
+            --sun-display: none;
+            --moon-display: inline;
+
+            --grain-opacity: 0.03;
+        }
+
+        /* =============================================
+           DARK MODE: Midnight Coral
+           ============================================= */
+        [data-theme="dark"] {
+            --bg: #0a0d1a;
+            --card: #12162a;
+            --card-raised: #181d35;
+            --card-border: rgba(249, 115, 22, 0.08);
+            --card-border-hover: rgba(249, 115, 22, 0.20);
+            --accent: #f97316;
+            --accent-hover: #ea580c;
+            --accent-dim: rgba(249, 115, 22, 0.12);
+            --accent-glow: rgba(249, 115, 22, 0.22);
+            --gold: #eab308;
+            --gold-dim: rgba(234, 179, 8, 0.10);
+            --text: #fef3c7;
+            --text-dim: #a8a0b8;
+            --text-muted: #636079;
+            --border: rgba(255, 255, 255, 0.05);
+            --input-bg: rgba(8, 10, 22, 0.65);
+            --input-border: rgba(255, 255, 255, 0.07);
+            --input-focus-border: var(--accent);
+            --input-focus-shadow: rgba(249, 115, 22, 0.18);
+            --shadow: 0 2px 8px rgba(0, 0, 0, 0.3), 0 8px 32px rgba(0, 0, 0, 0.4);
+            --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.4), 0 16px 48px rgba(0, 0, 0, 0.5);
+            --gradient-line: linear-gradient(90deg, #f97316, #eab308, transparent);
+
+            --mint: #34d399;
+            --mint-bg: rgba(52, 211, 153, 0.07);
+            --mint-border: rgba(52, 211, 153, 0.20);
+            --mint-glow: rgba(52, 211, 153, 0.10);
+            --amber: #fbbf24;
+            --amber-bg: rgba(251, 191, 36, 0.07);
+            --amber-border: rgba(251, 191, 36, 0.20);
+            --amber-glow: rgba(251, 191, 36, 0.10);
+            --rose: #fb7185;
+            --rose-bg: rgba(251, 113, 133, 0.07);
+            --rose-border: rgba(251, 113, 133, 0.20);
+            --rose-glow: rgba(251, 113, 133, 0.10);
+
+            --better: #34d399;
+            --better-bg: rgba(52, 211, 153, 0.10);
+            --better-border: rgba(52, 211, 153, 0.18);
+            --worse: #fb7185;
+            --worse-bg: rgba(251, 113, 133, 0.10);
+            --worse-border: rgba(251, 113, 133, 0.18);
+
+            --bg-glow1: rgba(249, 115, 22, 0.05);
+            --bg-glow2: rgba(234, 179, 8, 0.04);
+            --bg-glow3: rgba(52, 211, 153, 0.02);
+
+            --toggle-bg: rgba(255, 255, 255, 0.05);
+            --toggle-hover: rgba(255, 255, 255, 0.10);
+            --sun-display: inline;
+            --moon-display: none;
+
+            --grain-opacity: 0.015;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'DM Sans', system-ui, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            padding: 3.5rem 1.5rem;
+            min-height: 100vh;
+            position: relative;
+            transition: background-color 0.35s ease, color 0.35s ease;
+        }
+
+        /* Ambient background glows */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background:
+                radial-gradient(ellipse 55% 45% at 12% 8%, var(--bg-glow1) 0%, transparent 65%),
+                radial-gradient(ellipse 45% 35% at 88% 15%, var(--bg-glow2) 0%, transparent 55%),
+                radial-gradient(ellipse 35% 50% at 50% 92%, var(--bg-glow3) 0%, transparent 45%);
+            pointer-events: none;
+            z-index: 0;
+            transition: background 0.35s ease;
+        }
+
+        /* Subtle grain texture to give a tactile, paper-like feel */
+        body::after {
+            content: '';
+            position: fixed;
+            inset: 0;
+            filter: url(#grain);
+            opacity: var(--grain-opacity);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .container {
+            max-width: 1140px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ---- HEADER ---- */
+        header {
+            margin-bottom: 3.5rem;
+            text-align: center;
+            position: relative;
+        }
+
+        header h1 {
+            font-weight: 700;
+            font-size: 2.5rem;
+            color: var(--text);
+            letter-spacing: -0.035em;
+            line-height: 1.12;
+            margin-bottom: 0.5rem;
+        }
+
+        header h1 a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        header h1 span {
+            background: linear-gradient(135deg, var(--accent), var(--gold));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        header p {
+            font-size: 1.05rem;
+            color: var(--text-muted);
+            font-weight: 500;
+            letter-spacing: 0.01em;
+        }
+
+        /* ---- THEME TOGGLE ---- */
+        .theme-toggle {
+            position: absolute;
+            top: 0.25rem;
+            right: 0;
+            z-index: 1000;
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            border: 1px solid var(--border);
+            background: var(--toggle-bg);
+            color: var(--text-dim);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+        }
+
+        .theme-toggle:hover {
+            background: var(--toggle-hover);
+            color: var(--text);
+            border-color: var(--card-border-hover);
+        }
+
+        .theme-toggle:active {
+            transform: scale(0.93);
+        }
+
+        .theme-toggle .icon-sun {
+            display: var(--sun-display);
+        }
+
+        .theme-toggle .icon-moon {
+            display: var(--moon-display);
+        }
+
+        /* ---- SECTION HEADINGS ---- */
+        h2 {
+            font-weight: 600;
+            font-size: 1.2rem;
+            color: var(--text);
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.85rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            letter-spacing: -0.01em;
+        }
+
+        h2 svg {
+            color: var(--accent);
+            flex-shrink: 0;
+        }
+
+        /* ---- LAYOUT ---- */
+        .calculator-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+            align-items: start;
+            margin-bottom: 2.5rem;
+        }
+
+        @media (min-width: 1024px) {
+            .calculator-grid {
+                grid-template-columns: 1fr 1.25fr;
+            }
+        }
+
+        /* ---- CARD ---- */
+        .card {
+            background: var(--card);
+            border-radius: 14px;
+            border: 1px solid var(--card-border);
+            padding: 2rem 2.25rem;
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: border-color 0.25s ease, background 0.35s ease, box-shadow 0.25s ease;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--gradient-line);
+            opacity: 0.55;
+            transition: opacity 0.25s ease;
+        }
+
+        .card:hover {
+            border-color: var(--card-border-hover);
+            box-shadow: var(--shadow-md);
+        }
+
+        .card:hover::before {
+            opacity: 0.9;
+        }
+
+        /* ---- INPUTS ---- */
+        .input-group {
+            margin-bottom: 1.35rem;
+        }
+
+        .input-group label {
+            display: flex;
+            align-items: center;
+            gap: 0.45rem;
+            font-size: 0.825rem;
+            font-weight: 600;
+            color: var(--text-dim);
+            margin-bottom: 0.55rem;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+        }
+
+        .input-group label svg {
+            color: var(--accent);
+            opacity: 0.8;
+        }
+
+        .input-control {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            font-size: 0.95rem;
+            font-family: inherit;
+            font-weight: 500;
+            color: var(--text);
+            background: var(--input-bg);
+            border: 1px solid var(--input-border);
+            border-bottom: 2px solid var(--input-border);
+            border-radius: 8px;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.35s ease, border-bottom-color 0.2s ease;
+        }
+
+        .input-control::placeholder {
+            color: var(--text-muted);
+            font-weight: 400;
+        }
+
+        .input-control:focus {
+            outline: none;
+            border-color: var(--card-border);
+            border-bottom-color: var(--input-focus-border);
+            box-shadow: 0 1px 8px var(--input-focus-shadow);
+            background: var(--card);
+        }
+
+        select.input-control {
+            appearance: none;
+            cursor: pointer;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%236b5c48' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 0.85rem center;
+            padding-right: 2.5rem;
+        }
+
+        [data-theme="dark"] select.input-control {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23a09aad' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+        }
+
+        .row-2col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 0;
+        }
+
+        .platform-fee-row {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+
+        .platform-fee-row.has-custom {
+            grid-template-columns: 1.5fr 1fr;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* ---- SCORE CARD ---- */
+        .score-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            padding: 2.5rem 1.5rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            transition: all 0.4s ease;
+        }
+
+        .score-number {
+            font-weight: 700;
+            font-size: 4.5rem;
+            line-height: 1;
+            margin-bottom: 0.35rem;
+            letter-spacing: -0.04em;
+        }
+
+        .score-verdict {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+            letter-spacing: -0.01em;
+        }
+
+        .score-desc {
+            font-size: 0.78rem;
+            font-weight: 500;
+            opacity: 0.7;
+        }
+
+        .score-theme-green {
+            background: var(--mint-bg);
+            border: 1px solid var(--mint-border);
+            color: var(--mint);
+            box-shadow: 0 0 50px var(--mint-glow), inset 0 0 40px var(--mint-glow);
+        }
+
+        .score-theme-amber {
+            background: var(--amber-bg);
+            border: 1px solid var(--amber-border);
+            color: var(--amber);
+            box-shadow: 0 0 50px var(--amber-glow), inset 0 0 40px var(--amber-glow);
+        }
+
+        .score-theme-red {
+            background: var(--rose-bg);
+            border: 1px solid var(--rose-border);
+            color: var(--rose);
+            box-shadow: 0 0 50px var(--rose-glow), inset 0 0 40px var(--rose-glow);
+        }
+
+        /* ---- OUTPUT CARDS ---- */
+        .outputs-subgrid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+
+        @media (min-width: 640px) {
+            .outputs-subgrid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .output-card {
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 1.2rem 1.25rem;
+            background: var(--input-bg);
+            transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, background 0.35s ease;
+            cursor: default;
+        }
+
+        .output-card:hover {
+            transform: translateY(-2px);
+            border-color: var(--card-border-hover);
+            box-shadow: 0 6px 20px var(--accent-dim);
+        }
+
+        .output-card-label {
+            font-size: 0.68rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.07em;
+            color: var(--text-muted);
+            margin-bottom: 0.4rem;
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+        }
+
+        .output-card-label svg {
+            color: var(--accent);
+            opacity: 0.65;
+        }
+
+        .output-card-value {
+            font-family: 'DM Sans', sans-serif;
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--text);
+            letter-spacing: -0.01em;
+        }
+
+        .output-card-sublabel {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            margin-top: 0.3rem;
+            font-weight: 500;
+        }
+
+        .output-card.recommended-card {
+            grid-column: 1 / -1;
+            border-left: 3px solid var(--gold);
+            background: linear-gradient(to right, var(--gold-dim), transparent);
+        }
+
+        @keyframes valuePop {
+            0% {
+                color: var(--accent);
+                transform: scale(1.05);
+            }
+
+            100% {
+                color: var(--text);
+                transform: scale(1);
+            }
+        }
+
+        .pulse-highlight {
+            animation: valuePop 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            display: inline-block;
+        }
+
+        /* ---- ACTION BAR ---- */
+        .action-bar {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-bottom: 3.5rem;
+            padding: 1.5rem;
+            background: var(--card);
+            border-radius: 12px;
+            border: 1px solid var(--card-border);
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: background 0.35s ease, border-color 0.3s ease;
+        }
+
+        .action-bar::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--gradient-line);
+            opacity: 0.7;
+        }
+
+        @media (min-width: 768px) {
+            .action-bar {
+                flex-direction: row;
+                align-items: center;
+                justify-content: space-between;
+            }
+        }
+
+        .save-controls {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            width: 100%;
+        }
+
+        @media (min-width: 640px) {
+            .save-controls {
+                flex-direction: row;
+                align-items: center;
+                max-width: 680px;
+            }
+        }
+
+        .save-controls input {
+            flex-grow: 1;
+        }
+
+        .save-controls input[type="date"] {
+            width: 100%;
+        }
+
+        @media (min-width: 640px) {
+            .save-controls input[type="date"] {
+                width: 150px;
+                flex-shrink: 0;
+                flex-grow: 0;
+            }
+        }
+
+        .button-group {
+            display: flex;
+            gap: 0.75rem;
+            width: 100%;
+            justify-content: flex-end;
+        }
+
+        @media (min-width: 768px) {
+            .button-group {
+                width: auto;
+            }
+        }
+
+        /* ---- BUTTONS ---- */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.45rem;
+            font-family: inherit;
+            font-size: 0.85rem;
+            font-weight: 600;
+            padding: 0.8rem 1.3rem;
+            border-radius: 8px;
+            cursor: pointer;
+            border: 1px solid transparent;
+            transition: all 0.15s ease;
+            white-space: nowrap;
+        }
+
+        .btn:active {
+            transform: scale(0.97);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent), var(--accent-hover));
+            color: #fff;
+            box-shadow: 0 4px 18px var(--accent-dim);
+        }
+
+        .btn-primary:hover {
+            box-shadow: 0 6px 24px var(--accent-glow);
+            filter: brightness(1.08);
+        }
+
+        .btn-secondary {
+            background: var(--toggle-bg);
+            border-color: var(--border);
+            color: var(--text);
+        }
+
+        .btn-secondary:hover {
+            background: var(--toggle-hover);
+            border-color: var(--card-border-hover);
+        }
+
+        .btn-danger {
+            background: var(--rose-bg);
+            color: var(--rose);
+            border-color: var(--rose-border);
+        }
+
+        .btn-danger:hover {
+            background: var(--worse-bg);
+        }
+
+        /* ---- SECTIONS GRID ---- */
+        .sections-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2.5rem;
+            margin-top: 1rem;
+        }
+
+        @media (min-width: 1024px) {
+            .sections-grid {
+                grid-template-columns: 1.1fr 0.9fr;
+            }
+        }
+
+        /* ---- PROJECT LIST ---- */
+        .project-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            max-height: 480px;
+            overflow-y: auto;
+        }
+
+        .project-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--input-bg);
+            border: 1px solid var(--border);
+            border-left: 3px solid transparent;
+            border-radius: 10px;
+            padding: 1rem 1.15rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .project-item:hover {
+            border-left-color: var(--accent);
+            background: var(--accent-dim);
+        }
+
+        .project-info-name {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--text);
+        }
+
+        .project-info-meta {
+            font-size: 0.73rem;
+            color: var(--text-dim);
+            margin-top: 0.2rem;
+        }
+
+        .project-info-meta strong {
+            color: var(--text);
+            font-weight: 600;
+        }
+
+        .project-item-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn-sm {
+            padding: 0.35rem 0.7rem;
+            font-size: 0.725rem;
+            border-radius: 6px;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 3.5rem 1.5rem;
+            border: 2px dashed var(--border);
+            border-radius: 10px;
+            color: var(--text-muted);
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        /* ---- COMPARE ---- */
+        .compare-selectors {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .comparison-table-wrapper {
+            overflow-x: auto;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            background: var(--input-bg);
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 0.85rem;
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+            padding: 0.9rem 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .comparison-table th {
+            font-weight: 600;
+            font-size: 0.75rem;
+            background: var(--card);
+            color: var(--text-dim);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .comparison-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .compare-cell {
+            font-weight: 600;
+            border-radius: 6px;
+            padding: 0.3rem 0.6rem;
+            font-size: 0.8rem;
+            display: inline-block;
+            border: 1px solid transparent;
+        }
+
+        .better-value {
+            color: var(--better);
+            background: var(--better-bg);
+            border-color: var(--better-border);
+        }
+
+        .worse-value {
+            color: var(--worse);
+            background: var(--worse-bg);
+            border-color: var(--worse-border);
+        }
+
+        .equal-value {
+            color: var(--text-dim);
+            background: var(--toggle-bg);
+            border-color: var(--border);
+        }
+
+        .compare-metric-name {
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        /* ---- ANIMATIONS ---- */
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(8px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        header {
+            opacity: 0;
+            animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        .calculator-grid,
+        .action-bar,
+        .sections-grid {
+            opacity: 0;
+            animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        .calculator-grid {
+            animation-delay: 0.08s;
+        }
+
+        .action-bar {
+            animation-delay: 0.16s;
+        }
+
+        .sections-grid {
+            animation-delay: 0.24s;
+        }
+
+        /* Staggered output cards */
+        .output-card {
+            opacity: 0;
+            animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        .output-card:nth-child(1) { animation-delay: 0.15s; }
+        .output-card:nth-child(2) { animation-delay: 0.20s; }
+        .output-card:nth-child(3) { animation-delay: 0.25s; }
+        .output-card:nth-child(4) { animation-delay: 0.30s; }
+        .output-card:nth-child(5) { animation-delay: 0.35s; }
+        .output-card:nth-child(6) { animation-delay: 0.40s; }
+        .output-card:nth-child(7) { animation-delay: 0.45s; }
+        .output-card:nth-child(8) { animation-delay: 0.50s; }
+        .output-card:nth-child(9) { animation-delay: 0.55s; }
+        .output-card:nth-child(10) { animation-delay: 0.60s; }
+
+        /* Mode Tabs & Collapsible Details */
+        .mode-tabs button.active {
+            background: var(--accent);
+            color: #fff;
+            border-color: var(--accent);
+        }
+
+        details.overhead-details summary::-webkit-details-marker,
+        details.chart-details summary::-webkit-details-marker {
+            display: none;
+        }
+
+        details.overhead-details summary,
+        details.chart-details summary {
+            list-style: none;
+            outline: none;
+        }
+
+        details.overhead-details {
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 1rem;
+            background: var(--input-bg);
+            margin-top: 1rem;
+            transition: border-color 0.25s ease, background 0.35s ease;
+        }
+
+        details.overhead-details[open] {
+            background: var(--card);
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+        /* =============================================
+           MODAL & FOOTER STYLES
+           ============================================= */
+        .app-footer {
+            margin-top: 4rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border);
+            text-align: center;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            width: 100%;
+            position: relative;
+            z-index: 10;
+        }
+
+        .footer-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        @media (min-width: 600px) {
+            .footer-content {
+                flex-direction: row;
+                justify-content: space-between;
+            }
+        }
+
+        .footer-links {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .footer-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--accent);
+        }
+
+        .footer-links .separator {
+            color: var(--border);
+            user-select: none;
+        }
+
+        /* Modal styling */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(10, 13, 26, 0.4);
+            backdrop-filter: blur(8px);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-card {
+            background: var(--card);
+            border: 1px solid var(--card-border);
+            border-radius: 14px;
+            width: 100%;
+            max-width: 600px;
+            padding: 2.5rem;
+            box-shadow: var(--shadow-md);
+            position: relative;
+            transform: scale(0.95);
+            transition: transform 0.3s ease;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .modal-overlay.active .modal-card {
+            transform: scale(1);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--text-dim);
+            cursor: pointer;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: background 0.2s ease;
+        }
+
+        .modal-close:hover {
+            background: var(--toggle-bg);
+            color: var(--text);
+        }
+
+        .modal-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 0.5rem;
+        }
+
+        .modal-body {
+            font-size: 0.9rem;
+            color: var(--text-dim);
+            line-height: 1.6;
+            text-align: left;
+        }
+
+        .modal-body h4 {
+            font-weight: 700;
+            color: var(--text);
+            margin: 1.25rem 0 0.5rem 0;
+            font-size: 0.95rem;
+        }
+
+        .modal-body p {
+            margin-bottom: 0.75rem;
+        }
+    </style>
+</head>
+
+<body>
+
+    <main class="container">
+
+        <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode" title="Toggle dark mode">
+            <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+            </svg>
+            <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="5" />
+                <line x1="12" y1="1" x2="12" y2="3" />
+                <line x1="12" y1="21" x2="12" y2="23" />
+                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+                <line x1="1" y1="12" x2="3" y2="12" />
+                <line x1="21" y1="12" x2="23" y2="12" />
+                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+            </svg>
+        </button>
+
+        <header>
+            <h1><a href="index.html">Loomrate</a> <span>Freelance Analyzer</span></h1>
+            <p>Find out what you actually made &amp; what you should quote next</p>
+        </header>
+
+        <div class="calculator-grid">
+            <!-- INPUTS -->
+            <div class="card">
+                <h2>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                        <polyline points="14 2 14 8 20 8" />
+                        <line x1="16" y1="13" x2="8" y2="13" />
+                        <line x1="16" y1="17" x2="8" y2="17" />
+                    </svg>
+                    Project Inputs
+                </h2>
+
+                <div class="mode-tabs"
+                    style="display: flex; gap: 0.5rem; margin-bottom: 1.5rem; border-bottom: 1px solid var(--border); padding-bottom: 0.75rem;">
+                    <button type="button" id="tab_analyze" class="btn btn-secondary active"
+                        style="flex: 1; padding: 0.5rem;" onclick="setMode('analyze')">Analyze Project</button>
+                    <button type="button" id="tab_quote" class="btn btn-secondary" style="flex: 1; padding: 0.5rem;"
+                        onclick="setMode('quote')">Plan a Quote</button>
+                </div>
+
+                <!-- ANALYZE MODE FIELDS -->
+                <div id="mode_analyze_fields">
+                    <div class="input-group">
+                        <label for="fee"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
+                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="12" y1="1" x2="12" y2="23" />
+                                <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+                            </svg> Project Fee (USD)</label>
+                        <input type="number" id="fee" class="input-control" placeholder="e.g. 5000" min="0" step="any"
+                            oninput="calculate()">
+                    </div>
+                    <div class="row-2col">
+                        <div class="input-group">
+                            <label for="quoted_hours"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
+                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="10" />
+                                    <polyline points="12 6 12 12 16 14" />
+                                </svg> Quoted Hours</label>
+                            <input type="number" id="quoted_hours" class="input-control" placeholder="e.g. 40" min="0"
+                                step="any" oninput="calculate()">
+                        </div>
+                        <div class="input-group">
+                            <label for="actual_hours"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
+                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="10" />
+                                    <polyline points="12 6 12 12 16 14" />
+                                </svg> Actual Hours Worked</label>
+                            <input type="number" id="actual_hours" class="input-control" placeholder="e.g. 50" min="0"
+                                step="any" oninput="calculate()">
+                        </div>
+                    </div>
+                    <div class="input-group" id="non_billable_group" style="margin-bottom: 1.35rem;">
+                        <label><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10" />
+                                <polyline points="12 6 12 12 16 14" />
+                            </svg> Non-Billable Breakdown</label>
+                        <div class="non-billable-grid"
+                            style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;">
+                            <input type="number" id="nb_emails" class="input-control" placeholder="Emails" min="0"
+                                step="any" oninput="calculate()" title="Emails & Comms">
+                            <input type="number" id="nb_revisions" class="input-control" placeholder="Revisions" min="0"
+                                step="any" oninput="calculate()" title="Revisions">
+                            <input type="number" id="nb_meetings" class="input-control" placeholder="Meetings" min="0"
+                                step="any" oninput="calculate()" title="Meetings & Calls">
+                            <input type="number" id="nb_admin" class="input-control" placeholder="Admin" min="0"
+                                step="any" oninput="calculate()" title="Admin & Other">
+                        </div>
+                        <div id="nb_total_display"
+                            style="font-size: 0.75rem; color: var(--text-dim); margin-top: 0.35rem; font-weight: 600;">
+                            Total Non-Billable: 0 hrs</div>
+                    </div>
+                </div>
+
+                <!-- QUOTE MODE FIELDS -->
+                <div id="mode_quote_fields" class="hidden">
+                    <div class="input-group">
+                        <label for="target_take_home_rate"><svg xmlns="http://www.w3.org/2000/svg" width="14"
+                                height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="12" y1="1" x2="12" y2="23" />
+                                <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+                            </svg> Target Take-Home Rate ($/hr)</label>
+                        <input type="number" id="target_take_home_rate" class="input-control" placeholder="e.g. 50"
+                            min="0" step="any" oninput="calculate()">
+                    </div>
+                    <div class="row-2col" style="margin-bottom: 1.35rem;">
+                        <div class="input-group" style="margin-bottom: 0;">
+                            <label for="est_hours"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
+                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="10" />
+                                    <polyline points="12 6 12 12 16 14" />
+                                </svg> Estimated Hours</label>
+                            <input type="number" id="est_hours" class="input-control" placeholder="e.g. 40" min="0"
+                                step="any" oninput="calculate()">
+                        </div>
+                        <div class="input-group" style="margin-bottom: 0;">
+                            <label for="est_non_billable_hours"><svg xmlns="http://www.w3.org/2000/svg" width="14"
+                                    height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="10" />
+                                    <polyline points="12 6 12 12 16 14" />
+                                </svg> Est. Non-Billable Hours</label>
+                            <input type="number" id="est_non_billable_hours" class="input-control" placeholder="e.g. 8"
+                                min="0" step="any" oninput="calculate()">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SHARED FIELDS -->
+                <div class="row-2col">
+                    <div class="input-group">
+                        <label for="expenses"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
+                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="2" y="5" width="20" height="14" rx="2" ry="2" />
+                                <line x1="2" y1="10" x2="22" y2="10" />
+                            </svg> Direct Expenses (USD)</label>
+                        <input type="number" id="expenses" class="input-control" placeholder="e.g. 300" min="0"
+                            step="any" oninput="calculate()">
+                    </div>
+                    <div class="input-group">
+                        <label for="tax_rate"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
+                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="19" y1="5" x2="5" y2="19" />
+                                <circle cx="6.5" cy="6.5" r="2.5" />
+                                <circle cx="17.5" cy="17.5" r="2.5" />
+                            </svg> Tax Rate (%)</label>
+                        <input type="number" id="tax_rate" class="input-control" placeholder="e.g. 25" min="0" max="100"
+                            step="any" oninput="calculate()">
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label for="platform_fee_type"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
+                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <polygon points="12 2 2 7 12 12 22 7 12 2" />
+                            <polyline points="2 17 12 22 22 17" />
+                            <polyline points="2 12 12 17 22 12" />
+                        </svg> Platform Fee</label>
+                    <div id="platform_fee_container" class="platform-fee-row">
+                        <select id="platform_fee_type" class="input-control" onchange="handlePlatformFeeChange()">
+                            <option value="direct">Direct (0%)</option>
+                            <option value="upwork">Upwork (20%)</option>
+                            <option value="fiverr">Fiverr (20%)</option>
+                            <option value="toptal">Toptal (varies, manual entry)</option>
+                            <option value="custom">Custom (manual entry %)</option>
+                        </select>
+                        <div id="custom_platform_percent_wrapper" class="hidden">
+                            <input type="number" id="platform_fee_custom" class="input-control" placeholder="Fee %"
+                                min="0" max="100" step="any" oninput="calculate()">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- COLLAPSIBLE OVERHEAD -->
+                <details class="overhead-details">
+                    <summary
+                        style="font-size: 0.825rem; font-weight: 600; color: var(--text-dim); cursor: pointer; user-select: none; display: flex; align-items: center; gap: 0.45rem; text-transform: uppercase; letter-spacing: 0.06em;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="6 9 12 15 18 9" />
+                        </svg>
+                        Monthly Overhead
+                    </summary>
+                    <div class="input-group" style="margin-top: 0.75rem; margin-bottom: 0;">
+                        <label for="monthly_overhead"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
+                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+                                <line x1="9" y1="9" x2="15" y2="15" />
+                                <line x1="15" y1="9" x2="9" y2="15" />
+                            </svg> Monthly Overhead (USD)</label>
+                        <input type="number" id="monthly_overhead" class="input-control"
+                            placeholder="e.g. 2000 (rent, software, insurance...)" min="0" step="any"
+                            oninput="calculate()">
+                    </div>
+                </details>
+            </div>
+
+            <!-- OUTPUTS -->
+            <div class="card">
+                <h2><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="20" x2="18" y2="10" />
+                        <line x1="12" y1="20" x2="12" y2="4" />
+                        <line x1="6" y1="20" x2="6" y2="14" />
+                    </svg> Performance</h2>
+                <div id="score_card" class="score-card score-theme-green">
+                    <div id="score_number" class="score-number">10</div>
+                    <div id="score_verdict" class="score-verdict">Strong project</div>
+                    <div id="score_desc" class="score-desc">Calculation active</div>
+                </div>
+                <div class="outputs-subgrid">
+                    <div class="output-card" id="card_gross_profit">
+                        <div class="output-card-label"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12"
+                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                <rect x="2" y="7" width="20" height="14" rx="2" ry="2" />
+                                <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
+                            </svg> <span id="lbl_gross_profit">Gross Profit</span></div>
+                        <div id="out_gross_profit" class="output-card-value">$0.00</div>
+                        <div class="output-card-sublabel" id="sublbl_gross_profit">Before taxes</div>
+                    </div>
+                    <div class="output-card" id="card_net_profit">
+                        <div class="output-card-label"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12"
+                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                <rect x="2" y="7" width="20" height="14" rx="2" ry="2" />
+                                <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
+                            </svg> <span id="lbl_net_profit">Net Profit</span></div>
+                        <div id="out_net_profit" class="output-card-value">$0.00</div>
+                        <div class="output-card-sublabel" id="sublbl_net_profit">Your take-home</div>
+                    </div>
+                    <div class="output-card" id="card_true_rate">
+                        <div class="output-card-label"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12"
+                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                <circle cx="12" cy="12" r="10" />
+                                <polyline points="12 6 12 12 16 14" />
+                            </svg> <span id="lbl_true_rate">True Hourly Rate</span></div>
+                        <div id="out_true_hourly_rate" class="output-card-value">$0.00/hr</div>
+                        <div class="output-card-sublabel" id="sublbl_true_rate">Including non-billable</div>
+                    </div>
+                    <div class="output-card" id="card_quoted_rate">
+                        <div class="output-card-label"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12"
+                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                <circle cx="12" cy="12" r="10" />
+                                <polyline points="12 6 12 12 16 14" />
+                            </svg> Quoted Hourly Rate</div>
+                        <div id="out_quoted_hourly_rate" class="output-card-value">$0.00/hr</div>
+                        <div class="output-card-sublabel">Based on estimate</div>
+                    </div>
+                    <div class="output-card" id="card_scope_creep">
+                        <div class="output-card-label"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12"
+                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                <polygon
+                                    points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2" />
+                                <line x1="12" y1="8" x2="12" y2="12" />
+                                <line x1="12" y1="16" x2="12.01" y2="16" />
+                            </svg> <span id="scope_creep_label">No scope creep</span></div>
+                        <div id="out_scope_creep_cost" class="output-card-value">$0.00</div>
+                        <div class="output-card-sublabel">Estimate mismatch loss</div>
+                    </div>
+                    <div class="output-card" id="card_platform_fee">
+                        <div class="output-card-label"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12"
+                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                <polygon points="12 2 2 7 12 12 22 7 12 2" />
+                                <polyline points="2 17 12 22 22 17" />
+                                <polyline points="2 12 12 17 22 12" />
+                            </svg> Platform Fee Total</div>
+                        <div id="out_platform_fee" class="output-card-value">$0.00</div>
+                        <div class="output-card-sublabel">Paid to platform</div>
+                    </div>
+                    <div class="output-card" id="card_overhead_allocated">
+                        <div class="output-card-label"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12"
+                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+                                <line x1="9" y1="9" x2="15" y2="15" />
+                                <line x1="15" y1="9" x2="9" y2="15" />
+                            </svg> Overhead Allocated</div>
+                        <div id="out_overhead_allocated" class="output-card-value">$0.00</div>
+                        <div class="output-card-sublabel">Prorated overhead costs</div>
+                    </div>
+                    <div class="output-card" id="card_tax_set_aside">
+                        <div class="output-card-label"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12"
+                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                <line x1="19" y1="5" x2="5" y2="19" />
+                                <circle cx="6.5" cy="6.5" r="2.5" />
+                                <circle cx="17.5" cy="17.5" r="2.5" />
+                            </svg> Tax Set Aside</div>
+                        <div id="out_tax_set_aside" class="output-card-value">$0.00</div>
+                        <div class="output-card-sublabel">Reserve for taxes</div>
+                    </div>
+                    <div class="output-card recommended-card">
+                        <div class="output-card-label"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12"
+                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                <polyline points="22 7 13.5 15.5 8.5 10.5 2 17" />
+                                <polyline points="16 7 22 7 22 13" />
+                            </svg> Recommended minimum fee for a similar project</div>
+                        <div id="out_recommended_fee" class="output-card-value">$0.00</div>
+                        <div class="output-card-sublabel">Adjusted for overhead &amp; minimum targets</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ACTION BAR -->
+        <div class="action-bar">
+            <div class="save-controls">
+                <input type="text" id="client_name" class="input-control" placeholder="Client (e.g. Acme Corp)..."
+                    style="margin-bottom:0">
+                <input type="text" id="project_name" class="input-control" placeholder="Project name..."
+                    style="margin-bottom:0">
+                <input type="date" id="project_date" class="input-control" style="margin-bottom:0" title="Project Date">
+                <button onclick="saveProject()" class="btn btn-primary" style="width:100%"><svg
+                        xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2">
+                        <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" />
+                        <polyline points="17 21 17 13 7 13 7 21" />
+                        <polyline points="7 3 7 8 15 8" />
+                    </svg> Save</button>
+            </div>
+            <div class="button-group">
+                <button onclick="clearCalculator()" class="btn btn-secondary" title="Clear calculator"><svg
+                        xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2">
+                        <path d="M3 6h18" />
+                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+                    </svg> Clear</button>
+                <button onclick="exportToPDF()" class="btn btn-secondary" title="Export report as PDF"><svg
+                        xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                        <polyline points="14 2 14 8 20 8" />
+                        <line x1="16" y1="13" x2="8" y2="13" />
+                        <line x1="16" y1="17" x2="8" y2="17" />
+                    </svg> PDF</button>
+                <button onclick="exportToCSV()" class="btn btn-secondary" title="Export all projects as CSV"><svg
+                        xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                        <polyline points="7 10 12 15 17 10" />
+                        <line x1="12" y1="15" x2="12" y2="3" />
+                    </svg> Export CSV</button>
+                <button onclick="triggerCSVImport()" class="btn btn-secondary" title="Import projects from CSV"><svg
+                        xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                        <polyline points="17 8 12 3 7 8" />
+                        <line x1="12" y1="3" x2="12" y2="15" />
+                    </svg> Import CSV</button>
+                <input type="file" id="csv_import_file" accept=".csv" class="hidden" onchange="importFromCSV(event)">
+            </div>
+        </div>
+
+        <!-- PROFITABILITY OVER TIME CHART -->
+        <details class="chart-details card" style="margin-bottom: 2.5rem;" open
+            ontoggle="if(this.open) setTimeout(renderProfitabilityChart, 50)">
+            <summary
+                style="font-size: 1.2rem; font-weight: 600; color: var(--text); cursor: pointer; user-select: none; display: flex; align-items: center; justify-content: space-between; gap: 0.6rem; list-style: none;">
+                <div style="display: flex; align-items: center; gap: 0.6rem;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="20" x2="18" y2="10" />
+                        <line x1="12" y1="20" x2="12" y2="4" />
+                        <line x1="6" y1="20" x2="6" y2="14" />
+                        <line x1="2" y1="20" x2="22" y2="20" />
+                    </svg>
+                    Profitability Over Time
+                </div>
+                <div class="chart-filters" style="display: flex; gap: 0.35rem;" onclick="event.stopPropagation()">
+                    <button type="button" id="chart_filter_all" class="btn btn-secondary btn-sm active"
+                        style="padding: 0.25rem 0.6rem; font-size: 0.7rem;" onclick="setChartFilter('all')">All</button>
+                    <button type="button" id="chart_filter_analyze" class="btn btn-secondary btn-sm"
+                        style="padding: 0.25rem 0.6rem; font-size: 0.7rem;" onclick="setChartFilter('analyze')">Analyze
+                        Mode</button>
+                    <button type="button" id="chart_filter_quote" class="btn btn-secondary btn-sm"
+                        style="padding: 0.25rem 0.6rem; font-size: 0.7rem;" onclick="setChartFilter('quote')">Quotes
+                        Only</button>
+                </div>
+            </summary>
+            <div style="margin-top: 1.5rem; height: 280px; position: relative;">
+                <canvas id="profitability_chart"></canvas>
+                <div id="chart_empty_state" class="empty-state"
+                    style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;">
+                    Save at least 2 projects to see your profitability trend.</div>
+            </div>
+        </details>
+
+        <!-- SAVED + COMPARE -->
+        <div class="sections-grid">
+            <div class="card">
+                <h2><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="3" width="7" height="9" />
+                        <rect x="14" y="3" width="7" height="5" />
+                        <rect x="14" y="12" width="7" height="9" />
+                        <rect x="3" y="16" width="7" height="5" />
+                    </svg> Saved Projects</h2>
+                <div id="project_list_container" class="project-list"></div>
+            </div>
+            <div class="card">
+                <h2><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="20" x2="18" y2="10" />
+                        <line x1="12" y1="20" x2="12" y2="4" />
+                        <line x1="6" y1="20" x2="6" y2="14" />
+                        <line x1="2" y1="20" x2="22" y2="20" />
+                    </svg> Compare</h2>
+                <div class="compare-selectors">
+                    <div class="input-group" style="margin-bottom:0"><label for="compare_project_a">Project
+                            A</label><select id="compare_project_a" class="input-control" onchange="runComparison()">
+                            <option value="">Select...</option>
+                        </select></div>
+                    <div class="input-group" style="margin-bottom:0"><label for="compare_project_b">Project
+                            B</label><select id="compare_project_b" class="input-control" onchange="runComparison()">
+                            <option value="">Select...</option>
+                        </select></div>
+                </div>
+                <div id="comparison_matrix_container">
+                    <div class="empty-state">Select two projects above to compare.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CLIENT SUMMARY -->
+        <div class="card" style="margin-top: 2.5rem;">
+            <h2><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2">
+                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                    <circle cx="9" cy="7" r="4" />
+                    <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                    <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                </svg> Client Summary</h2>
+            <div id="client_summary_container">
+                <div class="empty-state">Save projects with client tags to see aggregate stats.</div>
+            </div>
+        </div>
+
+        <!-- FOOTER -->
+        <footer class="app-footer">
+            <div class="footer-content">
+                <p>&copy; 2026 Loomrate. All rights reserved.</p>
+                <div class="footer-links">
+                    <a href="#terms" onclick="showModal('terms', event)">Terms of Use</a>
+                    <span class="separator">&middot;</span>
+                    <a href="#privacy" onclick="showModal('privacy', event)">Privacy Policy</a>
+                    <span class="separator">&middot;</span>
+                    <a href="#about" onclick="showModal('about', event)">About</a>
+                </div>
+            </div>
+        </footer>
+    </main>
+
+    <!-- SLIGHT OVERLAY MODAL -->
+    <div id="footer_modal" class="modal-overlay" onclick="closeModal(event)">
+        <div class="modal-card" onclick="event.stopPropagation()">
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+            <h3 id="modal_title" class="modal-title">Terms of Use</h3>
+            <div id="modal_body" class="modal-body">
+                <!-- Content injected dynamically -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let projects = [];
+        let currentMode = 'analyze';
+        let profitabilityChart = null;
+
+        /* ---- FOOTER MODALS ---- */
+        function showModal(type, event) {
+            if (event) event.preventDefault();
+            const modal = document.getElementById('footer_modal');
+            const title = document.getElementById('modal_title');
+            const body = document.getElementById('modal_body');
+            
+            if (type === 'terms') {
+                title.innerText = 'Terms of Use';
+                body.innerHTML = `
+                    <p>Loomrate is a local-first, serverless utility designed to assist with freelance quote estimation and billing metrics.</p>
+                    <h4>Disclaimer of Advice</h4>
+                    <p>All calculations, ratios, rates, scores, and pricing guidance generated by Loomrate are for informational and planning purposes only. They do not constitute official financial, legal, business, or accounting advice.</p>
+                    <h4>No Warranty</h4>
+                    <p>This utility is provided "as is" without warranty of any kind, express or implied. You assume full accountability for any pricing structures, tax filings, client contracts, or fee agreements you negotiate or submit using Loomrate.</p>
+                `;
+            } else if (type === 'privacy') {
+                title.innerText = 'Privacy Policy';
+                body.innerHTML = `
+                    <p>Your financial metrics are private, and they should stay that way.</p>
+                    <h4>No Data Collection</h4>
+                    <p>Loomrate does not collect, record, track, transmit, or sell any of your personal information, inputs, or client analytics. There are no databases, analytics trackers, or server-side sync systems integrated into the site.</p>
+                    <h4>Local Storage</h4>
+                    <p>Any project profiles or quote calculations you explicitly save are stored locally inside your browser's private storage database (<code>localStorage</code>). This data remains on your physical machine and can be completely cleared at any time by wiping your browser site data or using the "Clear" function inside the app.</p>
+                `;
+            } else if (type === 'about') {
+                title.innerText = 'About Loomrate';
+                body.innerHTML = `
+                    <p>Loomrate was built to provide clarity for modern independent consultants, freelancers, and creative developers.</p>
+                    <h4>Pricing Clarity</h4>
+                    <p>Freelancers frequently set pricing based on gross rates without considering unpaid business admin hours, platform commissions, software licensing, and self-employment taxes. Loomrate exposes the exact take-home rate of every contract, giving you the visibility needed to scale your business profitably.</p>
+                    <h4>Local-First Philosophy</h4>
+                    <p>We believe professional utilities should be fast, private, and permanent. Built with vanilla client-side technologies, Loomrate runs 100% locally in your browser, even when offline.</p>
+                `;
+            }
+            
+            modal.classList.add('active');
+        }
+
+        function closeModal(event) {
+            const modal = document.getElementById('footer_modal');
+            modal.classList.remove('active');
+        }
+
+        /* ---- THEME TOGGLE ---- */
+        function toggleTheme() {
+            const isDark = document.body.getAttribute('data-theme') === 'dark';
+            document.body.setAttribute('data-theme', isDark ? 'light' : 'dark');
+            localStorage.setItem('fpa_theme', isDark ? 'light' : 'dark');
+            setTimeout(renderProfitabilityChart, 100);
+        }
+        function loadTheme() {
+            const saved = localStorage.getItem('fpa_theme');
+            if (saved === 'dark') document.body.setAttribute('data-theme', 'dark');
+        }
+
+        function parseDateSafe(dateStr) {
+            if (!dateStr) return new Date();
+            const ymdMatch = String(dateStr).trim().match(/^(\d{4})-(\d{2})-(\d{2})$/);
+            if (ymdMatch) {
+                const year = parseInt(ymdMatch[1], 10);
+                const month = parseInt(ymdMatch[2], 10) - 1;
+                const day = parseInt(ymdMatch[3], 10);
+                return new Date(year, month, day);
+            }
+            const parsed = new Date(dateStr);
+            if (!isNaN(parsed.getTime())) {
+                return parsed;
+            }
+            return new Date();
+        }
+
+        function getLocalDateString(date) {
+            const d = new Date(date);
+            if (isNaN(d.getTime())) return '';
+            const year = d.getFullYear();
+            const month = String(d.getMonth() + 1).padStart(2, '0');
+            const day = String(d.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        }
+
+        function formatCurrency(n) { return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(n); }
+        function formatPercent(v) { return v.toFixed(1) + '%'; }
+        function formatHours(h) { return h === 1 ? '1 hr' : h.toFixed(1) + ' hrs'; }
+
+        function handlePlatformFeeChange() {
+            const sel = document.getElementById('platform_fee_type'), wrap = document.getElementById('custom_platform_percent_wrapper'), cont = document.getElementById('platform_fee_container'), inp = document.getElementById('platform_fee_custom');
+            if (sel.value === 'toptal' || sel.value === 'custom') { wrap.classList.remove('hidden'); cont.classList.add('has-custom'); inp.placeholder = 'Fee %'; }
+            else { wrap.classList.add('hidden'); cont.classList.remove('has-custom'); inp.value = ''; }
+            calculate();
+        }
+
+        function setMode(mode) {
+            currentMode = mode;
+            const btnAnalyze = document.getElementById('tab_analyze');
+            const btnQuote = document.getElementById('tab_quote');
+            const analyzeFields = document.getElementById('mode_analyze_fields');
+            const quoteFields = document.getElementById('mode_quote_fields');
+
+            if (mode === 'analyze') {
+                btnAnalyze.classList.add('active');
+                btnQuote.classList.remove('active');
+                analyzeFields.classList.remove('hidden');
+                quoteFields.classList.add('hidden');
+                document.getElementById('card_quoted_rate').classList.remove('hidden');
+                document.getElementById('card_scope_creep').classList.remove('hidden');
+                document.querySelector('.recommended-card').classList.remove('hidden');
+            } else {
+                btnAnalyze.classList.remove('active');
+                btnQuote.classList.add('active');
+                analyzeFields.classList.add('hidden');
+                quoteFields.classList.remove('hidden');
+                document.getElementById('card_quoted_rate').classList.add('hidden');
+                document.getElementById('card_scope_creep').classList.add('hidden');
+                document.querySelector('.recommended-card').classList.add('hidden');
+            }
+            calculate();
+        }
+
+        function updateOutputLabels() {
+            const lblGross = document.getElementById('lbl_gross_profit');
+            const sublblGross = document.getElementById('sublbl_gross_profit');
+            const lblNet = document.getElementById('lbl_net_profit');
+            const sublblNet = document.getElementById('sublbl_net_profit');
+            const lblTrue = document.getElementById('lbl_true_rate');
+            const sublblTrue = document.getElementById('sublbl_true_rate');
+
+            if (currentMode === 'analyze') {
+                lblGross.innerText = 'Gross Profit';
+                sublblGross.innerText = 'Before taxes';
+                lblNet.innerText = 'Net Profit';
+                sublblNet.innerText = 'Your take-home';
+                lblTrue.innerText = 'True Hourly Rate';
+                sublblTrue.innerText = 'Including non-billable';
+            } else {
+                lblGross.innerText = 'Est. Gross Profit';
+                sublblGross.innerText = 'Before taxes & overhead';
+                lblNet.innerText = 'Your Take-Home';
+                sublblNet.innerText = 'Est. net profit';
+                lblTrue.innerText = 'Take-Home Rate';
+                sublblTrue.innerText = 'Target rate achieved';
+            }
+        }
+
+        function calculate() { const s = getInputsState(); const r = computeProjectResults(s); renderResults(r); }
+
+        function getInputsState() {
+            const expenses = parseFloat(document.getElementById('expenses').value) || 0;
+            const taxRate = parseFloat(document.getElementById('tax_rate').value) || 0;
+            const monthlyOverhead = parseFloat(document.getElementById('monthly_overhead').value) || 0;
+            const platformType = document.getElementById('platform_fee_type').value;
+            let platformPercent = 0;
+            if (platformType === 'upwork' || platformType === 'fiverr') {
+                platformPercent = 20;
+            } else if (platformType === 'toptal' || platformType === 'custom') {
+                platformPercent = parseFloat(document.getElementById('platform_fee_custom').value) || 0;
+            }
+
+            if (currentMode === 'analyze') {
+                const fee = parseFloat(document.getElementById('fee').value) || 0;
+                const quotedHours = parseFloat(document.getElementById('quoted_hours').value) || 0;
+                const actualHours = parseFloat(document.getElementById('actual_hours').value) || 0;
+
+                const nbEmails = parseFloat(document.getElementById('nb_emails').value) || 0;
+                const nbRevisions = parseFloat(document.getElementById('nb_revisions').value) || 0;
+                const nbMeetings = parseFloat(document.getElementById('nb_meetings').value) || 0;
+                const nbAdmin = parseFloat(document.getElementById('nb_admin').value) || 0;
+                const nonBillableHours = nbEmails + nbRevisions + nbMeetings + nbAdmin;
+
+                document.getElementById('nb_total_display').innerText = `Total Non-Billable: ${nonBillableHours.toFixed(1)} hrs`;
+
+                return {
+                    mode: 'analyze',
+                    fee,
+                    quotedHours,
+                    actualHours,
+                    nonBillableHours,
+                    nonBillable: {
+                        emails: nbEmails,
+                        revisions: nbRevisions,
+                        meetings: nbMeetings,
+                        admin: nbAdmin
+                    },
+                    expenses,
+                    platformType,
+                    platformPercent,
+                    taxRate,
+                    monthlyOverhead
+                };
+            } else {
+                const targetTakeHomeRate = parseFloat(document.getElementById('target_take_home_rate').value) || 0;
+                const estHours = parseFloat(document.getElementById('est_hours').value) || 0;
+                const estNonBillableHours = parseFloat(document.getElementById('est_non_billable_hours').value) || 0;
+
+                return {
+                    mode: 'quote',
+                    targetTakeHomeRate,
+                    estHours,
+                    estNonBillableHours,
+                    expenses,
+                    platformType,
+                    platformPercent,
+                    taxRate,
+                    monthlyOverhead
+                };
+            }
+        }
+
+        function computeProjectResults(i) {
+            if (!i.mode || i.mode === 'analyze') {
+                const nonBillable = i.nonBillable || { emails: 0, revisions: 0, meetings: 0, admin: i.nonBillableHours || 0 };
+                const nonBillableHours = i.nonBillableHours !== undefined ? i.nonBillableHours : (nonBillable.emails + nonBillable.revisions + nonBillable.meetings + nonBillable.admin);
+                const monthlyOverhead = i.monthlyOverhead || 0;
+
+                const totalHours = i.actualHours + nonBillableHours;
+                const platformFeeTotal = i.fee * (i.platformPercent / 100);
+
+                const overheadPerHour = monthlyOverhead / 160;
+                const overheadAllocation = overheadPerHour * totalHours;
+
+                const grossProfit = i.fee - i.expenses - platformFeeTotal - overheadAllocation;
+                const taxSetAside = grossProfit > 0 ? grossProfit * (i.taxRate / 100) : 0;
+                const netProfit = grossProfit - taxSetAside;
+
+                const trueHourlyRate = totalHours > 0 ? netProfit / totalHours : 0;
+                const quotedHourlyRate = i.quotedHours > 0 ? i.fee / i.quotedHours : 0;
+
+                let scopeCreepCost = 0, hasCreep = false;
+                if (i.actualHours > i.quotedHours) {
+                    hasCreep = true;
+                    scopeCreepCost = i.quotedHours > 0 ? (i.actualHours - i.quotedHours) * (i.fee / i.quotedHours) : 0;
+                }
+
+                let score = 10;
+                if (trueHourlyRate < 15) score -= 2;
+                if (i.fee > 0 && scopeCreepCost > 0.20 * i.fee) score -= 2;
+                if (i.platformPercent > 15) score -= 1;
+                if (totalHours > 0 && (nonBillableHours / totalHours) > 0.30) score -= 1;
+                if (netProfit < 100) score -= 1;
+                score = Math.max(1, score);
+
+                let verdict = '';
+                if (score >= 8) verdict = 'Strong project';
+                else if (score >= 5) verdict = 'Acceptable, but review your pricing';
+                else if (score >= 3) verdict = 'Barely worth it';
+                else verdict = 'This project cost you money in real terms';
+
+                let scoreColorClass = 'score-theme-red';
+                if (score >= 7) scoreColorClass = 'score-theme-green';
+                else if (score >= 4) scoreColorClass = 'score-theme-amber';
+
+                const targetRate = Math.max(trueHourlyRate * 1.25, 20);
+                const recommendedFee = totalHours * targetRate;
+
+                return {
+                    mode: 'analyze',
+                    grossProfit,
+                    netProfit,
+                    trueHourlyRate,
+                    quotedHourlyRate,
+                    scopeCreepCost,
+                    hasCreep,
+                    platformFeeTotal,
+                    taxSetAside,
+                    overheadAllocation,
+                    score,
+                    verdict,
+                    scoreColorClass,
+                    recommendedFee,
+                    inputs: i
+                };
+            } else {
+                const totalHours = i.estHours + i.estNonBillableHours;
+                const desiredNetProfit = i.targetTakeHomeRate * totalHours;
+
+                const taxDiv = i.taxRate >= 100 ? 0.01 : (1 - i.taxRate / 100);
+                const platformDiv = i.platformPercent >= 100 ? 0.01 : (1 - i.platformPercent / 100);
+
+                const grossProfitNeeded = desiredNetProfit / taxDiv;
+                const overheadAllocation = (i.monthlyOverhead / 160) * totalHours;
+                const prePlatformFee = grossProfitNeeded + i.expenses + overheadAllocation;
+                const requiredFee = prePlatformFee / platformDiv;
+
+                const quotedHourlyRate = i.estHours > 0 ? requiredFee / i.estHours : 0;
+                const platformFeeTotal = requiredFee * (i.platformPercent / 100);
+                const grossProfit = requiredFee - i.expenses - platformFeeTotal - overheadAllocation;
+                const taxSetAside = grossProfit > 0 ? grossProfit * (i.taxRate / 100) : 0;
+                const netProfit = grossProfit - taxSetAside;
+
+                let verdict = 'Quote This Fee';
+                let desc = '';
+                let scoreColorClass = 'score-theme-green';
+
+                if (requiredFee <= 0) {
+                    desc = 'Please enter estimated hours and a target rate.';
+                    scoreColorClass = 'score-theme-amber';
+                } else {
+                    const platformRatio = platformFeeTotal / requiredFee;
+                    const overheadRatio = overheadAllocation / requiredFee;
+                    const margin = (netProfit / requiredFee) * 100;
+
+                    if (platformRatio > 0.15) {
+                        desc = `Warning: platform fees eat ${Math.round(platformRatio * 100)}%, consider negotiating direct.`;
+                        scoreColorClass = 'score-theme-amber';
+                    } else if (overheadRatio > 0.20) {
+                        desc = `Warning: overhead eats ${Math.round(overheadRatio * 100)}% of this quote.`;
+                        scoreColorClass = 'score-theme-amber';
+                    } else {
+                        desc = `This quote gives you a ${Math.round(margin)}% net margin above expenses, overhead, and taxes.`;
+                        scoreColorClass = 'score-theme-green';
+                    }
+                }
+
+                return {
+                    mode: 'quote',
+                    requiredFee,
+                    quotedHourlyRate,
+                    grossProfit,
+                    taxSetAside,
+                    overheadAllocation,
+                    platformFeeTotal,
+                    netProfit,
+                    trueHourlyRate: i.targetTakeHomeRate,
+                    verdict,
+                    desc,
+                    scoreColorClass,
+                    inputs: i
+                };
+            }
+        }
+
+        function triggerPulse(id, txt) { const el = document.getElementById(id); if (!el) return; el.innerText = txt; el.classList.remove('pulse-highlight'); void el.offsetWidth; el.classList.add('pulse-highlight'); }
+
+        function renderResults(r) {
+            updateOutputLabels();
+
+            if (r.mode === 'quote') {
+                triggerPulse('out_gross_profit', formatCurrency(r.grossProfit));
+                triggerPulse('out_net_profit', formatCurrency(r.netProfit));
+                triggerPulse('out_true_hourly_rate', formatCurrency(r.trueHourlyRate) + '/hr');
+                triggerPulse('out_platform_fee', formatCurrency(r.platformFeeTotal));
+                triggerPulse('out_tax_set_aside', formatCurrency(r.taxSetAside));
+                triggerPulse('out_overhead_allocated', formatCurrency(r.overheadAllocation));
+
+                document.getElementById('score_number').innerText = formatCurrency(r.requiredFee);
+                if (r.requiredFee >= 100000) {
+                    document.getElementById('score_number').style.fontSize = '3rem';
+                } else if (r.requiredFee >= 10000) {
+                    document.getElementById('score_number').style.fontSize = '3.5rem';
+                } else {
+                    document.getElementById('score_number').style.fontSize = '4.5rem';
+                }
+                document.getElementById('score_verdict').innerText = r.verdict + ` (${formatCurrency(r.quotedHourlyRate)}/hr billable)`;
+                document.getElementById('score_card').className = 'score-card ' + r.scoreColorClass;
+                document.getElementById('score_desc').innerText = r.desc;
+            } else {
+                document.getElementById('score_number').style.fontSize = '4.5rem';
+
+                triggerPulse('out_gross_profit', formatCurrency(r.grossProfit));
+                triggerPulse('out_net_profit', formatCurrency(r.netProfit));
+                triggerPulse('out_true_hourly_rate', formatCurrency(r.trueHourlyRate) + '/hr');
+                triggerPulse('out_quoted_hourly_rate', formatCurrency(r.quotedHourlyRate) + '/hr');
+                triggerPulse('out_platform_fee', formatCurrency(r.platformFeeTotal));
+                triggerPulse('out_tax_set_aside', formatCurrency(r.taxSetAside));
+                triggerPulse('out_overhead_allocated', formatCurrency(r.overheadAllocation));
+                triggerPulse('out_recommended_fee', formatCurrency(r.recommendedFee));
+
+                const cl = document.getElementById('scope_creep_label'), cv = document.getElementById('out_scope_creep_cost');
+                if (r.hasCreep) { cl.innerText = 'Scope Creep Cost'; triggerPulse('out_scope_creep_cost', formatCurrency(r.scopeCreepCost)); cv.style.color = 'var(--rose)'; }
+                else { cl.innerText = 'No scope creep'; triggerPulse('out_scope_creep_cost', '$0.00'); cv.style.color = 'var(--text)'; }
+
+                document.getElementById('score_number').innerText = r.score;
+                document.getElementById('score_verdict').innerText = r.verdict;
+                document.getElementById('score_card').className = 'score-card ' + r.scoreColorClass;
+
+                let nonBillableMsg = '';
+                const i = r.inputs;
+                const nbHours = i.nonBillableHours || 0;
+                if (nbHours > 0 && i.nonBillable) {
+                    const cats = [
+                        { name: 'Emails', val: i.nonBillable.emails || 0 },
+                        { name: 'Revisions', val: i.nonBillable.revisions || 0 },
+                        { name: 'Meetings', val: i.nonBillable.meetings || 0 },
+                        { name: 'Admin', val: i.nonBillable.admin || 0 }
+                    ];
+                    const maxCat = cats.reduce((max, c) => c.val > max.val ? c : max, cats[0]);
+                    if (maxCat.val > 0) {
+                        const pct = Math.round((maxCat.val / nbHours) * 100);
+                        nonBillableMsg = ` · ${maxCat.name} consumed ${pct}% of non-billable time`;
+                    }
+                }
+                document.getElementById('score_desc').innerText = 'Scored ' + r.score + '/10 based on profitability factors' + nonBillableMsg;
+            }
+        }
+
+        function clearCalculator() {
+            ['fee', 'quoted_hours', 'actual_hours', 'nb_emails', 'nb_revisions', 'nb_meetings', 'nb_admin', 'expenses', 'tax_rate', 'project_name', 'platform_fee_custom', 'monthly_overhead', 'target_take_home_rate', 'est_hours', 'est_non_billable_hours', 'client_name'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.value = '';
+            });
+            const dateEl = document.getElementById('project_date');
+            if (dateEl) dateEl.value = getLocalDateString(new Date());
+            document.getElementById('platform_fee_type').value = 'direct';
+            handlePlatformFeeChange();
+        }
+
+        function loadProjectsFromStorage() {
+            try { projects = JSON.parse(localStorage.getItem('fpa_projects')) || []; } catch (e) { projects = []; }
+            renderProjectList();
+            populateCompareDropdowns();
+            renderClientSummary();
+            renderProfitabilityChart();
+        }
+        function saveProjectsToStorage() {
+            localStorage.setItem('fpa_projects', JSON.stringify(projects));
+            renderProjectList();
+            populateCompareDropdowns();
+            runComparison();
+            renderClientSummary();
+            renderProfitabilityChart();
+        }
+
+        function saveProject() {
+            const inp = document.getElementById('project_name'), name = inp.value.trim();
+            if (!name) { alert('Please enter a project name.'); inp.focus(); return; }
+            const clientInp = document.getElementById('client_name'), client = clientInp ? clientInp.value.trim() : '';
+            const dateInp = document.getElementById('project_date');
+            const timestamp = (dateInp && dateInp.value) ? dateInp.value : new Date().toLocaleString();
+            const state = getInputsState(), data = { id: Date.now().toString(), name, client, timestamp, inputs: state };
+            const idx = projects.findIndex(p => p.name.toLowerCase() === name.toLowerCase());
+            if (idx > -1) { if (!confirm('"' + name + '" already exists. Overwrite?')) return; data.id = projects[idx].id; projects[idx] = data; } else { projects.push(data); }
+            saveProjectsToStorage(); alert('Project "' + name + '" saved!');
+        }
+
+        function loadProject(id) {
+            const p = projects.find(x => x.id === id); if (!p) return;
+            document.getElementById('project_name').value = p.name;
+            if (document.getElementById('client_name')) {
+                document.getElementById('client_name').value = p.client || '';
+            }
+
+            const dateEl = document.getElementById('project_date');
+            if (dateEl) {
+                const parsedDate = parseDateSafe(p.timestamp);
+                dateEl.value = getLocalDateString(parsedDate);
+            }
+
+            const mode = p.inputs.mode || 'analyze';
+            setMode(mode);
+
+            if (mode === 'analyze') {
+                document.getElementById('fee').value = p.inputs.fee || '';
+                document.getElementById('quoted_hours').value = p.inputs.quotedHours || '';
+                document.getElementById('actual_hours').value = p.inputs.actualHours || '';
+
+                if (p.inputs.nonBillable) {
+                    document.getElementById('nb_emails').value = p.inputs.nonBillable.emails || '';
+                    document.getElementById('nb_revisions').value = p.inputs.nonBillable.revisions || '';
+                    document.getElementById('nb_meetings').value = p.inputs.nonBillable.meetings || '';
+                    document.getElementById('nb_admin').value = p.inputs.nonBillable.admin || '';
+                } else {
+                    document.getElementById('nb_emails').value = '';
+                    document.getElementById('nb_revisions').value = '';
+                    document.getElementById('nb_meetings').value = '';
+                    document.getElementById('nb_admin').value = p.inputs.nonBillableHours || '';
+                }
+            } else {
+                document.getElementById('target_take_home_rate').value = p.inputs.targetTakeHomeRate || '';
+                document.getElementById('est_hours').value = p.inputs.estHours || '';
+                document.getElementById('est_non_billable_hours').value = p.inputs.estNonBillableHours || '';
+            }
+
+            document.getElementById('expenses').value = p.inputs.expenses || '';
+            document.getElementById('platform_fee_type').value = p.inputs.platformType;
+            document.getElementById('platform_fee_custom').value = (p.inputs.platformType === 'toptal' || p.inputs.platformType === 'custom') ? p.inputs.platformPercent : '';
+            document.getElementById('tax_rate').value = p.inputs.taxRate || '';
+            document.getElementById('monthly_overhead').value = p.inputs.monthlyOverhead || '';
+
+            handlePlatformFeeChange();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function deleteProject(id, ev) { ev.stopPropagation(); if (confirm('Delete this project?')) { projects = projects.filter(p => p.id !== id); saveProjectsToStorage(); } }
+
+        function renderProjectList() {
+            const c = document.getElementById('project_list_container');
+            if (!projects.length) { c.innerHTML = '<div class="empty-state">No saved projects yet.</div>'; return; }
+            const sorted = [...projects].sort((a, b) => {
+                const dateA = parseDateSafe(a.timestamp);
+                const dateB = parseDateSafe(b.timestamp);
+                if (dateA.getTime() === dateB.getTime()) {
+                    return parseFloat(b.id) - parseFloat(a.id);
+                }
+                return dateB - dateA;
+            });
+            c.innerHTML = sorted.map(p => {
+                const r = computeProjectResults(p.inputs);
+                const clientPrefix = p.client ? `<strong style="color: var(--accent);">${p.client}</strong> · ` : '';
+                const modeIndicator = r.mode === 'quote' ? ' <span style="font-size:0.7rem; background: var(--gold-dim); color: var(--gold); padding: 0.1rem 0.3rem; border-radius:4px; font-weight:700;">Quote</span>' : '';
+                const pDate = parseDateSafe(p.timestamp);
+                const dateStr = pDate.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' });
+                return '<div class="project-item" onclick="loadProject(\'' + p.id + '\')"><div><span class="project-info-name">' + clientPrefix + p.name + modeIndicator + '</span><div class="project-info-meta">Net: <strong>' + formatCurrency(r.netProfit) + '</strong> · Rate: <strong>' + formatCurrency(r.trueHourlyRate) + '/hr</strong> · <span style="opacity: 0.8;">' + dateStr + '</span></div></div><div class="project-item-actions"><button class="btn btn-secondary btn-sm" onclick="loadProject(\'' + p.id + '\')">Load</button><button class="btn btn-danger btn-sm" onclick="deleteProject(\'' + p.id + '\', event)">Delete</button></div></div>';
+            }).join('');
+        }
+
+        function populateCompareDropdowns() {
+            ['compare_project_a', 'compare_project_b'].forEach(selId => {
+                const sel = document.getElementById(selId), val = sel.value;
+                sel.innerHTML = '<option value="">Select...</option>';
+                const sortedProjects = [...projects].sort((a, b) => {
+                    const dateA = parseDateSafe(a.timestamp);
+                    const dateB = parseDateSafe(b.timestamp);
+                    if (dateA.getTime() === dateB.getTime()) {
+                        return parseFloat(b.id) - parseFloat(a.id);
+                    }
+                    return dateB - dateA;
+                });
+                sortedProjects.forEach(p => {
+                    const o = document.createElement('option');
+                    o.value = p.id;
+                    o.textContent = p.name;
+                    sel.appendChild(o);
+                });
+                if (projects.some(p => p.id === val)) sel.value = val;
+            });
+        }
+
+        function runComparison() {
+            const idA = document.getElementById('compare_project_a').value, idB = document.getElementById('compare_project_b').value, mc = document.getElementById('comparison_matrix_container');
+            if (!idA || !idB) { mc.innerHTML = '<div class="empty-state">Select two projects above to compare.</div>'; return; }
+            if (idA === idB) { mc.innerHTML = '<div class="empty-state">Pick two different projects.</div>'; return; }
+            const pA = projects.find(p => p.id === idA), pB = projects.find(p => p.id === idB);
+            if (!pA || !pB) { mc.innerHTML = '<div class="empty-state">Error loading projects.</div>'; return; }
+            const rA = computeProjectResults(pA.inputs), rB = computeProjectResults(pB.inputs);
+            const specs = [
+                { l: 'Client Name', k: 'client_val', f: v => v || 'Untagged', noCmp: true },
+                { l: 'Gross Profit', k: 'grossProfit', h: true, f: formatCurrency },
+                { l: 'Net Profit', k: 'netProfit', h: true, f: formatCurrency },
+                { l: 'True Hourly Rate', k: 'trueHourlyRate', h: true, f: v => formatCurrency(v) + '/hr' },
+                { l: 'Quoted Hourly Rate', k: 'quotedHourlyRate', h: true, f: v => formatCurrency(v) + '/hr' },
+                { l: 'Overhead Allocated', k: 'overheadAllocation', h: false, f: formatCurrency },
+                { l: 'Scope Creep Cost', k: 'scopeCreepCost', h: false, f: formatCurrency },
+                { l: 'Platform Fee Total', k: 'platformFeeTotal', h: false, f: formatCurrency },
+                { l: 'Tax Set Aside', k: 'taxSetAside', h: false, f: formatCurrency },
+                { l: 'Profitability Score', k: 'score', h: true, f: v => v + ' / 10', noCmp: false },
+                { l: 'Verdict', k: 'verdict', h: true, f: v => v, cmp: 'score' }
+            ];
+            const rows = specs.map(s => {
+                let vA, vB;
+                if (s.k === 'client_val') {
+                    vA = pA.client || 'Untagged';
+                    vB = pB.client || 'Untagged';
+                } else {
+                    vA = s.cmp ? rA[s.cmp] : rA[s.k];
+                    vB = s.cmp ? rB[s.cmp] : rB[s.k];
+                }
+                let cA = 'equal-value', cB = 'equal-value';
+                if (!s.noCmp && typeof vA === 'number' && typeof vB === 'number') {
+                    if (vA > vB) { cA = s.h ? 'better-value' : 'worse-value'; cB = s.h ? 'worse-value' : 'better-value'; }
+                    else if (vA < vB) { cA = s.h ? 'worse-value' : 'better-value'; cB = s.h ? 'better-value' : 'worse-value'; }
+                }
+                const displayValA = s.k === 'client_val' ? vA : rA[s.k];
+                const displayValB = s.k === 'client_val' ? vB : rB[s.k];
+                return '<tr><td class="compare-metric-name">' + s.l + '</td><td><span class="compare-cell ' + cA + '">' + s.f(displayValA) + '</span></td><td><span class="compare-cell ' + cB + '">' + s.f(displayValB) + '</span></td></tr>';
+            }).join('');
+            mc.innerHTML = '<div class="comparison-table-wrapper"><table class="comparison-table"><thead><tr><th>Metric</th><th>' + pA.name + '</th><th>' + pB.name + '</th></tr></thead><tbody>' + rows + '</tbody></table></div>';
+        }
+
+        function renderClientSummary() {
+            const container = document.getElementById('client_summary_container');
+            if (!container) return;
+
+            if (!projects.length) {
+                container.innerHTML = '<div class="empty-state">Save projects with client tags to see aggregate stats.</div>';
+                return;
+            }
+
+            const clientGroups = {};
+            projects.forEach(p => {
+                const clientName = (p.client && p.client.trim()) || 'Untagged';
+                if (!clientGroups[clientName]) {
+                    clientGroups[clientName] = [];
+                }
+                clientGroups[clientName].push(p);
+            });
+
+            const clientStats = Object.keys(clientGroups).map(name => {
+                const clientProjects = clientGroups[name];
+                let totalRevenue = 0;
+                let totalNetProfit = 0;
+                let totalHours = 0;
+                let totalScore = 0;
+                let scoreCount = 0;
+
+                clientProjects.forEach(p => {
+                    const r = computeProjectResults(p.inputs);
+                    if (r.mode === 'quote') {
+                        totalRevenue += r.requiredFee || 0;
+                        totalHours += (p.inputs.estHours + p.inputs.estNonBillableHours) || 0;
+                    } else {
+                        totalRevenue += p.inputs.fee || 0;
+                        const nonBillable = p.inputs.nonBillable || { emails: 0, revisions: 0, meetings: 0, admin: p.inputs.nonBillableHours || 0 };
+                        const nbHours = p.inputs.nonBillableHours !== undefined ? p.inputs.nonBillableHours : (nonBillable.emails + nonBillable.revisions + nonBillable.meetings + nonBillable.admin);
+                        totalHours += (p.inputs.actualHours + nbHours) || 0;
+                        totalScore += r.score || 0;
+                        scoreCount++;
+                    }
+                    totalNetProfit += r.netProfit || 0;
+                });
+
+                const avgTrueHourlyRate = totalHours > 0 ? totalNetProfit / totalHours : 0;
+                const avgScore = scoreCount > 0 ? totalScore / scoreCount : 0;
+
+                return {
+                    name,
+                    projectCount: clientProjects.length,
+                    totalRevenue,
+                    totalNetProfit,
+                    avgTrueHourlyRate,
+                    avgScore,
+                    totalHours
+                };
+            });
+
+            const clientsWithRates = clientStats.filter(c => c.totalHours > 0);
+            let bestClient = null;
+            let worstClient = null;
+            if (clientsWithRates.length > 0) {
+                bestClient = clientsWithRates.reduce((best, c) => c.avgTrueHourlyRate > best.avgTrueHourlyRate ? c : best, clientsWithRates[0]);
+                worstClient = clientsWithRates.reduce((worst, c) => c.avgTrueHourlyRate < worst.avgTrueHourlyRate ? c : worst, clientsWithRates[0]);
+                if (bestClient.name === worstClient.name) {
+                    worstClient = null;
+                }
+            }
+
+            const rows = clientStats.map(c => {
+                let rowClass = '';
+                let label = '';
+                if (bestClient && c.name === bestClient.name) {
+                    rowClass = 'style="background: var(--mint-bg); border-left: 3px solid var(--mint);"';
+                    label = ' <span style="font-size: 0.65rem; font-weight: 700; color: var(--mint); background: var(--mint-glow); padding: 0.1rem 0.3rem; border-radius: 4px; margin-left: 0.35rem;">BEST</span>';
+                } else if (worstClient && c.name === worstClient.name) {
+                    rowClass = 'style="background: var(--rose-bg); border-left: 3px solid var(--rose);"';
+                    label = ' <span style="font-size: 0.65rem; font-weight: 700; color: var(--rose); background: var(--rose-glow); padding: 0.1rem 0.3rem; border-radius: 4px; margin-left: 0.35rem;">WORST</span>';
+                }
+
+                const scoreDisplay = c.avgScore > 0 ? `${c.avgScore.toFixed(1)} / 10` : 'None';
+
+                return `<tr ${rowClass}>
+                <td style="font-weight:700; color: var(--text);">${c.name}${label}</td>
+                <td>${c.projectCount}</td>
+                <td>${formatCurrency(c.totalRevenue)}</td>
+                <td>${formatCurrency(c.totalNetProfit)}</td>
+                <td style="font-weight:700;">${formatCurrency(c.avgTrueHourlyRate)}/hr</td>
+                <td>${scoreDisplay}</td>
+            </tr>`;
+            }).join('');
+
+            container.innerHTML = `
+            <div class="comparison-table-wrapper">
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Client Name</th>
+                            <th>Projects</th>
+                            <th>Total Revenue</th>
+                            <th>Total Net Profit</th>
+                            <th>Avg True Rate</th>
+                            <th>Avg Score</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${rows}
+                    </tbody>
+                </table>
+            </div>
+        `;
+        }
+
+        let chartFilter = 'all';
+
+        function setChartFilter(filter) {
+            chartFilter = filter;
+            ['all', 'analyze', 'quote'].forEach(f => {
+                const btn = document.getElementById(`chart_filter_${f}`);
+                if (btn) {
+                    if (f === filter) btn.classList.add('active');
+                    else btn.classList.remove('active');
+                }
+            });
+            renderProfitabilityChart();
+        }
+
+        function renderProfitabilityChart() {
+            const canvas = document.getElementById('profitability_chart');
+            const emptyState = document.getElementById('chart_empty_state');
+            if (!canvas) return;
+
+            let filteredProjects = [...projects];
+            if (chartFilter === 'analyze') {
+                filteredProjects = filteredProjects.filter(p => !p.inputs.mode || p.inputs.mode === 'analyze');
+            } else if (chartFilter === 'quote') {
+                filteredProjects = filteredProjects.filter(p => p.inputs.mode === 'quote');
+            }
+
+            if (filteredProjects.length < 2) {
+                canvas.style.display = 'none';
+                if (emptyState) {
+                    emptyState.style.display = 'flex';
+                    if (chartFilter === 'all') {
+                        emptyState.innerText = 'Save at least 2 projects to see your profitability trend.';
+                    } else if (chartFilter === 'analyze') {
+                        emptyState.innerText = 'Save at least 2 completed projects to see the trend.';
+                    } else {
+                        emptyState.innerText = 'Save at least 2 planned quotes to see the trend.';
+                    }
+                }
+                if (profitabilityChart) {
+                    profitabilityChart.destroy();
+                    profitabilityChart = null;
+                }
+                return;
+            }
+
+            canvas.style.display = 'block';
+            if (emptyState) emptyState.style.display = 'none';
+
+            const sortedProjects = filteredProjects.sort((a, b) => {
+                const dateA = parseDateSafe(a.timestamp);
+                const dateB = parseDateSafe(b.timestamp);
+                if (dateA.getTime() === dateB.getTime()) {
+                    return parseFloat(a.id) - parseFloat(b.id);
+                }
+                return dateA - dateB;
+            });
+
+            const labels = sortedProjects.map(p => {
+                const clientPart = p.client ? `${p.client.slice(0, 10)}: ` : '';
+                return clientPart + p.name;
+            });
+            const netProfits = [];
+            const trueHourlyRates = [];
+
+            sortedProjects.forEach(p => {
+                const r = computeProjectResults(p.inputs);
+                netProfits.push(r.netProfit);
+                trueHourlyRates.push(r.trueHourlyRate);
+            });
+
+            const styles = getComputedStyle(document.documentElement);
+            const accentColor = styles.getPropertyValue('--accent').trim();
+            const goldColor = styles.getPropertyValue('--gold').trim();
+            const textColor = styles.getPropertyValue('--text').trim();
+            const textMutedColor = styles.getPropertyValue('--text-muted').trim();
+            const borderColor = styles.getPropertyValue('--border').trim();
+            const cardBg = styles.getPropertyValue('--card').trim();
+            const cardRaisedBg = styles.getPropertyValue('--card-raised').trim() || '#12162a';
+
+            const ctx = canvas.getContext('2d');
+
+            if (profitabilityChart) {
+                profitabilityChart.destroy();
+            }
+
+            // Create vertical gradient for bars
+            const barGradient = ctx.createLinearGradient(0, 0, 0, 240);
+            barGradient.addColorStop(0, accentColor + '66'); // 40% opacity
+            barGradient.addColorStop(1, accentColor + '08'); // 3% opacity
+
+            // Determine average target rate for benchmark line
+            let targetHourlyRate = 50;
+            const lastQuoteProject = sortedProjects.slice().reverse().find(p => p.inputs.mode === 'quote');
+            if (lastQuoteProject) {
+                targetHourlyRate = lastQuoteProject.inputs.targetTakeHomeRate || 50;
+            } else {
+                const completedRates = trueHourlyRates.filter(r => r > 0);
+                if (completedRates.length > 0) {
+                    targetHourlyRate = completedRates.reduce((sum, r) => sum + r, 0) / completedRates.length;
+                }
+            }
+
+            profitabilityChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            type: 'bar',
+                            label: 'Net Profit ($)',
+                            data: netProfits,
+                            backgroundColor: barGradient,
+                            borderColor: accentColor,
+                            borderWidth: 2,
+                            borderRadius: 6,
+                            yAxisID: 'yNetProfit',
+                            order: 2
+                        },
+                        {
+                            type: 'line',
+                            label: 'True Hourly Rate ($/hr)',
+                            data: trueHourlyRates,
+                            borderColor: goldColor,
+                            backgroundColor: goldColor,
+                            borderWidth: 3,
+                            pointBackgroundColor: goldColor,
+                            pointBorderColor: cardBg,
+                            pointBorderWidth: 2,
+                            pointRadius: 5,
+                            pointHoverRadius: 7,
+                            pointHoverBackgroundColor: goldColor,
+                            pointHoverBorderColor: '#fff',
+                            pointHoverBorderWidth: 2,
+                            tension: 0.35,
+                            yAxisID: 'yHourlyRate',
+                            order: 1
+                        },
+                        {
+                            type: 'line',
+                            label: 'Benchmark Target Rate',
+                            data: new Array(labels.length).fill(targetHourlyRate),
+                            borderColor: textMutedColor,
+                            borderWidth: 1.5,
+                            borderDash: [6, 6],
+                            pointRadius: 0,
+                            fill: false,
+                            yAxisID: 'yHourlyRate',
+                            order: 3
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            labels: {
+                                color: textColor,
+                                font: { family: 'DM Sans', weight: 600, size: 11 },
+                                padding: 15
+                            }
+                        },
+                        tooltip: {
+                            backgroundColor: cardRaisedBg,
+                            titleColor: textColor,
+                            bodyColor: textColor,
+                            borderColor: borderColor,
+                            borderWidth: 1,
+                            padding: 10,
+                            cornerRadius: 8,
+                            displayColors: true,
+                            titleFont: { family: 'DM Sans', size: 13, weight: 'bold' },
+                            bodyFont: { family: 'DM Sans', size: 12 },
+                            callbacks: {
+                                label: function (context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed.y !== null) {
+                                        if (context.datasetIndex === 0) {
+                                            label += formatCurrency(context.parsed.y);
+                                        } else {
+                                            label += formatCurrency(context.parsed.y) + '/hr';
+                                        }
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: { color: borderColor, drawOnChartArea: false },
+                            ticks: {
+                                color: textMutedColor,
+                                font: { family: 'DM Sans', size: 10 },
+                                maxRotation: 45,
+                                autoSkip: true,
+                                maxTicksLimit: 12
+                            }
+                        },
+                        yNetProfit: {
+                            type: 'linear',
+                            position: 'left',
+                            grid: { color: borderColor },
+                            ticks: {
+                                color: textMutedColor,
+                                font: { family: 'DM Sans', size: 10 },
+                                callback: function (value) { return '$' + value; }
+                            },
+                            title: {
+                                display: true,
+                                text: 'Net Profit ($)',
+                                color: textColor,
+                                font: { family: 'DM Sans', weight: 600, size: 11 }
+                            }
+                        },
+                        yHourlyRate: {
+                            type: 'linear',
+                            position: 'right',
+                            grid: { drawOnChartArea: false },
+                            ticks: {
+                                color: textMutedColor,
+                                font: { family: 'DM Sans', size: 10 },
+                                callback: function (value) { return '$' + value + '/hr'; }
+                            },
+                            title: {
+                                display: true,
+                                text: 'Hourly Rate ($/hr)',
+                                color: textColor,
+                                font: { family: 'DM Sans', weight: 600, size: 11 }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function exportToCSV() {
+            if (!projects.length) {
+                alert('No saved projects to export.');
+                return;
+            }
+
+            const headers = [
+                'Project Name', 'Client', 'Date', 'Fee', 'Quoted Hours', 'Actual Hours',
+                'Non-Billable Hours', 'Expenses', 'Platform', 'Platform %', 'Tax Rate',
+                'Monthly Overhead', 'Gross Profit', 'Net Profit', 'True Hourly Rate', 'Score'
+            ];
+
+            const rows = projects.map(p => {
+                const r = computeProjectResults(p.inputs);
+                const fee = p.inputs.mode === 'quote' ? r.requiredFee : (p.inputs.fee || 0);
+
+                let nbHours = 0;
+                if (p.inputs.mode === 'quote') {
+                    nbHours = p.inputs.estNonBillableHours || 0;
+                } else {
+                    const nonBillable = p.inputs.nonBillable || { emails: 0, revisions: 0, meetings: 0, admin: p.inputs.nonBillableHours || 0 };
+                    nbHours = p.inputs.nonBillableHours !== undefined ? p.inputs.nonBillableHours : (nonBillable.emails + nonBillable.revisions + nonBillable.meetings + nonBillable.admin);
+                }
+
+                const billableHours = p.inputs.mode === 'quote' ? (p.inputs.estHours || 0) : (p.inputs.actualHours || 0);
+                const quotedHours = p.inputs.mode === 'quote' ? (p.inputs.estHours || 0) : (p.inputs.quotedHours || 0);
+
+                return [
+                    `"${p.name.replace(/"/g, '""')}"`,
+                    `"${(p.client || '').replace(/"/g, '""')}"`,
+                    `"${p.timestamp}"`,
+                    fee.toFixed(2),
+                    quotedHours.toFixed(1),
+                    billableHours.toFixed(1),
+                    nbHours.toFixed(1),
+                    (p.inputs.expenses || 0).toFixed(2),
+                    p.inputs.platformType || 'direct',
+                    (p.inputs.platformPercent || 0).toFixed(1),
+                    (p.inputs.taxRate || 0).toFixed(1),
+                    (p.inputs.monthlyOverhead || 0).toFixed(2),
+                    r.grossProfit.toFixed(2),
+                    r.netProfit.toFixed(2),
+                    r.trueHourlyRate.toFixed(2),
+                    r.score || 'None'
+                ];
+            });
+
+            const csvContent = [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `freelance_profit_analyzer_${new Date().toISOString().slice(0, 10)}.csv`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        }
+
+        function triggerCSVImport() {
+            document.getElementById('csv_import_file').click();
+        }
+
+        function importFromCSV(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function (evt) {
+                try {
+                    const text = evt.target.result;
+                    const lines = text.split('\n').map(l => l.trim()).filter(l => l.length > 0);
+                    if (lines.length < 2) {
+                        alert('Invalid CSV file: empty or missing data.');
+                        return;
+                    }
+
+                    const parseCSVRow = (line) => {
+                        const result = [];
+                        let current = '';
+                        let inQuotes = false;
+                        for (let i = 0; i < line.length; i++) {
+                            const char = line[i];
+                            if (char === '"') {
+                                if (inQuotes && line[i + 1] === '"') {
+                                    current += '"';
+                                    i++;
+                                } else {
+                                    inQuotes = !inQuotes;
+                                }
+                            } else if (char === ',' && !inQuotes) {
+                                result.push(current);
+                                current = '';
+                            } else {
+                                current += char;
+                            }
+                        }
+                        result.push(current);
+                        return result;
+                    };
+
+                    const headers = parseCSVRow(lines[0]);
+                    const requiredHeaders = ['Project Name', 'Fee', 'Actual Hours', 'Expenses'];
+                    const missing = requiredHeaders.filter(h => !headers.includes(h));
+                    if (missing.length > 0) {
+                        alert(`Invalid CSV. Missing required columns: ${missing.join(', ')}`);
+                        return;
+                    }
+
+                    const importedProjects = [];
+                    for (let i = 1; i < lines.length; i++) {
+                        const vals = parseCSVRow(lines[i]);
+                        if (vals.length < headers.length) continue;
+
+                        const row = {};
+                        headers.forEach((h, idx) => {
+                            row[h] = vals[idx];
+                        });
+
+                        const name = row['Project Name'];
+                        if (!name) continue;
+
+                        const client = row['Client'] || '';
+                        const date = row['Date'] || new Date().toLocaleString();
+                        const fee = parseFloat(row['Fee']) || 0;
+                        const quotedHours = parseFloat(row['Quoted Hours']) || 0;
+                        const actualHours = parseFloat(row['Actual Hours']) || 0;
+                        const nonBillableHours = parseFloat(row['Non-Billable Hours']) || 0;
+                        const expenses = parseFloat(row['Expenses']) || 0;
+                        const platformType = row['Platform'] || 'direct';
+                        const platformPercent = parseFloat(row['Platform %']) || 0;
+                        const taxRate = parseFloat(row['Tax Rate']) || 0;
+                        const monthlyOverhead = parseFloat(row['Monthly Overhead']) || 0;
+
+                        const inputs = {
+                            mode: 'analyze',
+                            fee,
+                            quotedHours,
+                            actualHours,
+                            nonBillableHours,
+                            nonBillable: {
+                                emails: 0,
+                                revisions: 0,
+                                meetings: 0,
+                                admin: nonBillableHours
+                            },
+                            expenses,
+                            platformType,
+                            platformPercent,
+                            taxRate,
+                            monthlyOverhead
+                        };
+
+                        const projectData = {
+                            id: Date.now().toString() + '_' + i,
+                            name,
+                            client,
+                            timestamp: date,
+                            inputs
+                        };
+
+                        importedProjects.push(projectData);
+                    }
+
+                    if (importedProjects.length === 0) {
+                        alert('No valid projects found in CSV.');
+                        return;
+                    }
+
+                    importedProjects.forEach(ip => {
+                        const existingIdx = projects.findIndex(p => p.name.toLowerCase() === ip.name.toLowerCase());
+                        if (existingIdx > -1) {
+                            if (confirm(`Project "${ip.name}" already exists. Overwrite?`)) {
+                                ip.id = projects[existingIdx].id;
+                                projects[existingIdx] = ip;
+                            }
+                        } else {
+                            projects.push(ip);
+                        }
+                    });
+
+                    saveProjectsToStorage();
+                } catch (err) {
+                    console.error(err);
+                    alert('Error parsing CSV file. Please make sure it matches the exported format.');
+                }
+                e.target.value = '';
+            };
+            reader.readAsText(file);
+        }
+
+        function exportToPDF() {
+            const { jsPDF } = window.jspdf;
+            const projectName = document.getElementById('project_name').value.trim() || 'Untitled Project';
+            const clientName = document.getElementById('client_name') ? document.getElementById('client_name').value.trim() : '';
+            const s = getInputsState();
+            const r = computeProjectResults(s);
+            const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
+
+            const accent = [146, 64, 14];
+            const dk = [31, 41, 55];
+            const md = [75, 85, 99];
+            const lt = [156, 163, 175];
+            const bg = [248, 246, 242];
+
+            doc.setFillColor(accent[0], accent[1], accent[2]);
+            doc.rect(0, 0, 210, 6, 'F');
+
+            doc.setFont('helvetica', 'bold');
+            doc.setFontSize(22);
+            doc.setTextColor(accent[0], accent[1], accent[2]);
+            doc.text('Loomrate Freelance Analyzer', 20, 22);
+
+            doc.setFont('helvetica', 'normal');
+            doc.setFontSize(9);
+            doc.setTextColor(md[0], md[1], md[2]);
+            doc.text('Profitability analysis and performance report.', 20, 27);
+
+            doc.setDrawColor(lt[0], lt[1], lt[2]);
+            doc.setLineWidth(0.3);
+            doc.line(20, 32, 190, 32);
+
+            doc.setFont('helvetica', 'bold');
+            doc.setFontSize(14);
+            doc.setTextColor(dk[0], dk[1], dk[2]);
+            const titleText = clientName ? `Client: ${clientName} | Project: ${projectName}` : `Project: ${projectName}`;
+            doc.text(titleText, 20, 42);
+
+            doc.setFont('helvetica', 'normal');
+            doc.setFontSize(8.5);
+            doc.setTextColor(md[0], md[1], md[2]);
+            doc.text('Generated: ' + new Date().toLocaleString(), 20, 47);
+
+            if (r.mode === 'analyze') {
+                doc.setFillColor(bg[0], bg[1], bg[2]);
+                doc.rect(20, 54, 80, 84, 'F');
+                doc.setDrawColor(229, 231, 235);
+                doc.rect(20, 54, 80, 84, 'D');
+
+                doc.setFont('helvetica', 'bold');
+                doc.setFontSize(10);
+                doc.setTextColor(accent[0], accent[1], accent[2]);
+                doc.text('Project Inputs', 25, 61);
+                doc.line(25, 63, 95, 63);
+
+                doc.setFont('helvetica', 'normal');
+                doc.setFontSize(8.5);
+                doc.setTextColor(dk[0], dk[1], dk[2]);
+                let y = 70;
+
+                const inputsData = [
+                    ['Project Fee:', formatCurrency(s.fee)],
+                    ['Quoted Hours:', formatHours(s.quotedHours)],
+                    ['Actual Hours:', formatHours(s.actualHours)],
+                    ['Non-Billable:', formatHours(s.nonBillableHours)],
+                    ['Expenses:', formatCurrency(s.expenses)],
+                    ['Platform:', s.platformType.toUpperCase() + ' (' + s.platformPercent + '%)'],
+                    ['Tax Rate:', formatPercent(s.taxRate)],
+                    ['Mo. Overhead:', formatCurrency(s.monthlyOverhead)]
+                ];
+
+                inputsData.forEach(p => {
+                    doc.setFont('helvetica', 'bold');
+                    doc.text(p[0], 25, y);
+                    doc.setFont('helvetica', 'normal');
+                    doc.text(p[1], 95, y, { align: 'right' });
+                    y += 8;
+                });
+
+                doc.setFillColor(255, 255, 255);
+                doc.rect(110, 54, 80, 84, 'FD');
+
+                doc.setFont('helvetica', 'bold');
+                doc.setFontSize(10);
+                doc.setTextColor(accent[0], accent[1], accent[2]);
+                doc.text('Performance', 115, 61);
+                doc.line(115, 63, 185, 63);
+
+                doc.setFont('helvetica', 'normal');
+                doc.setFontSize(8.5);
+                doc.setTextColor(dk[0], dk[1], dk[2]);
+                y = 70;
+
+                const perfData = [
+                    ['Gross Profit:', formatCurrency(r.grossProfit)],
+                    ['Net Profit:', formatCurrency(r.netProfit)],
+                    ['True Rate:', formatCurrency(r.trueHourlyRate) + '/hr'],
+                    ['Quoted Rate:', formatCurrency(r.quotedHourlyRate) + '/hr'],
+                    [r.hasCreep ? 'Scope Creep:' : 'No creep:', formatCurrency(r.scopeCreepCost)],
+                    ['Platform Fee:', formatCurrency(r.platformFeeTotal)],
+                    ['Tax Set Aside:', formatCurrency(r.taxSetAside)],
+                    ['Overhead Cost:', formatCurrency(r.overheadAllocation)]
+                ];
+
+                perfData.forEach(p => {
+                    doc.setFont('helvetica', 'bold');
+                    doc.text(p[0], 115, y);
+                    doc.setFont('helvetica', 'normal');
+                    doc.text(p[1], 185, y, { align: 'right' });
+                    y += 8;
+                });
+
+                let sc = [22, 101, 52];
+                if (r.score < 4) sc = [159, 18, 57];
+                else if (r.score < 7) sc = [133, 77, 14];
+
+                doc.setFillColor(bg[0], bg[1], bg[2]);
+                doc.rect(20, 146, 170, 40, 'F');
+                doc.setDrawColor(229, 231, 235);
+                doc.rect(20, 146, 170, 40, 'D');
+
+                doc.setFillColor(sc[0], sc[1], sc[2]);
+                doc.rect(26, 152, 28, 28, 'F');
+
+                doc.setFont('helvetica', 'bold');
+                doc.setFontSize(18);
+                doc.setTextColor(255, 255, 255);
+                doc.text(r.score.toString(), 40, 167, { align: 'center' });
+                doc.setFontSize(8);
+                doc.text('/ 10', 40, 173, { align: 'center' });
+
+                doc.setFont('helvetica', 'bold');
+                doc.setFontSize(13);
+                doc.setTextColor(sc[0], sc[1], sc[2]);
+                doc.text(r.verdict, 62, 159);
+
+                doc.setFont('helvetica', 'normal');
+                doc.setFontSize(9);
+                doc.setTextColor(dk[0], dk[1], dk[2]);
+                doc.text('Based on estimation accuracy, platform costs, overhead,', 62, 166);
+                doc.text('non-billable time, and tax set asides.', 62, 170);
+
+                doc.setDrawColor(accent[0], accent[1], accent[2]);
+                doc.setLineWidth(0.8);
+                doc.line(20, 194, 20, 224);
+                doc.setLineWidth(0.3);
+
+                doc.setFont('helvetica', 'bold');
+                doc.setFontSize(11);
+                doc.setTextColor(accent[0], accent[1], accent[2]);
+                doc.text('Recommended Fee For Similar Projects', 25, 200);
+
+                doc.setFontSize(16);
+                doc.setTextColor(dk[0], dk[1], dk[2]);
+                doc.text(formatCurrency(r.recommendedFee), 25, 210);
+
+                doc.setFont('helvetica', 'normal');
+                doc.setFontSize(8.5);
+                doc.setTextColor(md[0], md[1], md[2]);
+                doc.text('Target rate: ' + formatCurrency(Math.max(r.trueHourlyRate * 1.25, 20)) + '/hr across ' + formatHours(s.actualHours + s.nonBillableHours) + ' total effort.', 25, 216);
+
+            } else {
+                doc.setFillColor(bg[0], bg[1], bg[2]);
+                doc.rect(20, 54, 80, 84, 'F');
+                doc.setDrawColor(229, 231, 235);
+                doc.rect(20, 54, 80, 84, 'D');
+
+                doc.setFont('helvetica', 'bold');
+                doc.setFontSize(10);
+                doc.setTextColor(accent[0], accent[1], accent[2]);
+                doc.text('Quote Parameters', 25, 61);
+                doc.line(25, 63, 95, 63);
+
+                doc.setFont('helvetica', 'normal');
+                doc.setFontSize(8.5);
+                doc.setTextColor(dk[0], dk[1], dk[2]);
+                let y = 70;
+
+                const inputsData = [
+                    ['Target Net Rate:', formatCurrency(s.targetTakeHomeRate) + '/hr'],
+                    ['Est. Hours:', formatHours(s.estHours)],
+                    ['Est. Non-Billable:', formatHours(s.estNonBillableHours)],
+                    ['Expenses:', formatCurrency(s.expenses)],
+                    ['Platform:', s.platformType.toUpperCase() + ' (' + s.platformPercent + '%)'],
+                    ['Tax Rate:', formatPercent(s.taxRate)],
+                    ['Mo. Overhead:', formatCurrency(s.monthlyOverhead)]
+                ];
+
+                inputsData.forEach(p => {
+                    doc.setFont('helvetica', 'bold');
+                    doc.text(p[0], 25, y);
+                    doc.setFont('helvetica', 'normal');
+                    doc.text(p[1], 95, y, { align: 'right' });
+                    y += 8;
+                });
+
+                doc.setFillColor(255, 255, 255);
+                doc.rect(110, 54, 80, 84, 'FD');
+
+                doc.setFont('helvetica', 'bold');
+                doc.setFontSize(10);
+                doc.setTextColor(accent[0], accent[1], accent[2]);
+                doc.text('Calculated Outputs', 115, 61);
+                doc.line(115, 63, 185, 63);
+
+                doc.setFont('helvetica', 'normal');
+                doc.setFontSize(8.5);
+                doc.setTextColor(dk[0], dk[1], dk[2]);
+                y = 70;
+
+                const perfData = [
+                    ['Quote Required Fee:', formatCurrency(r.requiredFee)],
+                    ['Hourly Rate to Quote:', formatCurrency(r.quotedHourlyRate) + '/hr'],
+                    ['Gross Profit:', formatCurrency(r.grossProfit)],
+                    ['Net Profit (Take-Home):', formatCurrency(r.netProfit)],
+                    ['Overhead Cost:', formatCurrency(r.overheadAllocation)],
+                    ['Platform Fee:', formatCurrency(r.platformFeeTotal)],
+                    ['Tax Set Aside:', formatCurrency(r.taxSetAside)]
+                ];
+
+                perfData.forEach(p => {
+                    doc.setFont('helvetica', 'bold');
+                    doc.text(p[0], 115, y);
+                    doc.setFont('helvetica', 'normal');
+                    doc.text(p[1], 185, y, { align: 'right' });
+                    y += 8;
+                });
+
+                doc.setFillColor(bg[0], bg[1], bg[2]);
+                doc.rect(20, 146, 170, 40, 'F');
+                doc.setDrawColor(229, 231, 235);
+                doc.rect(20, 146, 170, 40, 'D');
+
+                doc.setFillColor(accent[0], accent[1], accent[2]);
+                doc.rect(26, 152, 40, 28, 'F');
+
+                doc.setFont('helvetica', 'bold');
+                doc.setFontSize(14);
+                doc.setTextColor(255, 255, 255);
+                doc.text(formatCurrency(r.requiredFee), 46, 169, { align: 'center' });
+
+                doc.setFont('helvetica', 'bold');
+                doc.setFontSize(13);
+                doc.setTextColor(accent[0], accent[1], accent[2]);
+                doc.text('Recommended Quote', 72, 159);
+
+                doc.setFont('helvetica', 'normal');
+                doc.setFontSize(9);
+                doc.setTextColor(dk[0], dk[1], dk[2]);
+                doc.text(`Required fee to secure a ${formatCurrency(s.targetTakeHomeRate)}/hr net take-home rate.`, 72, 166);
+                doc.text(`Estimated total effort: ${formatHours(s.estHours + s.estNonBillableHours)}.`, 72, 171);
+
+                doc.setDrawColor(accent[0], accent[1], accent[2]);
+                doc.setLineWidth(0.8);
+                doc.line(20, 194, 20, 214);
+                doc.setLineWidth(0.3);
+
+                doc.setFont('helvetica', 'bold');
+                doc.setFontSize(11);
+                doc.setTextColor(accent[0], accent[1], accent[2]);
+                doc.text('Quote Confidence & Notes', 25, 200);
+
+                doc.setFont('helvetica', 'normal');
+                doc.setFontSize(9.5);
+                doc.setTextColor(dk[0], dk[1], dk[2]);
+                doc.text(r.desc, 25, 208);
+            }
+
+            doc.setFont('helvetica', 'normal');
+            doc.setFontSize(8);
+            doc.setTextColor(lt[0], lt[1], lt[2]);
+            doc.text('Loomrate Freelance Analyzer', 20, 275);
+            doc.text('Page 1 of 1', 190, 275, { align: 'right' });
+
+            doc.save(projectName.toLowerCase().replace(/\s+/g, '_') + '_profit_analysis.pdf');
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            loadTheme();
+            const dateEl = document.getElementById('project_date');
+            if (dateEl) dateEl.value = getLocalDateString(new Date());
+            loadProjectsFromStorage();
+            calculate();
+        });
+    </script>
+</body>
+
+</html>

@@ -1,6 +1,6 @@
 # 🪙 Loomrate
 
-> **Loomrate** is a premium, local-first freelance profitability & quote analyzer designed to help independent professionals, contractors, and agencies calculate their **true hourly rate**, model scope creep, analyze client overheads, and plan quotes with a reverse-pricing engine.
+> **Loomrate** is a premium, local-first freelance profitability and quote analyzer designed to help independent professionals, contractors, and agencies calculate their **true hourly rate**, model scope creep, analyze client overheads, and plan quotes with a reverse pricing engine.
 
 Built entirely as a modern client-side application, it features a warm, paper-like tactile design system with a seamless Dark Mode toggle, interactive analytics, and professional PDF report exporting.
 
@@ -8,13 +8,13 @@ Built entirely as a modern client-side application, it features a warm, paper-li
 
 ## ✨ Features
 
-*   **True Hourly Rate Calculator** — Account for platform fees, tax brackets, and unpaid administrative/business hours to uncover what you *actually* make.
-*   **Scope Creep Cost Visualizer** — See exactly how hours added past the original estimate degrade your margins and drive down your effective hourly wage.
-*   **Reverse Quote Planner** — Enter your desired net profit and hours to instantly receive the exact quote rate required to get you there.
-*   **Overhead & Expense Allocator** — Distribute your recurring business overhead costs and software subscriptions proportionally across your billing rates.
-*   **Local Project Dashboard & Comparisons** — Save quotes locally using `localStorage` to contrast metrics and client performance over time.
-*   **Dynamic Client Analytics** — Sleek charts (powered by Chart.js) that map and visualize key freelance profit ratios.
-*   **PDF Export Engine** — Export beautiful, clean PDF rate sheets and project summaries via jsPDF to share or archive.
+*   **True Hourly Rate Calculator**: Account for platform fees, tax brackets, and unpaid administrative/business hours to uncover what you *actually* make.
+*   **Scope Creep Cost Visualizer**: See exactly how hours added past the original estimate degrade your margins and drive down your effective hourly wage.
+*   **Reverse Quote Planner**: Enter your desired net profit and hours to instantly receive the exact quote rate required to get you there.
+*   **Overhead & Expense Allocator**: Distribute your recurring business overhead costs and software subscriptions proportionally across your billing rates.
+*   **Local Project Dashboard & Comparisons**: Save quotes locally using `localStorage` to contrast metrics and client performance over time.
+*   **Dynamic Client Analytics**: Sleek charts (powered by Chart.js) that map and visualize key freelance profit ratios.
+*   **PDF Export Engine**: Export beautiful, clean PDF rate sheets and project summaries via jsPDF to share or archive.
 
 ---
 
@@ -53,7 +53,7 @@ Then navigate to `http://localhost:8000` or the port provided.
 
 ## 🛠️ Built With
 
-*   **HTML5 & Vanilla CSS3** — Fully responsive fluid layout, custom CSS custom properties (variables), and an SVG turbulence grain filter.
-*   **Vanilla JavaScript** — Real-time reactive calculator calculations and state synchronization.
-*   **Chart.js** — Premium interactive client analytics and charts.
-*   **jsPDF** — Client-side vector PDF document generation.
+*   **HTML5 & Vanilla CSS3**: Fully responsive fluid layout, custom CSS custom properties (variables), and an SVG turbulence grain filter.
+*   **Vanilla JavaScript**: Real-time reactive calculator calculations and state synchronization.
+*   **Chart.js**: Premium interactive client analytics and charts.
+*   **jsPDF**: Client-side vector PDF document generation.
