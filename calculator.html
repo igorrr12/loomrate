@@ -15,6 +15,8 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="config.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <!-- SVG grain texture filter (hidden) -->
     <svg style="position:absolute;width:0;height:0" aria-hidden="true">
@@ -227,12 +229,19 @@
             letter-spacing: 0.01em;
         }
 
-        /* ---- THEME TOGGLE ---- */
-        .theme-toggle {
+        /* ---- HEADER ACTIONS & THEME TOGGLE ---- */
+        .header-actions {
             position: absolute;
             top: 0.25rem;
             right: 0;
             z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .theme-toggle {
+            position: relative;
             width: 42px;
             height: 42px;
             border-radius: 50%;
@@ -1083,6 +1092,139 @@
         .modal-body p {
             margin-bottom: 0.75rem;
         }
+
+        /* ---- AUTH & PREMIUM GATING STYLES ---- */
+        .auth-form-group {
+            margin-bottom: 1.25rem;
+            text-align: left;
+        }
+        .auth-form-label {
+            display: block;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 0.4rem;
+            color: var(--text-dim);
+        }
+        .auth-form-input {
+            width: 100%;
+            font-family: inherit;
+            font-size: 0.9rem;
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            background: var(--input-bg);
+            border: 1px solid var(--input-border);
+            color: var(--text);
+            transition: all 0.15s ease;
+        }
+        .auth-form-input:focus {
+            outline: none;
+            border-color: var(--input-focus-border);
+            box-shadow: 0 0 0 3px var(--input-focus-shadow);
+        }
+        .auth-tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 0.5rem;
+        }
+        .auth-tab {
+            background: none;
+            border: none;
+            font-family: inherit;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            cursor: pointer;
+            padding: 0.25rem 0.5rem;
+            position: relative;
+            transition: color 0.2s ease;
+        }
+        .auth-tab.active {
+            color: var(--accent);
+        }
+        .auth-tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -0.6rem;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--accent);
+        }
+        .auth-msg {
+            margin-top: 1rem;
+            padding: 0.75rem;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            display: none;
+        }
+        .auth-msg.error {
+            display: block;
+            background: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
+            border: 1px solid rgba(239, 68, 68, 0.2);
+        }
+        .auth-msg.success {
+            display: block;
+            background: rgba(34, 197, 94, 0.1);
+            color: #22c55e;
+            border: 1px solid rgba(34, 197, 94, 0.2);
+        }
+        .auth-forgot-link {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            text-decoration: none;
+            display: block;
+            margin-top: 0.5rem;
+            text-align: right;
+            transition: color 0.2s ease;
+        }
+        .auth-forgot-link:hover {
+            color: var(--accent);
+        }
+
+        /* Paywall overlays */
+        .paywall-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(243, 237, 226, 0.82);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            z-index: 10;
+            transition: opacity 0.3s ease;
+        }
+        [data-theme="dark"] .paywall-overlay {
+            background: rgba(10, 13, 26, 0.86);
+        }
+        .paywall-content {
+            text-align: center;
+            max-width: 320px;
+            padding: 1.25rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.6rem;
+        }
+        .paywall-content svg {
+            color: var(--accent);
+        }
+        .paywall-content h4 {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--text);
+            margin: 0.25rem 0 0 0;
+        }
+        .paywall-content p {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            line-height: 1.4;
+            margin: 0 0 0.4rem 0;
+        }
     </style>
 </head>
 
@@ -1090,24 +1232,27 @@
 
     <main class="container">
 
-        <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode" title="Toggle dark mode">
-            <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
-                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
-            </svg>
-            <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
-                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="12" cy="12" r="5" />
-                <line x1="12" y1="1" x2="12" y2="3" />
-                <line x1="12" y1="21" x2="12" y2="23" />
-                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
-                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
-                <line x1="1" y1="12" x2="3" y2="12" />
-                <line x1="21" y1="12" x2="23" y2="12" />
-                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
-                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
-            </svg>
-        </button>
+        <div class="header-actions">
+            <button id="auth_btn" class="btn btn-secondary btn-sm" onclick="handleAuthClick()" style="font-size: 0.8rem; padding: 0.5rem 1rem;">Sign In</button>
+            <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode" title="Toggle dark mode">
+                <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+                </svg>
+                <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="5" />
+                    <line x1="12" y1="1" x2="12" y2="3" />
+                    <line x1="12" y1="21" x2="12" y2="23" />
+                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+                    <line x1="1" y1="12" x2="3" y2="12" />
+                    <line x1="21" y1="12" x2="23" y2="12" />
+                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+                    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+                </svg>
+            </button>
+        </div>
 
         <header>
             <h1><a href="index.html">Loomrate</a> <span>Freelance Analyzer</span></h1>
@@ -1486,6 +1631,17 @@
                 <div id="chart_empty_state" class="empty-state"
                     style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;">
                     Save at least 2 projects to see your profitability trend.</div>
+                <div id="chart_paywall_overlay" class="paywall-overlay" style="display: none;">
+                    <div class="paywall-content">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                        </svg>
+                        <h4>Trend Analytics is a Premium Feature</h4>
+                        <p>Upgrade to unlock a visual timeline of your net margins and billable hours.</p>
+                        <button class="btn btn-primary btn-sm" onclick="showPremiumUpgradeModal('Trend Analytics is a Premium feature. Upgrade to unlock interactive visual summaries.')">Upgrade to Premium</button>
+                    </div>
+                </div>
             </div>
         </details>
 
@@ -1526,7 +1682,7 @@
         </div>
 
         <!-- CLIENT SUMMARY -->
-        <div class="card" style="margin-top: 2.5rem;">
+        <div class="card" style="margin-top: 2.5rem; position: relative;">
             <h2><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
                     stroke="currentColor" stroke-width="2">
                     <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
@@ -1534,8 +1690,21 @@
                     <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
                     <path d="M16 3.13a4 4 0 0 1 0 7.75" />
                 </svg> Client Summary</h2>
-            <div id="client_summary_container">
-                <div class="empty-state">Save projects with client tags to see aggregate stats.</div>
+            <div style="position: relative; min-height: 120px;">
+                <div id="client_summary_container">
+                    <div class="empty-state">Save projects with client tags to see aggregate stats.</div>
+                </div>
+                <div id="client_summary_paywall_overlay" class="paywall-overlay" style="display: none;">
+                    <div class="paywall-content">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                        </svg>
+                        <h4>Client Summary is a Premium Feature</h4>
+                        <p>Unlock client specific metrics to see which accounts are most profitable.</p>
+                        <button class="btn btn-primary btn-sm" onclick="showPremiumUpgradeModal('Client Summary is a Premium feature. Upgrade to view comparative aggregates.')">Upgrade to Premium</button>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -1561,6 +1730,123 @@
             <h3 id="modal_title" class="modal-title">Terms of Use</h3>
             <div id="modal_body" class="modal-body">
                 <!-- Content injected dynamically -->
+            </div>
+        </div>
+    </div>
+
+    <!-- AUTH MODAL -->
+    <div id="auth_modal" class="modal-overlay" onclick="closeAuthModal(event)">
+        <div class="modal-card" style="max-width: 400px;" onclick="event.stopPropagation()">
+            <button class="modal-close" onclick="closeAuthModal()">&times;</button>
+            
+            <div class="auth-tabs" id="auth_tabs">
+                <button class="auth-tab active" onclick="switchAuthTab('signin')">Sign In</button>
+                <button class="auth-tab" onclick="switchAuthTab('signup')">Sign Up</button>
+            </div>
+            
+            <!-- Sign In Form -->
+            <form id="signin_form" onsubmit="handleSignIn(event)">
+                <div class="auth-form-group">
+                    <label class="auth-form-label" for="signin_email">Email Address</label>
+                    <input class="auth-form-input" type="email" id="signin_email" required placeholder="you@example.com">
+                </div>
+                <div class="auth-form-group">
+                    <label class="auth-form-label" for="signin_password">Password</label>
+                    <input class="auth-form-input" type="password" id="signin_password" required placeholder="••••••••">
+                    <a href="#" class="auth-forgot-link" onclick="showForgotPassword(event)">Forgot password?</a>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 0.5rem;">Sign In</button>
+            </form>
+            
+            <!-- Sign Up Form -->
+            <form id="signup_form" onsubmit="handleSignUp(event)" style="display: none;">
+                <div class="auth-form-group">
+                    <label class="auth-form-label" for="signup_email">Email Address</label>
+                    <input class="auth-form-input" type="email" id="signup_email" required placeholder="you@example.com">
+                </div>
+                <div class="auth-form-group">
+                    <label class="auth-form-label" for="signup_password">Password</label>
+                    <input class="auth-form-input" type="password" id="signup_password" required placeholder="••••••••">
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 0.5rem;">Create Account</button>
+            </form>
+
+            <!-- Reset Password Form -->
+            <form id="reset_form" onsubmit="handleResetPassword(event)" style="display: none;">
+                <div class="auth-form-group">
+                    <label class="auth-form-label" for="reset_email">Email Address</label>
+                    <input class="auth-form-input" type="email" id="reset_email" required placeholder="you@example.com">
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 0.5rem;">Send Reset Link</button>
+                <a href="#" class="auth-forgot-link" onclick="cancelForgotPassword(event)" style="text-align: center; margin-top: 0.75rem;">Back to Sign In</a>
+            </form>
+            
+            <div id="auth_message" class="auth-msg"></div>
+        </div>
+    </div>
+
+    <!-- NEW PASSWORD MODAL (RECOVERY) -->
+    <div id="recovery_modal" class="modal-overlay">
+        <div class="modal-card" style="max-width: 400px;" onclick="event.stopPropagation()">
+            <h3 class="modal-title">Reset Your Password</h3>
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.25rem;">Please enter a new password for your account.</p>
+            <form id="recovery_form" onsubmit="handleUpdatePassword(event)">
+                <div class="auth-form-group">
+                    <label class="auth-form-label" for="recovery_password">New Password</label>
+                    <input class="auth-form-input" type="password" id="recovery_password" required placeholder="••••••••">
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 0.5rem;">Update Password</button>
+            </form>
+            <div id="recovery_message" class="auth-msg"></div>
+        </div>
+    </div>
+
+    <!-- PREMIUM UPGRADE MODAL -->
+    <div id="premium_modal" class="modal-overlay" onclick="closePremiumModal(event)">
+        <div class="modal-card" style="max-width: 460px;" onclick="event.stopPropagation()">
+            <button class="modal-close" onclick="closePremiumModal()">&times;</button>
+            <div style="text-align: center; padding: 1rem 0;">
+                <div style="width: 54px; height: 54px; background: var(--gold-dim); border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 1.25rem;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                    </svg>
+                </div>
+                <h3 class="modal-title" style="border: none; margin-bottom: 0.5rem; font-size: 1.6rem; letter-spacing: -0.02em;">Unlock Premium</h3>
+                <p id="premium_modal_reason" style="font-size: 0.9rem; color: var(--text-dim); line-height: 1.5; margin-bottom: 2rem;">
+                    Access unlimited project storage, CSV exports, client performance analytics, and PDF reports.
+                </p>
+                
+                <div style="background: var(--input-bg); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; text-align: left; margin-bottom: 2rem;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                        <span style="font-weight: 700; font-size: 1.1rem; color: var(--text);">Loomrate Premium</span>
+                        <span style="font-size: 1.4rem; font-weight: 700; color: var(--accent);">$9<span style="font-size: 0.85rem; font-weight: 500; color: var(--text-muted);">/month</span></span>
+                    </div>
+                    <ul style="list-style: none; font-size: 0.85rem; color: var(--text-dim); display: flex; flex-direction: column; gap: 0.5rem;">
+                        <li style="display: flex; align-items: center; gap: 0.5rem;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            Unlimited projects synced to the cloud
+                        </li>
+                        <li style="display: flex; align-items: center; gap: 0.5rem;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            Detailed Client Summary & performance ranking
+                        </li>
+                        <li style="display: flex; align-items: center; gap: 0.5rem;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            Interactive trend charts & historical logs
+                        </li>
+                        <li style="display: flex; align-items: center; gap: 0.5rem;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            Export reports to PDF & CSV backup formats
+                        </li>
+                    </ul>
+                </div>
+                
+                <button onclick="redirectToUpgrade()" class="btn btn-primary" style="width: 100%; font-size: 1rem; padding: 1rem;">
+                    Upgrade with Lemon Squeezy
+                </button>
+                <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.75rem;">
+                    Secure Merchant of Record checkout. Cancel anytime.
+                </div>
             </div>
         </div>
     </div>
@@ -1976,15 +2262,39 @@
             handlePlatformFeeChange();
         }
 
-        function loadProjectsFromStorage() {
-            try { projects = JSON.parse(localStorage.getItem('fpa_projects')) || []; } catch (e) { projects = []; }
+        async function loadProjects() {
+            if (supabaseClient && currentUser) {
+                try {
+                    const { data, error } = await supabaseClient
+                        .from('projects')
+                        .select('*')
+                        .order('timestamp', { ascending: false });
+                        
+                    if (error) throw error;
+                    projects = data || [];
+                } catch (e) {
+                    console.error('Failed to load projects from Supabase, falling back to local cache:', e);
+                    try { projects = JSON.parse(localStorage.getItem('fpa_projects')) || []; } catch (e) { projects = []; }
+                }
+            } else {
+                try { projects = JSON.parse(localStorage.getItem('fpa_projects')) || []; } catch (e) { projects = []; }
+            }
+            
             renderProjectList();
             populateCompareDropdowns();
             renderClientSummary();
             renderProfitabilityChart();
         }
-        function saveProjectsToStorage() {
-            localStorage.setItem('fpa_projects', JSON.stringify(projects));
+
+        async function saveProjectsToStorage() {
+            if (supabaseClient && currentUser) {
+                // If synced, loadProjects handles rendering, but we can write a generic sync saver
+                // Normally we perform inserts/updates individually for better efficiency.
+                // This is a local fallback helper.
+                localStorage.setItem('fpa_projects', JSON.stringify(projects));
+            } else {
+                localStorage.setItem('fpa_projects', JSON.stringify(projects));
+            }
             renderProjectList();
             populateCompareDropdowns();
             runComparison();
@@ -1992,67 +2302,100 @@
             renderProfitabilityChart();
         }
 
-        function saveProject() {
+        async function saveProject() {
             const inp = document.getElementById('project_name'), name = inp.value.trim();
             if (!name) { alert('Please enter a project name.'); inp.focus(); return; }
+            
+            const idx = projects.findIndex(p => p.name.toLowerCase() === name.toLowerCase());
+            const isExisting = idx > -1;
+            
+            if (!isExisting && projects.length >= 3 && !isPremium) {
+                showPremiumUpgradeModal("You have reached the maximum limit of 3 saved projects on the free tier. Upgrade to Premium for unlimited project storage.");
+                return;
+            }
+            
             const clientInp = document.getElementById('client_name'), client = clientInp ? clientInp.value.trim() : '';
             const dateInp = document.getElementById('project_date');
-            const timestamp = (dateInp && dateInp.value) ? dateInp.value : new Date().toLocaleString();
-            const state = getInputsState(), data = { id: Date.now().toString(), name, client, timestamp, inputs: state };
-            const idx = projects.findIndex(p => p.name.toLowerCase() === name.toLowerCase());
-            if (idx > -1) { if (!confirm('"' + name + '" already exists. Overwrite?')) return; data.id = projects[idx].id; projects[idx] = data; } else { projects.push(data); }
-            saveProjectsToStorage(); alert('Project "' + name + '" saved!');
-        }
-
-        function loadProject(id) {
-            const p = projects.find(x => x.id === id); if (!p) return;
-            document.getElementById('project_name').value = p.name;
-            if (document.getElementById('client_name')) {
-                document.getElementById('client_name').value = p.client || '';
+            const timestamp = (dateInp && dateInp.value) ? dateInp.value : new Date().toISOString().slice(0, 10);
+            const state = getInputsState();
+            
+            let id = Date.now().toString() + '_' + Math.random().toString(36).substring(2, 9);
+            if (isExisting) {
+                if (!confirm('"' + name + '" already exists. Overwrite?')) return;
+                id = projects[idx].id;
             }
-
-            const dateEl = document.getElementById('project_date');
-            if (dateEl) {
-                const parsedDate = parseDateSafe(p.timestamp);
-                dateEl.value = getLocalDateString(parsedDate);
-            }
-
-            const mode = p.inputs.mode || 'analyze';
-            setMode(mode);
-
-            if (mode === 'analyze') {
-                document.getElementById('fee').value = p.inputs.fee || '';
-                document.getElementById('quoted_hours').value = p.inputs.quotedHours || '';
-                document.getElementById('actual_hours').value = p.inputs.actualHours || '';
-
-                if (p.inputs.nonBillable) {
-                    document.getElementById('nb_emails').value = p.inputs.nonBillable.emails || '';
-                    document.getElementById('nb_revisions').value = p.inputs.nonBillable.revisions || '';
-                    document.getElementById('nb_meetings').value = p.inputs.nonBillable.meetings || '';
-                    document.getElementById('nb_admin').value = p.inputs.nonBillable.admin || '';
-                } else {
-                    document.getElementById('nb_emails').value = '';
-                    document.getElementById('nb_revisions').value = '';
-                    document.getElementById('nb_meetings').value = '';
-                    document.getElementById('nb_admin').value = p.inputs.nonBillableHours || '';
+            
+            const projectData = { id, name, client, timestamp, inputs: state };
+            
+            if (supabaseClient && currentUser) {
+                try {
+                    const record = {
+                        id,
+                        user_id: currentUser.id,
+                        name,
+                        client: client || null,
+                        timestamp,
+                        inputs: state
+                    };
+                    
+                    const { error } = await supabaseClient
+                        .from('projects')
+                        .upsert(record);
+                        
+                    if (error) throw error;
+                    
+                    if (isExisting) {
+                        projects[idx] = projectData;
+                    } else {
+                        projects.push(projectData);
+                    }
+                    alert('Project "' + name + '" saved to cloud!');
+                } catch (e) {
+                    console.error('Failed to save to Supabase:', e);
+                    alert('Failed to sync to cloud. Saving locally for now.');
+                    saveProjectLocal(projectData, idx);
                 }
             } else {
-                document.getElementById('target_take_home_rate').value = p.inputs.targetTakeHomeRate || '';
-                document.getElementById('est_hours').value = p.inputs.estHours || '';
-                document.getElementById('est_non_billable_hours').value = p.inputs.estNonBillableHours || '';
+                saveProjectLocal(projectData, idx);
+                alert('Project "' + name + '" saved locally!');
             }
-
-            document.getElementById('expenses').value = p.inputs.expenses || '';
-            document.getElementById('platform_fee_type').value = p.inputs.platformType;
-            document.getElementById('platform_fee_custom').value = (p.inputs.platformType === 'toptal' || p.inputs.platformType === 'custom') ? p.inputs.platformPercent : '';
-            document.getElementById('tax_rate').value = p.inputs.taxRate || '';
-            document.getElementById('monthly_overhead').value = p.inputs.monthlyOverhead || '';
-
-            handlePlatformFeeChange();
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+            
+            await loadProjects();
         }
 
-        function deleteProject(id, ev) { ev.stopPropagation(); if (confirm('Delete this project?')) { projects = projects.filter(p => p.id !== id); saveProjectsToStorage(); } }
+        function saveProjectLocal(projectData, idx) {
+            if (idx > -1) {
+                projects[idx] = projectData;
+            } else {
+                projects.push(projectData);
+            }
+            localStorage.setItem('fpa_projects', JSON.stringify(projects));
+        }
+
+        async function deleteProject(id, ev) {
+            ev.stopPropagation();
+            if (!confirm('Delete this project?')) return;
+            
+            if (supabaseClient && currentUser) {
+                try {
+                    const { error } = await supabaseClient
+                        .from('projects')
+                        .delete()
+                        .eq('id', id);
+                        
+                    if (error) throw error;
+                } catch (e) {
+                    console.error('Failed to delete from Supabase:', e);
+                    alert('Failed to delete from cloud.');
+                    return;
+                }
+            } else {
+                projects = projects.filter(p => p.id !== id);
+                localStorage.setItem('fpa_projects', JSON.stringify(projects));
+            }
+            
+            await loadProjects();
+        }
 
         function renderProjectList() {
             const c = document.getElementById('project_list_container');
@@ -2490,6 +2833,10 @@
         }
 
         function exportToCSV() {
+            if (!isPremium) {
+                showPremiumUpgradeModal("Exporting projects to CSV is a Premium feature. Upgrade to unlock data backups.");
+                return;
+            }
             if (!projects.length) {
                 alert('No saved projects to export.');
                 return;
@@ -2548,6 +2895,10 @@
         }
 
         function triggerCSVImport() {
+            if (!isPremium) {
+                showPremiumUpgradeModal("Importing projects from CSV is a Premium feature. Upgrade to import historical data.");
+                return;
+            }
             document.getElementById('csv_import_file').click();
         }
 
@@ -2680,6 +3031,10 @@
         }
 
         function exportToPDF() {
+            if (!isPremium) {
+                showPremiumUpgradeModal("Exporting project reports to PDF is a Premium feature. Upgrade to print custom invoices and summaries.");
+                return;
+            }
             const { jsPDF } = window.jspdf;
             const projectName = document.getElementById('project_name').value.trim() || 'Untitled Project';
             const clientName = document.getElementById('client_name') ? document.getElementById('client_name').value.trim() : '';
@@ -2955,12 +3310,410 @@
             doc.save(projectName.toLowerCase().replace(/\s+/g, '_') + '_profit_analysis.pdf');
         }
 
+        /* ---- SUPABASE & AUTH INTEGRATION ON CALCULATOR ---- */
+        let supabaseClient = null;
+        let currentUser = null;
+
+        function initSupabase() {
+            if (typeof CONFIG !== 'undefined' && CONFIG.SUPABASE_URL && CONFIG.SUPABASE_ANON_KEY) {
+                try {
+                    supabaseClient = supabase.createClient(CONFIG.SUPABASE_URL, CONFIG.SUPABASE_ANON_KEY);
+                } catch (e) {
+                    console.error('Failed to initialize Supabase client:', e);
+                }
+            }
+        }
+
+        async function checkUserSession() {
+            if (!supabaseClient) {
+                updateAuthUI(null);
+                await checkPremiumStatus();
+                await loadProjects();
+                return;
+            }
+            
+            try {
+                const { data: { session }, error } = await supabaseClient.auth.getSession();
+                if (session) {
+                    currentUser = session.user;
+                    await mergeLocalProjectsToCloud();
+                } else {
+                    currentUser = null;
+                }
+            } catch (e) {
+                console.error('Session retrieval error:', e);
+                currentUser = null;
+            }
+            
+            updateAuthUI(currentUser);
+            await checkPremiumStatus();
+            await loadProjects();
+            
+            supabaseClient.auth.onAuthStateChange(async (event, session) => {
+                if (session) {
+                    currentUser = session.user;
+                    if (event === 'SIGNED_IN') {
+                        await mergeLocalProjectsToCloud();
+                    }
+                } else {
+                    currentUser = null;
+                }
+                updateAuthUI(currentUser);
+                await checkPremiumStatus();
+                await loadProjects();
+            });
+        }
+
+        async function mergeLocalProjectsToCloud() {
+            if (!supabaseClient || !currentUser) return;
+            const local = JSON.parse(localStorage.getItem('fpa_projects')) || [];
+            if (local.length > 0) {
+                console.log(`Merging ${local.length} local projects to Supabase...`);
+                for (const p of local) {
+                    try {
+                        const record = {
+                            id: p.id,
+                            user_id: currentUser.id,
+                            name: p.name,
+                            client: p.client || null,
+                            timestamp: p.timestamp,
+                            inputs: p.inputs
+                        };
+                        await supabaseClient.from('projects').upsert(record);
+                    } catch (err) {
+                        console.error('Failed to merge project:', p.name, err);
+                    }
+                }
+                localStorage.removeItem('fpa_projects');
+                console.log('Local projects successfully synced to cloud storage.');
+            }
+        }
+
+        function updateAuthUI(user) {
+            const authBtn = document.getElementById('auth_btn');
+            if (user) {
+                if (authBtn) {
+                    authBtn.innerText = 'Sign Out';
+                }
+            } else {
+                if (authBtn) {
+                    authBtn.innerText = 'Sign In';
+                }
+            }
+        }
+
+        async function handleAuthClick() {
+            if (currentUser) {
+                if (confirm('Sign out of your Loomrate account?')) {
+                    if (supabaseClient) {
+                        await supabaseClient.auth.signOut();
+                    }
+                }
+            } else {
+                openAuthModal();
+            }
+        }
+
+        function openAuthModal() {
+            const modal = document.getElementById('auth_modal');
+            if (modal) modal.classList.add('active');
+            switchAuthTab('signin');
+            clearAuthMessage();
+        }
+
+        function closeAuthModal(event) {
+            const modal = document.getElementById('auth_modal');
+            if (modal) modal.classList.remove('active');
+        }
+
+        function switchAuthTab(tab) {
+            const signinForm = document.getElementById('signin_form');
+            const signupForm = document.getElementById('signup_form');
+            const resetForm = document.getElementById('reset_form');
+            const tabs = document.querySelectorAll('.auth-tab');
+            
+            if (tab === 'signin') {
+                if (signinForm) signinForm.style.display = 'block';
+                if (signupForm) signupForm.style.display = 'none';
+                if (resetForm) resetForm.style.display = 'none';
+                tabs[0].classList.add('active');
+                tabs[1].classList.remove('active');
+            } else if (tab === 'signup') {
+                if (signinForm) signinForm.style.display = 'none';
+                if (signupForm) signupForm.style.display = 'block';
+                if (resetForm) resetForm.style.display = 'none';
+                tabs[0].classList.remove('active');
+                tabs[1].classList.add('active');
+            }
+            clearAuthMessage();
+        }
+
+        function showForgotPassword(event) {
+            if (event) event.preventDefault();
+            const signinForm = document.getElementById('signin_form');
+            const signupForm = document.getElementById('signup_form');
+            const resetForm = document.getElementById('reset_form');
+            
+            if (signinForm) signinForm.style.display = 'none';
+            if (signupForm) signupForm.style.display = 'none';
+            if (resetForm) resetForm.style.display = 'block';
+            clearAuthMessage();
+        }
+
+        function cancelForgotPassword(event) {
+            if (event) event.preventDefault();
+            switchAuthTab('signin');
+        }
+
+        function showAuthMessage(text, type) {
+            const msg = document.getElementById('auth_message');
+            if (!msg) return;
+            msg.innerText = text;
+            msg.className = `auth-msg ${type}`;
+        }
+
+        function clearAuthMessage() {
+            const msg = document.getElementById('auth_message');
+            if (msg) {
+                msg.innerText = '';
+                msg.className = 'auth-msg';
+            }
+        }
+
+        async function handleSignIn(e) {
+            e.preventDefault();
+            if (!supabaseClient) {
+                showAuthMessage('Supabase URL or API Key is missing in config.js.', 'error');
+                return;
+            }
+            clearAuthMessage();
+            const email = document.getElementById('signin_email').value;
+            const password = document.getElementById('signin_password').value;
+            
+            const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
+            if (error) {
+                showAuthMessage(error.message, 'error');
+            } else {
+                showAuthMessage('Signed in successfully!', 'success');
+                setTimeout(() => {
+                    closeAuthModal();
+                }, 1000);
+            }
+        }
+
+        async function handleSignUp(e) {
+            e.preventDefault();
+            if (!supabaseClient) {
+                showAuthMessage('Supabase URL or API Key is missing in config.js.', 'error');
+                return;
+            }
+            clearAuthMessage();
+            const email = document.getElementById('signup_email').value;
+            const password = document.getElementById('signup_password').value;
+            
+            const { error } = await supabaseClient.auth.signUp({ email, password });
+            if (error) {
+                showAuthMessage(error.message, 'error');
+            } else {
+                showAuthMessage('Verification email sent or account registered!', 'success');
+            }
+        }
+
+        async function handleResetPassword(e) {
+            e.preventDefault();
+            if (!supabaseClient) {
+                showAuthMessage('Supabase URL or API Key is missing in config.js.', 'error');
+                return;
+            }
+            clearAuthMessage();
+            const email = document.getElementById('reset_email').value;
+            
+            const { error } = await supabaseClient.auth.resetPasswordForEmail(email, {
+                redirectTo: window.location.origin + window.location.pathname
+            });
+            if (error) {
+                showAuthMessage(error.message, 'error');
+            } else {
+                showAuthMessage('Password reset email has been dispatched!', 'success');
+            }
+        }
+
+        function openNewPasswordModal() {
+            const modal = document.getElementById('recovery_modal');
+            if (modal) modal.classList.add('active');
+        }
+
+        function closeNewPasswordModal() {
+            const modal = document.getElementById('recovery_modal');
+            if (modal) modal.classList.remove('active');
+            history.pushState("", document.title, window.location.pathname + window.location.search);
+        }
+
+        async function handleUpdatePassword(e) {
+            e.preventDefault();
+            if (!supabaseClient) return;
+            const password = document.getElementById('recovery_password').value;
+            const msg = document.getElementById('recovery_message');
+            
+            const { error } = await supabaseClient.auth.updateUser({ password });
+            if (error) {
+                if (msg) {
+                    msg.innerText = error.message;
+                    msg.className = 'auth-msg error';
+                }
+            } else {
+                if (msg) {
+                    msg.innerText = 'Password updated successfully!';
+                    msg.className = 'auth-msg success';
+                }
+                setTimeout(() => {
+                    closeNewPasswordModal();
+                }, 1500);
+            }
+        }
+
+        /* ---- PREMIUM SUBSCRIPTION & UPGRADE GATING ---- */
+        let isPremium = false;
+
+        async function checkPremiumStatus() {
+            if (!supabaseClient || !currentUser) {
+                isPremium = false;
+                updatePremiumUI();
+                return;
+            }
+            
+            try {
+                const { data, error } = await supabaseClient
+                    .from('subscriptions')
+                    .select('status')
+                    .eq('user_id', currentUser.id)
+                    .maybeSingle();
+                    
+                if (data && data.status === 'active') {
+                    isPremium = true;
+                } else {
+                    isPremium = false;
+                }
+            } catch (e) {
+                console.error('Failed to query subscription status:', e);
+                isPremium = false;
+            }
+            
+            updatePremiumUI();
+        }
+
+        function updatePremiumUI() {
+            const chartOverlay = document.getElementById('chart_paywall_overlay');
+            const summaryOverlay = document.getElementById('client_summary_paywall_overlay');
+            
+            if (chartOverlay) {
+                chartOverlay.style.display = isPremium ? 'none' : 'flex';
+            }
+            if (summaryOverlay) {
+                summaryOverlay.style.display = isPremium ? 'none' : 'flex';
+            }
+            
+            const chartCanvas = document.getElementById('profitability_chart');
+            const summaryContainer = document.getElementById('client_summary_container');
+            
+            if (chartCanvas) {
+                chartCanvas.style.filter = isPremium ? 'none' : 'blur(4px)';
+            }
+            if (summaryContainer) {
+                summaryContainer.style.filter = isPremium ? 'none' : 'blur(4px)';
+            }
+        }
+
+        function showPremiumUpgradeModal(reason) {
+            const modal = document.getElementById('premium_modal');
+            const reasonText = document.getElementById('premium_modal_reason');
+            if (reasonText && reason) {
+                reasonText.innerText = reason;
+            }
+            if (modal) modal.classList.add('active');
+        }
+
+        function closePremiumModal() {
+            const modal = document.getElementById('premium_modal');
+            if (modal) modal.classList.remove('active');
+        }
+
+        function redirectToUpgrade() {
+            let url = CONFIG.LEMON_SQUEEZY_CHECKOUT_URL || "#";
+            if (url === "#" || url === "") {
+                alert("Checkout is not configured yet. Set LEMON_SQUEEZY_CHECKOUT_URL in config.js.");
+                return;
+            }
+            
+            if (currentUser && currentUser.email) {
+                const separator = url.includes('?') ? '&' : '?';
+                url += `${separator}checkout[email]=${encodeURIComponent(currentUser.email)}`;
+                url += `&checkout[custom][user_id]=${encodeURIComponent(currentUser.id)}`;
+            }
+            
+            window.open(url, '_blank');
+        }
+
+        function loadProject(id) {
+            const p = projects.find(x => x.id === id); if (!p) return;
+            document.getElementById('project_name').value = p.name;
+            if (document.getElementById('client_name')) {
+                document.getElementById('client_name').value = p.client || '';
+            }
+
+            const dateEl = document.getElementById('project_date');
+            if (dateEl) {
+                const parsedDate = parseDateSafe(p.timestamp);
+                dateEl.value = getLocalDateString(parsedDate);
+            }
+
+            const mode = p.inputs.mode || 'analyze';
+            setMode(mode);
+
+            if (mode === 'analyze') {
+                document.getElementById('fee').value = p.inputs.fee || '';
+                document.getElementById('quoted_hours').value = p.inputs.quotedHours || '';
+                document.getElementById('actual_hours').value = p.inputs.actualHours || '';
+
+                if (p.inputs.nonBillable) {
+                    document.getElementById('nb_emails').value = p.inputs.nonBillable.emails || '';
+                    document.getElementById('nb_revisions').value = p.inputs.nonBillable.revisions || '';
+                    document.getElementById('nb_meetings').value = p.inputs.nonBillable.meetings || '';
+                    document.getElementById('nb_admin').value = p.inputs.nonBillable.admin || '';
+                } else {
+                    document.getElementById('nb_emails').value = '';
+                    document.getElementById('nb_revisions').value = '';
+                    document.getElementById('nb_meetings').value = '';
+                    document.getElementById('nb_admin').value = p.inputs.nonBillableHours || '';
+                }
+            } else {
+                document.getElementById('target_take_home_rate').value = p.inputs.targetTakeHomeRate || '';
+                document.getElementById('est_hours').value = p.inputs.estHours || '';
+                document.getElementById('est_non_billable_hours').value = p.inputs.estNonBillableHours || '';
+            }
+
+            document.getElementById('expenses').value = p.inputs.expenses || '';
+            document.getElementById('platform_fee_type').value = p.inputs.platformType;
+            document.getElementById('platform_fee_custom').value = (p.inputs.platformType === 'toptal' || p.inputs.platformType === 'custom') ? p.inputs.platformPercent : '';
+            document.getElementById('tax_rate').value = p.inputs.taxRate || '';
+            document.getElementById('monthly_overhead').value = p.inputs.monthlyOverhead || '';
+
+            handlePlatformFeeChange();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
         window.addEventListener('DOMContentLoaded', () => {
             loadTheme();
             const dateEl = document.getElementById('project_date');
             if (dateEl) dateEl.value = getLocalDateString(new Date());
-            loadProjectsFromStorage();
+            
+            initSupabase();
+            checkUserSession();
             calculate();
+            
+            if (window.location.hash && window.location.hash.includes('type=recovery')) {
+                setTimeout(openNewPasswordModal, 500);
+            }
         });
     </script>
 </body>
