@@ -311,6 +311,14 @@
             opacity: 0.35;
         }
 
+        .landing-logo {
+            width: 80px;
+            height: 80px;
+            margin-bottom: 1.5rem;
+            animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            filter: drop-shadow(0 4px 12px var(--accent-glow));
+        }
+
         .landing-title {
             font-size: 4.5rem;
             font-weight: 700;
@@ -654,6 +662,7 @@
         <!-- LANDING PAGE -->
         <div id="landing_page" class="landing-page-wrapper">
             <div class="landing-bg-pattern"></div>
+            <img src="favicons/apple-touch-icon.png" alt="Loomrate Logo" class="landing-logo">
             <h1 class="landing-title">Loomrate</h1>
             <p class="landing-tagline">Stop guessing your freelance margins. Discover your true hourly take-home wage.
             </p>
@@ -680,7 +689,10 @@
         <!-- FOOTER -->
         <footer class="app-footer">
             <div class="footer-content">
-                <p>&copy; 2026 Loomrate. All rights reserved.</p>
+                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                    <img src="favicons/favicon-32x32.png" alt="Loomrate Logo" style="width: 20px; height: 20px; opacity: 0.6; filter: drop-shadow(0 1px 3px var(--accent-glow));">
+                    <p style="margin: 0;">&copy; 2026 Loomrate. All rights reserved.</p>
+                </div>
                 <div class="footer-links">
                     <a href="#terms" onclick="showModal('terms', event)">Terms of Use</a>
                     <span class="separator">&middot;</span>
