@@ -7,7 +7,7 @@
     <title>Loomrate: Premium Freelance Profit &amp; Quote Analyzer</title>
     <meta name="description"
         content="Calculate your true hourly rate, net profit, scope creep costs, monthly overheads, client analytics, and plan quotes.">
-    
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap"
@@ -911,16 +911,45 @@
             animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
 
-        .output-card:nth-child(1) { animation-delay: 0.15s; }
-        .output-card:nth-child(2) { animation-delay: 0.20s; }
-        .output-card:nth-child(3) { animation-delay: 0.25s; }
-        .output-card:nth-child(4) { animation-delay: 0.30s; }
-        .output-card:nth-child(5) { animation-delay: 0.35s; }
-        .output-card:nth-child(6) { animation-delay: 0.40s; }
-        .output-card:nth-child(7) { animation-delay: 0.45s; }
-        .output-card:nth-child(8) { animation-delay: 0.50s; }
-        .output-card:nth-child(9) { animation-delay: 0.55s; }
-        .output-card:nth-child(10) { animation-delay: 0.60s; }
+        .output-card:nth-child(1) {
+            animation-delay: 0.15s;
+        }
+
+        .output-card:nth-child(2) {
+            animation-delay: 0.20s;
+        }
+
+        .output-card:nth-child(3) {
+            animation-delay: 0.25s;
+        }
+
+        .output-card:nth-child(4) {
+            animation-delay: 0.30s;
+        }
+
+        .output-card:nth-child(5) {
+            animation-delay: 0.35s;
+        }
+
+        .output-card:nth-child(6) {
+            animation-delay: 0.40s;
+        }
+
+        .output-card:nth-child(7) {
+            animation-delay: 0.45s;
+        }
+
+        .output-card:nth-child(8) {
+            animation-delay: 0.50s;
+        }
+
+        .output-card:nth-child(9) {
+            animation-delay: 0.55s;
+        }
+
+        .output-card:nth-child(10) {
+            animation-delay: 0.60s;
+        }
 
         /* Mode Tabs & Collapsible Details */
         .mode-tabs button.active {
@@ -954,6 +983,7 @@
         }
 
         @media (prefers-reduced-motion: reduce) {
+
             *,
             *::before,
             *::after {
@@ -1110,6 +1140,7 @@
             margin-bottom: 1.25rem;
             text-align: left;
         }
+
         .auth-form-label {
             display: block;
             font-size: 0.8rem;
@@ -1117,6 +1148,7 @@
             margin-bottom: 0.4rem;
             color: var(--text-dim);
         }
+
         .auth-form-input {
             width: 100%;
             font-family: inherit;
@@ -1128,11 +1160,13 @@
             color: var(--text);
             transition: all 0.15s ease;
         }
+
         .auth-form-input:focus {
             outline: none;
             border-color: var(--input-focus-border);
             box-shadow: 0 0 0 3px var(--input-focus-shadow);
         }
+
         .auth-tabs {
             display: flex;
             gap: 1rem;
@@ -1140,6 +1174,7 @@
             border-bottom: 1px solid var(--border);
             padding-bottom: 0.5rem;
         }
+
         .auth-tab {
             background: none;
             border: none;
@@ -1152,9 +1187,11 @@
             position: relative;
             transition: color 0.2s ease;
         }
+
         .auth-tab.active {
             color: var(--accent);
         }
+
         .auth-tab.active::after {
             content: '';
             position: absolute;
@@ -1164,6 +1201,7 @@
             height: 2px;
             background: var(--accent);
         }
+
         .auth-msg {
             margin-top: 1rem;
             padding: 0.75rem;
@@ -1171,18 +1209,21 @@
             font-size: 0.85rem;
             display: none;
         }
+
         .auth-msg.error {
             display: block;
             background: rgba(239, 68, 68, 0.1);
             color: #ef4444;
             border: 1px solid rgba(239, 68, 68, 0.2);
         }
+
         .auth-msg.success {
             display: block;
             background: rgba(34, 197, 94, 0.1);
             color: #22c55e;
             border: 1px solid rgba(34, 197, 94, 0.2);
         }
+
         .auth-forgot-link {
             font-size: 0.8rem;
             color: var(--text-muted);
@@ -1192,6 +1233,7 @@
             text-align: right;
             transition: color 0.2s ease;
         }
+
         .auth-forgot-link:hover {
             color: var(--accent);
         }
@@ -1210,9 +1252,11 @@
             z-index: 10;
             transition: opacity 0.3s ease;
         }
+
         [data-theme="dark"] .paywall-overlay {
             background: rgba(10, 13, 26, 0.86);
         }
+
         .paywall-content {
             text-align: center;
             max-width: 320px;
@@ -1222,15 +1266,18 @@
             align-items: center;
             gap: 0.6rem;
         }
+
         .paywall-content svg {
             color: var(--accent);
         }
+
         .paywall-content h4 {
             font-size: 0.95rem;
             font-weight: 700;
             color: var(--text);
             margin: 0.25rem 0 0 0;
         }
+
         .paywall-content p {
             font-size: 0.75rem;
             color: var(--text-muted);
@@ -1245,7 +1292,8 @@
     <main class="container">
 
         <div class="header-actions">
-            <button id="auth_btn" class="btn btn-secondary btn-sm" onclick="handleAuthClick()" style="font-size: 0.8rem; padding: 0.5rem 1rem;">Sign In</button>
+            <button id="auth_btn" class="btn btn-secondary btn-sm" onclick="handleAuthClick()"
+                style="font-size: 0.8rem; padding: 0.5rem 1rem;">Sign In</button>
             <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode" title="Toggle dark mode">
                 <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -1327,7 +1375,8 @@
                                 step="any" oninput="calculate()">
                         </div>
                     </div>
-                    <div class="input-group" id="non_billable_group" style="margin-bottom: 1.35rem; position: relative;">
+                    <div class="input-group" id="non_billable_group"
+                        style="margin-bottom: 1.35rem; position: relative;">
                         <label><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
                                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                 stroke-linejoin="round">
@@ -1339,21 +1388,26 @@
                                 style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; transition: filter 0.3s ease;">
                                 <input type="number" id="nb_emails" class="input-control" placeholder="Emails" min="0"
                                     step="any" oninput="calculate()" title="Emails & Comms">
-                                <input type="number" id="nb_revisions" class="input-control" placeholder="Revisions" min="0"
-                                    step="any" oninput="calculate()" title="Revisions">
-                                <input type="number" id="nb_meetings" class="input-control" placeholder="Meetings" min="0"
-                                    step="any" oninput="calculate()" title="Meetings & Calls">
+                                <input type="number" id="nb_revisions" class="input-control" placeholder="Revisions"
+                                    min="0" step="any" oninput="calculate()" title="Revisions">
+                                <input type="number" id="nb_meetings" class="input-control" placeholder="Meetings"
+                                    min="0" step="any" oninput="calculate()" title="Meetings & Calls">
                                 <input type="number" id="nb_admin" class="input-control" placeholder="Admin" min="0"
                                     step="any" oninput="calculate()" title="Admin & Other">
                             </div>
-                            <div id="nb_paywall_overlay" class="paywall-overlay" style="display: none; border-radius: 6px;">
+                            <div id="nb_paywall_overlay" class="paywall-overlay"
+                                style="display: none; border-radius: 6px;">
                                 <div class="paywall-content" style="padding: 0.5rem; gap: 0.3rem;">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2">
                                         <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
                                         <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
                                     </svg>
-                                    <span style="font-size: 0.75rem; font-weight: 700; color: var(--text);">Locked</span>
-                                    <button type="button" class="btn btn-primary btn-sm" style="font-size: 0.65rem; padding: 0.15rem 0.4rem; height: auto;" onclick="showPremiumUpgradeModal('Non-Billable breakdown is a Premium feature. Upgrade to calculate real take-home rates with overhead/comms.')">Unlock</button>
+                                    <span
+                                        style="font-size: 0.75rem; font-weight: 700; color: var(--text);">Locked</span>
+                                    <button type="button" class="btn btn-primary btn-sm"
+                                        style="font-size: 0.65rem; padding: 0.15rem 0.4rem; height: auto;"
+                                        onclick="showPremiumUpgradeModal('Non-Billable breakdown is a Premium feature. Upgrade to calculate real take-home rates with overhead/comms.')">Unlock</button>
                                 </div>
                             </div>
                         </div>
@@ -1657,13 +1711,16 @@
                     Save at least 2 projects to see your profitability trend.</div>
                 <div id="chart_paywall_overlay" class="paywall-overlay" style="display: none;">
                     <div class="paywall-content">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
                             <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
                         </svg>
                         <h4>Trend Analytics is a Premium Feature</h4>
                         <p>Upgrade to unlock a visual timeline of your net margins and billable hours.</p>
-                        <button class="btn btn-primary btn-sm" onclick="showPremiumUpgradeModal('Trend Analytics is a Premium feature. Upgrade to unlock interactive visual summaries.')">Upgrade to Premium</button>
+                        <button class="btn btn-primary btn-sm"
+                            onclick="showPremiumUpgradeModal('Trend Analytics is a Premium feature. Upgrade to unlock interactive visual summaries.')">Upgrade
+                            to Premium</button>
                     </div>
                 </div>
             </div>
@@ -1720,13 +1777,16 @@
                 </div>
                 <div id="client_summary_paywall_overlay" class="paywall-overlay" style="display: none;">
                     <div class="paywall-content">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
                             <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
                         </svg>
                         <h4>Client Summary is a Premium Feature</h4>
                         <p>Unlock client specific metrics to see which accounts are most profitable.</p>
-                        <button class="btn btn-primary btn-sm" onclick="showPremiumUpgradeModal('Client Summary is a Premium feature. Upgrade to view comparative aggregates.')">Upgrade to Premium</button>
+                        <button class="btn btn-primary btn-sm"
+                            onclick="showPremiumUpgradeModal('Client Summary is a Premium feature. Upgrade to view comparative aggregates.')">Upgrade
+                            to Premium</button>
                     </div>
                 </div>
             </div>
@@ -1762,17 +1822,18 @@
     <div id="auth_modal" class="modal-overlay" onclick="closeAuthModal(event)">
         <div class="modal-card" style="max-width: 400px;" onclick="event.stopPropagation()">
             <button class="modal-close" onclick="closeAuthModal()">&times;</button>
-            
+
             <div class="auth-tabs" id="auth_tabs">
                 <button class="auth-tab active" onclick="switchAuthTab('signin')">Sign In</button>
                 <button class="auth-tab" onclick="switchAuthTab('signup')">Sign Up</button>
             </div>
-            
+
             <!-- Sign In Form -->
             <form id="signin_form" onsubmit="handleSignIn(event)">
                 <div class="auth-form-group">
                     <label class="auth-form-label" for="signin_email">Email Address</label>
-                    <input class="auth-form-input" type="email" id="signin_email" required placeholder="you@example.com">
+                    <input class="auth-form-input" type="email" id="signin_email" required
+                        placeholder="you@example.com">
                 </div>
                 <div class="auth-form-group">
                     <label class="auth-form-label" for="signin_password">Password</label>
@@ -1781,18 +1842,20 @@
                 </div>
                 <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 0.5rem;">Sign In</button>
             </form>
-            
+
             <!-- Sign Up Form -->
             <form id="signup_form" onsubmit="handleSignUp(event)" style="display: none;">
                 <div class="auth-form-group">
                     <label class="auth-form-label" for="signup_email">Email Address</label>
-                    <input class="auth-form-input" type="email" id="signup_email" required placeholder="you@example.com">
+                    <input class="auth-form-input" type="email" id="signup_email" required
+                        placeholder="you@example.com">
                 </div>
                 <div class="auth-form-group">
                     <label class="auth-form-label" for="signup_password">Password</label>
                     <input class="auth-form-input" type="password" id="signup_password" required placeholder="••••••••">
                 </div>
-                <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 0.5rem;">Create Account</button>
+                <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 0.5rem;">Create
+                    Account</button>
             </form>
 
             <!-- Reset Password Form -->
@@ -1801,10 +1864,12 @@
                     <label class="auth-form-label" for="reset_email">Email Address</label>
                     <input class="auth-form-input" type="email" id="reset_email" required placeholder="you@example.com">
                 </div>
-                <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 0.5rem;">Send Reset Link</button>
-                <a href="#" class="auth-forgot-link" onclick="cancelForgotPassword(event)" style="text-align: center; margin-top: 0.75rem;">Back to Sign In</a>
+                <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 0.5rem;">Send Reset
+                    Link</button>
+                <a href="#" class="auth-forgot-link" onclick="cancelForgotPassword(event)"
+                    style="text-align: center; margin-top: 0.75rem;">Back to Sign In</a>
             </form>
-            
+
             <div id="auth_message" class="auth-msg"></div>
         </div>
     </div>
@@ -1813,13 +1878,16 @@
     <div id="recovery_modal" class="modal-overlay">
         <div class="modal-card" style="max-width: 400px;" onclick="event.stopPropagation()">
             <h3 class="modal-title">Reset Your Password</h3>
-            <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.25rem;">Please enter a new password for your account.</p>
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.25rem;">Please enter a new password
+                for your account.</p>
             <form id="recovery_form" onsubmit="handleUpdatePassword(event)">
                 <div class="auth-form-group">
                     <label class="auth-form-label" for="recovery_password">New Password</label>
-                    <input class="auth-form-input" type="password" id="recovery_password" required placeholder="••••••••">
+                    <input class="auth-form-input" type="password" id="recovery_password" required
+                        placeholder="••••••••">
                 </div>
-                <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 0.5rem;">Update Password</button>
+                <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 0.5rem;">Update
+                    Password</button>
             </form>
             <div id="recovery_message" class="auth-msg"></div>
         </div>
@@ -1830,42 +1898,68 @@
         <div class="modal-card" style="max-width: 460px;" onclick="event.stopPropagation()">
             <button class="modal-close" onclick="closePremiumModal()">&times;</button>
             <div style="text-align: center; padding: 1rem 0;">
-                <div style="width: 54px; height: 54px; background: var(--gold-dim); border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 1.25rem;">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                <div
+                    style="width: 54px; height: 54px; background: var(--gold-dim); border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 1.25rem;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none"
+                        stroke="var(--gold)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
                     </svg>
                 </div>
-                <h3 class="modal-title" style="border: none; margin-bottom: 0.5rem; font-size: 1.6rem; letter-spacing: -0.02em;">Unlock Premium</h3>
-                <p id="premium_modal_reason" style="font-size: 0.9rem; color: var(--text-dim); line-height: 1.5; margin-bottom: 2rem;">
+                <h3 class="modal-title"
+                    style="border: none; margin-bottom: 0.5rem; font-size: 1.6rem; letter-spacing: -0.02em;">Unlock
+                    Premium</h3>
+                <p id="premium_modal_reason"
+                    style="font-size: 0.9rem; color: var(--text-dim); line-height: 1.5; margin-bottom: 2rem;">
                     Access unlimited project storage, CSV exports, client performance analytics, and PDF reports.
                 </p>
-                
-                <div style="background: var(--input-bg); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; text-align: left; margin-bottom: 2rem;">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+
+                <div
+                    style="background: var(--input-bg); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; text-align: left; margin-bottom: 2rem;">
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
                         <span style="font-weight: 700; font-size: 1.1rem; color: var(--text);">Loomrate Premium</span>
-                        <span style="font-size: 1.4rem; font-weight: 700; color: var(--accent);">$5.99 USD<span style="font-size: 0.85rem; font-weight: 500; color: var(--text-muted);">/month</span></span>
+                        <span style="font-size: 1.4rem; font-weight: 700; color: var(--accent);">$5.99 <span
+                                style="font-size: 0.85rem; font-weight: 500; color: var(--text-muted);">/month</span></span>
                     </div>
-                    <ul style="list-style: none; font-size: 0.85rem; color: var(--text-dim); display: flex; flex-direction: column; gap: 0.5rem;">
+                    <ul
+                        style="list-style: none; font-size: 0.85rem; color: var(--text-dim); display: flex; flex-direction: column; gap: 0.5rem;">
                         <li style="display: flex; align-items: center; gap: 0.5rem;">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                                fill="none" stroke="#22c55e" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg>
                             Unlimited projects synced to the cloud
                         </li>
                         <li style="display: flex; align-items: center; gap: 0.5rem;">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                                fill="none" stroke="#22c55e" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg>
                             Detailed Client Summary & performance ranking
                         </li>
                         <li style="display: flex; align-items: center; gap: 0.5rem;">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                                fill="none" stroke="#22c55e" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg>
                             Interactive trend charts & historical logs
                         </li>
                         <li style="display: flex; align-items: center; gap: 0.5rem;">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                                fill="none" stroke="#22c55e" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg>
                             Export reports to PDF & CSV backup formats
                         </li>
                     </ul>
                 </div>
-                
-                <button onclick="redirectToUpgrade()" class="btn btn-primary" style="width: 100%; font-size: 1rem; padding: 1rem;">
+
+                <button onclick="redirectToUpgrade()" class="btn btn-primary"
+                    style="width: 100%; font-size: 1rem; padding: 1rem;">
                     Upgrade Now
                 </button>
                 <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.75rem;">
@@ -1886,7 +1980,7 @@
             const modal = document.getElementById('footer_modal');
             const title = document.getElementById('modal_title');
             const body = document.getElementById('modal_body');
-            
+
             if (type === 'terms') {
                 title.innerText = 'Terms of Use';
                 body.innerHTML = `
@@ -1915,7 +2009,7 @@
                     <p>We believe professional utilities should be fast, private, and permanent. Built with vanilla client-side technologies, Loomrate runs 100% locally in your browser, even when offline.</p>
                 `;
             }
-            
+
             modal.classList.add('active');
         }
 
@@ -2366,7 +2460,7 @@
                         .from('projects')
                         .select('*')
                         .order('timestamp', { ascending: false });
-                        
+
                     if (error) throw error;
                     projects = data || [];
                 } catch (e) {
@@ -2376,7 +2470,7 @@
             } else {
                 try { projects = JSON.parse(localStorage.getItem('fpa_projects')) || []; } catch (e) { projects = []; }
             }
-            
+
             renderProjectList();
             populateCompareDropdowns();
             renderClientSummary();
@@ -2402,28 +2496,28 @@
         async function saveProject() {
             const inp = document.getElementById('project_name'), name = inp.value.trim();
             if (!name) { alert('Please enter a project name.'); inp.focus(); return; }
-            
+
             const idx = projects.findIndex(p => p.name.toLowerCase() === name.toLowerCase());
             const isExisting = idx > -1;
-            
+
             if (!isExisting && projects.length >= 3 && !isPremium) {
                 showPremiumUpgradeModal("You have reached the maximum limit of 3 saved projects on the free tier. Upgrade to Premium for unlimited project storage.");
                 return;
             }
-            
+
             const clientInp = document.getElementById('client_name'), client = clientInp ? clientInp.value.trim() : '';
             const dateInp = document.getElementById('project_date');
             const timestamp = (dateInp && dateInp.value) ? dateInp.value : new Date().toISOString().slice(0, 10);
             const state = getInputsState();
-            
+
             let id = Date.now().toString() + '_' + Math.random().toString(36).substring(2, 9);
             if (isExisting) {
                 if (!confirm('"' + name + '" already exists. Overwrite?')) return;
                 id = projects[idx].id;
             }
-            
+
             const projectData = { id, name, client, timestamp, inputs: state };
-            
+
             if (supabaseClient && currentUser) {
                 try {
                     const record = {
@@ -2434,13 +2528,13 @@
                         timestamp,
                         inputs: state
                     };
-                    
+
                     const { error } = await supabaseClient
                         .from('projects')
                         .upsert(record);
-                        
+
                     if (error) throw error;
-                    
+
                     if (isExisting) {
                         projects[idx] = projectData;
                     } else {
@@ -2456,7 +2550,7 @@
                 saveProjectLocal(projectData, idx);
                 alert('Project "' + name + '" saved locally!');
             }
-            
+
             await loadProjects();
         }
 
@@ -2472,14 +2566,14 @@
         async function deleteProject(id, ev) {
             ev.stopPropagation();
             if (!confirm('Delete this project?')) return;
-            
+
             if (supabaseClient && currentUser) {
                 try {
                     const { error } = await supabaseClient
                         .from('projects')
                         .delete()
                         .eq('id', id);
-                        
+
                     if (error) throw error;
                 } catch (e) {
                     console.error('Failed to delete from Supabase:', e);
@@ -2490,7 +2584,7 @@
                 projects = projects.filter(p => p.id !== id);
                 localStorage.setItem('fpa_projects', JSON.stringify(projects));
             }
-            
+
             await loadProjects();
         }
 
@@ -3428,7 +3522,7 @@
                 await loadProjects();
                 return;
             }
-            
+
             try {
                 const { data: { session }, error } = await supabaseClient.auth.getSession();
                 if (session) {
@@ -3441,11 +3535,11 @@
                 console.error('Session retrieval error:', e);
                 currentUser = null;
             }
-            
+
             updateAuthUI(currentUser);
             await checkPremiumStatus();
             await loadProjects();
-            
+
             supabaseClient.auth.onAuthStateChange(async (event, session) => {
                 if (session) {
                     currentUser = session.user;
@@ -3528,7 +3622,7 @@
             const signupForm = document.getElementById('signup_form');
             const resetForm = document.getElementById('reset_form');
             const tabs = document.querySelectorAll('.auth-tab');
-            
+
             if (tab === 'signin') {
                 if (signinForm) signinForm.style.display = 'block';
                 if (signupForm) signupForm.style.display = 'none';
@@ -3550,7 +3644,7 @@
             const signinForm = document.getElementById('signin_form');
             const signupForm = document.getElementById('signup_form');
             const resetForm = document.getElementById('reset_form');
-            
+
             if (signinForm) signinForm.style.display = 'none';
             if (signupForm) signupForm.style.display = 'none';
             if (resetForm) resetForm.style.display = 'block';
@@ -3601,7 +3695,7 @@
             clearAuthMessage();
             const email = document.getElementById('signin_email').value;
             const password = document.getElementById('signin_password').value;
-            
+
             setButtonLoading('signin_form', true, 'Signing In...');
             const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
             setButtonLoading('signin_form', false);
@@ -3624,7 +3718,7 @@
             clearAuthMessage();
             const email = document.getElementById('signup_email').value;
             const password = document.getElementById('signup_password').value;
-            
+
             setButtonLoading('signup_form', true, 'Creating Account...');
             const { error } = await supabaseClient.auth.signUp({ email, password });
             setButtonLoading('signup_form', false);
@@ -3643,7 +3737,7 @@
             }
             clearAuthMessage();
             const email = document.getElementById('reset_email').value;
-            
+
             setButtonLoading('reset_form', true, 'Sending Link...');
             const { error } = await supabaseClient.auth.resetPasswordForEmail(email, {
                 redirectTo: window.location.origin + window.location.pathname
@@ -3672,7 +3766,7 @@
             if (!supabaseClient) return;
             const password = document.getElementById('recovery_password').value;
             const msg = document.getElementById('recovery_message');
-            
+
             setButtonLoading('recovery_form', true, 'Updating...');
             const { error } = await supabaseClient.auth.updateUser({ password });
             setButtonLoading('recovery_form', false);
@@ -3701,14 +3795,14 @@
                 updatePremiumUI();
                 return;
             }
-            
+
             try {
                 const { data, error } = await supabaseClient
                     .from('subscriptions')
                     .select('status')
                     .eq('user_id', currentUser.id)
                     .maybeSingle();
-                    
+
                 if (data && data.status === 'active') {
                     isPremium = true;
                 } else {
@@ -3718,7 +3812,7 @@
                 console.error('Failed to query subscription status:', e);
                 isPremium = false;
             }
-            
+
             updatePremiumUI();
         }
 
@@ -3726,7 +3820,7 @@
             const chartOverlay = document.getElementById('chart_paywall_overlay');
             const summaryOverlay = document.getElementById('client_summary_paywall_overlay');
             const nbOverlay = document.getElementById('nb_paywall_overlay');
-            
+
             if (chartOverlay) {
                 chartOverlay.style.display = isPremium ? 'none' : 'flex';
             }
@@ -3736,11 +3830,11 @@
             if (nbOverlay) {
                 nbOverlay.style.display = isPremium ? 'none' : 'flex';
             }
-            
+
             const chartCanvas = document.getElementById('profitability_chart');
             const summaryContainer = document.getElementById('client_summary_container');
             const nbInputs = document.getElementById('non_billable_inputs_container');
-            
+
             if (chartCanvas) {
                 chartCanvas.style.filter = isPremium ? 'none' : 'blur(4px)';
             }
@@ -3773,13 +3867,13 @@
                 alert("Checkout is not configured yet. Set LEMON_SQUEEZY_CHECKOUT_URL in config.js.");
                 return;
             }
-            
+
             if (currentUser && currentUser.email) {
                 const separator = url.includes('?') ? '&' : '?';
                 url += `${separator}checkout[email]=${encodeURIComponent(currentUser.email)}`;
                 url += `&checkout[custom][user_id]=${encodeURIComponent(currentUser.id)}`;
             }
-            
+
             window.open(url, '_blank');
         }
 
@@ -3835,11 +3929,11 @@
             loadTheme();
             const dateEl = document.getElementById('project_date');
             if (dateEl) dateEl.value = getLocalDateString(new Date());
-            
+
             initSupabase();
             checkUserSession();
             calculate();
-            
+
             if (window.location.hash && window.location.hash.includes('type=recovery')) {
                 setTimeout(openNewPasswordModal, 500);
             }
