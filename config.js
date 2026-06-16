@@ -9,5 +9,5 @@ const CONFIG = {
     LEMON_SQUEEZY_CHECKOUT_URL: "https://loomrate.lemonsqueezy.com/checkout/buy/81e62ff4-4281-48f6-83ae-a20a3556ab60",
 
     // Dev Premium Override - set to true to unlock premium features locally without paying
-    DEV_MODE_PREMIUM: true
+    DEV_MODE_PREMIUM: false
 };
