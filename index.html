@@ -264,15 +264,15 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
+            justify-content: flex-start;
             min-height: calc(100vh - 12rem);
             text-align: center;
             opacity: 1;
             transform: translateY(0);
             transition: opacity 0.4s ease, transform 0.4s ease;
-            max-width: 800px;
+            max-width: 1000px;
             margin: 0 auto;
-            padding: 2rem 1.5rem;
+            padding: 4rem 1.5rem 2rem 1.5rem;
             position: relative;
         }
 
@@ -629,6 +629,301 @@
         .auth-forgot-link:hover {
             color: var(--accent);
         }
+
+        /* =============================================
+           INTERACTIVE PREVIEW WIDGET
+           ============================================= */
+        .preview-widget {
+            background: var(--card-raised);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            box-shadow: var(--shadow-md);
+            padding: 2rem;
+            width: 100%;
+            max-width: 900px;
+            margin: 2rem auto 4rem auto;
+            text-align: left;
+            animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.2s forwards;
+            opacity: 0;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+            position: relative;
+            overflow: hidden;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease, background-color 0.35s ease;
+        }
+
+        .preview-widget:hover {
+            border-color: var(--card-border-hover);
+            box-shadow: 0 8px 30px var(--accent-glow);
+        }
+
+        @media (min-width: 768px) {
+            .preview-widget {
+                grid-template-columns: 1.1fr 0.9fr;
+                gap: 2.5rem;
+            }
+        }
+
+        .preview-panel-inputs {
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+        }
+
+        .preview-panel-results {
+            background: var(--bg);
+            border-radius: 12px;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 1.25rem;
+            border: 1px solid var(--border);
+            transition: background-color 0.35s ease, border-color 0.35s ease;
+        }
+
+        .preview-widget-title {
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text-dim);
+            margin-bottom: 0.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .preview-input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+        }
+
+        .preview-input-label {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text);
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .preview-input-label span.value-display {
+            font-family: monospace;
+            color: var(--accent);
+            font-weight: 700;
+        }
+
+        .preview-slider {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 6px;
+            border-radius: 3px;
+            background: var(--toggle-bg);
+            outline: none;
+            transition: background 0.15s ease;
+        }
+
+        .preview-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: var(--accent);
+            cursor: pointer;
+            transition: transform 0.1s ease, background 0.1s ease;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+        }
+
+        .preview-slider::-webkit-slider-thumb:hover {
+            transform: scale(1.15);
+            background: var(--accent-hover);
+        }
+
+        .preview-slider::-moz-range-thumb {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: var(--accent);
+            cursor: pointer;
+            border: none;
+            transition: transform 0.1s ease, background 0.1s ease;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+        }
+
+        .preview-slider::-moz-range-thumb:hover {
+            transform: scale(1.15);
+            background: var(--accent-hover);
+        }
+
+        .result-metric-large {
+            text-align: center;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 1.25rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .result-metric-large .rate-val {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--accent);
+            line-height: 1;
+            font-feature-settings: "tnum";
+            letter-spacing: -0.02em;
+        }
+
+        .result-metric-large .rate-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .result-row-compare {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.825rem;
+            border-bottom: 1px dashed var(--border);
+            padding: 0.5rem 0;
+        }
+
+        .result-row-compare:last-child {
+            border-bottom: none;
+        }
+
+        .result-compare-label {
+            color: var(--text-dim);
+            font-weight: 500;
+        }
+
+        .result-compare-value {
+            font-weight: 700;
+            color: var(--text);
+            font-family: monospace;
+        }
+
+        .result-compare-value.loss-val {
+            color: var(--gold);
+        }
+
+        .verdict-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.35rem;
+            padding: 0.35rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin: 0 auto;
+        }
+
+        .verdict-badge.healthy {
+            background: rgba(22, 101, 52, 0.08);
+            color: #166534;
+            border: 1px solid rgba(22, 101, 52, 0.16);
+        }
+
+        .verdict-badge.warning {
+            background: rgba(133, 77, 14, 0.08);
+            color: #854d0e;
+            border: 1px solid rgba(133, 77, 14, 0.16);
+        }
+
+        .verdict-badge.danger {
+            background: rgba(159, 18, 57, 0.08);
+            color: #9f1239;
+            border: 1px solid rgba(159, 18, 57, 0.16);
+        }
+
+        /* =============================================
+           EXPLAINER SECTION
+           ============================================= */
+        .explainer-section {
+            width: 100%;
+            max-width: 900px;
+            margin: 0 auto 4rem auto;
+            text-align: center;
+            animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.25s forwards;
+            opacity: 0;
+        }
+
+        .explainer-title {
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            margin-bottom: 0.5rem;
+            color: var(--text);
+        }
+
+        .explainer-subtitle {
+            font-size: 1.05rem;
+            color: var(--text-dim);
+            margin-bottom: 2.5rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .explainer-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+        }
+
+        @media (min-width: 768px) {
+            .explainer-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        .explainer-card {
+            background: var(--card);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            padding: 1.75rem;
+            text-align: left;
+            transition: all 0.2s ease;
+        }
+
+        .explainer-card:hover {
+            border-color: var(--card-border-hover);
+            transform: translateY(-2px);
+        }
+
+        .explainer-num {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--accent);
+            background: var(--accent-dim);
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+        }
+
+        .explainer-card h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 0.5rem;
+        }
+
+        .explainer-card p {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
     </style>
 </head>
 
@@ -664,17 +959,15 @@
             <div class="landing-bg-pattern"></div>
             <img src="favicons/apple-touch-icon.png" alt="Loomrate Logo" class="landing-logo">
             <h1 class="landing-title">Loomrate</h1>
-            <p class="landing-tagline">Stop guessing your freelance margins. Discover your true hourly take-home wage.
-            </p>
+            <p class="landing-tagline">Analyze a quote or find your real hourly rate — all in one place.</p>
 
             <p class="landing-description">
-                Loomrate factors in platform cuts, taxes, recurring overhead, and non-billable hours to show you exactly
-                what you make.
+                Loomrate is the professional calculator for freelancers and consultants. Reveal your true take-home pay after platform fees, taxes, overhead, and non-billable hours.
             </p>
 
-            <div class="landing-btn-container">
+            <div class="landing-btn-container" style="margin-bottom: 3.5rem;">
                 <button onclick="launchApp()" class="btn btn-primary btn-giant">
-                    Launch Loomrate
+                    Calculate my real rate
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                         style="margin-left: 0.25rem;">
@@ -682,7 +975,99 @@
                         <polyline points="12 5 19 12 12 19"></polyline>
                     </svg>
                 </button>
-                <span class="landing-btn-sub">No signups, no trackers. Local-first freelance intelligence.</span>
+                <span class="landing-btn-sub">Use it instantly without an account, or sign in to sync your data across devices.</span>
+            </div>
+
+            <!-- INTERACTIVE PREVIEW WIDGET -->
+            <div class="preview-widget">
+                <div class="preview-panel-inputs">
+                    <h4 class="preview-widget-title">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polygon points="12 8 8 12 12 16 12 8"></polygon></svg>
+                        Interactive Preview
+                    </h4>
+                    
+                    <div class="preview-input-group">
+                        <div class="preview-input-label">
+                            <span>Project Fee</span>
+                            <span id="preview_val_fee" class="value-display">$3,000</span>
+                        </div>
+                        <input type="range" id="preview_fee" class="preview-slider" min="500" max="15000" step="250" value="3000" oninput="updatePreview()">
+                    </div>
+
+                    <div class="preview-input-group">
+                        <div class="preview-input-label">
+                            <span>Quoted Billable Hours</span>
+                            <span id="preview_val_hours" class="value-display">40 hrs</span>
+                        </div>
+                        <input type="range" id="preview_hours" class="preview-slider" min="10" max="150" step="5" value="40" oninput="updatePreview()">
+                    </div>
+
+                    <div class="preview-input-group">
+                        <div class="preview-input-label">
+                            <span>Unpaid Overhead Time <span style="font-weight:normal; font-size:0.75rem; color:var(--text-muted);">(meetings, emails, revisions)</span></span>
+                            <span id="preview_val_unpaid" class="value-display">10 hrs</span>
+                        </div>
+                        <input type="range" id="preview_unpaid" class="preview-slider" min="0" max="40" step="2" value="10" oninput="updatePreview()">
+                    </div>
+
+                    <div class="preview-input-group">
+                        <div class="preview-input-label">
+                            <span>Deductions <span style="font-weight:normal; font-size:0.75rem; color:var(--text-muted);">(tax reserves & platform fees)</span></span>
+                            <span id="preview_val_deductions" class="value-display">25%</span>
+                        </div>
+                        <input type="range" id="preview_deductions" class="preview-slider" min="0" max="50" step="5" value="25" oninput="updatePreview()">
+                    </div>
+                </div>
+
+                <div class="preview-panel-results">
+                    <div class="result-metric-large">
+                        <span class="rate-label">True Hourly Take-Home</span>
+                        <div id="preview_true_rate" class="rate-val">$45.00/hr</div>
+                        <div id="preview_verdict" class="verdict-badge healthy" style="margin-top: 0.5rem;">Healthy Margin</div>
+                    </div>
+
+                    <div style="display: flex; flex-direction: column; gap: 0.25rem;">
+                        <div class="result-row-compare">
+                            <span class="result-compare-label">Quoted Hourly Rate:</span>
+                            <span id="preview_quoted_rate" class="result-compare-value">$75.00/hr</span>
+                        </div>
+                        <div class="result-row-compare">
+                            <span class="result-compare-label">Total Deduction:</span>
+                            <span id="preview_deduction_cost" class="result-compare-value loss-val">-$750.00</span>
+                        </div>
+                        <div class="result-row-compare">
+                            <span class="result-compare-label">Net Take-Home:</span>
+                            <span id="preview_net_profit" class="result-compare-value">$2,250.00</span>
+                        </div>
+                        <div class="result-row-compare">
+                            <span class="result-compare-label">Total Hours Worked:</span>
+                            <span id="preview_total_hours" class="result-compare-value">50 hrs</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EXPLAINER SECTION -->
+            <div class="explainer-section">
+                <h2 class="explainer-title">How Quote Analysis Works</h2>
+                <p class="explainer-subtitle">Don't guess your margins. Calculate your true earning power before committing to the contract.</p>
+                <div class="explainer-grid">
+                    <div class="explainer-card">
+                        <div class="explainer-num">1</div>
+                        <h3>Input Project Scope</h3>
+                        <p>Define your project fee and quote hours. Track how unpaid admin tasks, client revisions, and status calls increase your total effort.</p>
+                    </div>
+                    <div class="explainer-card">
+                        <div class="explainer-num">2</div>
+                        <h3>Deduct Overhead & Taxes</h3>
+                        <p>Automatically factor in platform commissions (Upwork, Fiverr), local taxes, monthly software expenses, and hardware overhead.</p>
+                    </div>
+                    <div class="explainer-card">
+                        <div class="explainer-num">3</div>
+                        <h3>See What You Keep</h3>
+                        <p>Expose your true take-home hourly rate. Know exactly what you're making per hour and see if a project is worth your time.</p>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -801,7 +1186,7 @@
             if (type === 'terms') {
                 title.innerText = 'Terms of Use';
                 body.innerHTML = `
-                    <p>Loomrate is a local-first, serverless utility designed to assist with freelance quote estimation and billing metrics.</p>
+                    <p>Loomrate is a freelance utility designed to assist with project quote estimation, rate analysis, and billing metrics.</p>
                     <h4>Disclaimer of Advice</h4>
                     <p>All calculations, ratios, rates, scores, and pricing guidance generated by Loomrate are for informational and planning purposes only. They do not constitute official financial, legal, business, or accounting advice.</p>
                     <h4>No Warranty</h4>
@@ -811,10 +1196,10 @@
                 title.innerText = 'Privacy Policy';
                 body.innerHTML = `
                     <p>Your financial metrics are private, and they should stay that way.</p>
-                    <h4>No Data Collection</h4>
-                    <p>Loomrate does not collect, record, track, transmit, or sell any of your personal information, inputs, or client analytics. There are no databases, analytics trackers, or server-side sync systems integrated into the site.</p>
-                    <h4>Local Storage</h4>
-                    <p>Any project profiles or quote calculations you explicitly save are stored locally inside your browser's private storage database (<code>localStorage</code>). This data remains on your physical machine and can be completely cleared at any time by wiping your browser site data or using the "Clear" function inside the app.</p>
+                    <h4>Data Privacy & Sync</h4>
+                    <p>By default, Loomrate works locally in your browser. If you choose to create an account and sign in, your project data is securely synced and backed up to our cloud database so you can access it across devices.</p>
+                    <h4>Local Storage (Guests)</h4>
+                    <p>For guest users, all calculations and saved projects are stored locally in your browser's private database (<code>localStorage</code>). This data remains on your physical machine and is never sent to any servers. You can completely clear it at any time by wiping your browser site data or using the "Clear" function inside the app.</p>
                 `;
             } else if (type === 'about') {
                 title.innerText = 'About Loomrate';
@@ -822,8 +1207,8 @@
                     <p>Loomrate was built to provide clarity for modern independent consultants, freelancers, and creative developers.</p>
                     <h4>Pricing Clarity</h4>
                     <p>Freelancers frequently set pricing based on gross rates without considering unpaid business admin hours, platform commissions, software licensing, and self-employment taxes. Loomrate exposes the exact take-home rate of every contract, giving you the visibility needed to scale your business profitably.</p>
-                    <h4>Local-First Philosophy</h4>
-                    <p>We believe professional utilities should be fast, private, and permanent. Built with vanilla client-side technologies, Loomrate runs 100% locally in your browser, even when offline.</p>
+                    <h4>Offline-First & Sync</h4>
+                    <p>We believe professional utilities should be fast, private, and accessible. Loomrate works offline using client-side storage, with optional cloud sync to keep your projects backed up and synchronized across devices.</p>
                 `;
             }
 
@@ -945,7 +1330,7 @@
                     authBtn.innerText = 'Sign In';
                 }
                 if (launchSub) {
-                    launchSub.innerText = 'No signups, no trackers. Local-first freelance intelligence.';
+                    launchSub.innerText = 'Use it instantly without an account, or sign in to sync your data across devices.';
                 }
             }
         }
@@ -1147,10 +1532,63 @@
             }
         }
 
+        /* ---- INTERACTIVE PREVIEW CALCULATIONS ---- */
+        function updatePreview() {
+            const feeInput = document.getElementById('preview_fee');
+            const hoursInput = document.getElementById('preview_hours');
+            const unpaidInput = document.getElementById('preview_unpaid');
+            const deductionsInput = document.getElementById('preview_deductions');
+
+            if (!feeInput || !hoursInput || !unpaidInput || !deductionsInput) return;
+
+            const fee = parseFloat(feeInput.value);
+            const hours = parseFloat(hoursInput.value);
+            const unpaid = parseFloat(unpaidInput.value);
+            const deductionsPct = parseFloat(deductionsInput.value);
+
+            // Update label displays
+            document.getElementById('preview_val_fee').innerText = `$${fee.toLocaleString()}`;
+            document.getElementById('preview_val_hours').innerText = `${hours} hrs`;
+            document.getElementById('preview_val_unpaid').innerText = `${unpaid} hrs`;
+            document.getElementById('preview_val_deductions').innerText = `${deductionsPct}%`;
+
+            // Calculate metrics
+            const totalHours = hours + unpaid;
+            const deductionCost = fee * (deductionsPct / 100);
+            const netProfit = fee - deductionCost;
+            
+            const quotedHourly = hours > 0 ? (fee / hours) : 0;
+            const trueHourly = totalHours > 0 ? (netProfit / totalHours) : 0;
+
+            // Update UI elements
+            document.getElementById('preview_quoted_rate').innerText = `$${quotedHourly.toFixed(2)}/hr`;
+            document.getElementById('preview_deduction_cost').innerText = `-$${deductionCost.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+            document.getElementById('preview_net_profit').innerText = `$${netProfit.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+            document.getElementById('preview_total_hours').innerText = `${totalHours} hrs`;
+            document.getElementById('preview_true_rate').innerText = `$${trueHourly.toFixed(2)}/hr`;
+
+            // Update verdict badge based on trueHourly rate
+            const verdict = document.getElementById('preview_verdict');
+            if (trueHourly >= 55) {
+                verdict.innerText = 'High Margin';
+                verdict.className = 'verdict-badge healthy';
+            } else if (trueHourly >= 30) {
+                verdict.innerText = 'Healthy Margin';
+                verdict.className = 'verdict-badge healthy';
+            } else if (trueHourly >= 18) {
+                verdict.innerText = 'Thin Margin';
+                verdict.className = 'verdict-badge warning';
+            } else {
+                verdict.innerText = 'Underpriced';
+                verdict.className = 'verdict-badge danger';
+            }
+        }
+
         window.addEventListener('DOMContentLoaded', () => {
             loadTheme();
             initSupabase();
             checkUserSession();
+            updatePreview();
 
             if (window.location.hash && window.location.hash.includes('type=recovery')) {
                 setTimeout(openNewPasswordModal, 500);
