@@ -1317,7 +1317,7 @@
         <header>
             <h1 style="display: flex; align-items: center; justify-content: center; gap: 0.75rem; flex-wrap: wrap;">
                 <a href="index.html" style="display: inline-flex; align-items: center; gap: 0.6rem;">
-                    <img src="favicons/apple-touch-icon.png" alt="Loomrate Logo" style="width: 38px; height: 38px; filter: drop-shadow(0 2px 6px var(--accent-glow));">
+                    <img id="logo_img" src="favicons/apple-touch-icon.png" alt="Loomrate Logo" style="width: 38px; height: 38px; filter: drop-shadow(0 2px 6px var(--accent-glow));">
                     Loomrate
                 </a>
                 <span>Freelance Analyzer</span>
@@ -1389,7 +1389,7 @@
                                 <circle cx="12" cy="12" r="10" />
                                 <polyline points="12 6 12 12 16 14" />
                             </svg> Non-Billable Breakdown</label>
-                        <div style="position: relative;">
+                        <div style="position: relative; overflow: hidden; border-radius: 6px;">
                             <div class="non-billable-grid" id="non_billable_inputs_container"
                                 style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; transition: filter 0.3s ease;">
                                 <input type="number" id="nb_emails" class="input-control" placeholder="Emails" min="0"
@@ -1710,7 +1710,7 @@
                         Only</button>
                 </div>
             </summary>
-            <div style="margin-top: 1.5rem; height: 280px; position: relative;">
+            <div style="margin-top: 1.5rem; height: 280px; position: relative; overflow: hidden; border-radius: 8px;">
                 <canvas id="profitability_chart"></canvas>
                 <div id="chart_empty_state" class="empty-state"
                     style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;">
@@ -1777,7 +1777,7 @@
                     <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
                     <path d="M16 3.13a4 4 0 0 1 0 7.75" />
                 </svg> Client Summary</h2>
-            <div style="position: relative; min-height: 200px;">
+            <div style="position: relative; min-height: 200px; overflow: hidden; border-radius: 8px;">
                 <div id="client_summary_container">
                     <div class="empty-state">Save projects with client tags to see aggregate stats.</div>
                 </div>
@@ -2242,22 +2242,52 @@
                 }
 
                 let score = 10;
-                if (trueHourlyRate < 15) score -= 2;
+
+                // ── PRIMARY: NET PROFITABILITY ─────────────────────────────────────
+                // Losing money is catastrophic; near-zero profit is still a red flag
+                if (netProfit < 0)           score -= 5;   // Project cost you money
+                else if (netProfit < 100)    score -= 1;   // Barely profitable
+
+                // ── HOURLY RATE PENALTIES ─────────────────────────────────────────
+                // Each tier penalises progressively worse effective rates
+                if (trueHourlyRate < 0)        score -= 3; // You're paying to work
+                else if (trueHourlyRate < 15)  score -= 2; // Below viable freelance rate
+                else if (trueHourlyRate < 25)  score -= 1; // Low-end rate
+
+                // ── SCOPE CREEP ───────────────────────────────────────────────────
                 if (i.fee > 0 && scopeCreepCost > 0.20 * i.fee) score -= 2;
+
+                // ── PLATFORM CUT ──────────────────────────────────────────────────
                 if (i.platformPercent > 15) score -= 1;
+
+                // ── NON-BILLABLE TIME RATIO ───────────────────────────────────────
+                // >30% of total hours were unpaid admin / comms / revisions
                 if (totalHours > 0 && (nonBillableHours / totalHours) > 0.30) score -= 1;
-                if (netProfit < 100) score -= 1;
+
+                // ── EFFECTIVE RATE CEILING ────────────────────────────────────────
+                // Additive penalties alone can't stop a large-profit/terrible-rate
+                // project from scoring well (e.g. $1000 fee / 1000 hrs = $1/hr with
+                // $950 net profit would otherwise score 8). This hard cap ensures a
+                // dismal hourly rate can never produce a misleadingly high score,
+                // regardless of total profit size.
+                let rateCap = 10;
+                if      (trueHourlyRate < 0)   rateCap = 1;  // Negative — floor at 1
+                else if (trueHourlyRate < 10)  rateCap = 3;  // < $10/hr → "Barely worth it" max
+                else if (trueHourlyRate < 20)  rateCap = 5;  // < $20/hr → "Acceptable" max
+                else if (trueHourlyRate < 35)  rateCap = 7;  // < $35/hr → capped below "Strong"
+
+                score = Math.min(score, rateCap);
                 score = Math.max(1, score);
 
                 let verdict = '';
-                if (score >= 8) verdict = 'Strong project';
-                else if (score >= 5) verdict = 'Acceptable, but review your pricing';
-                else if (score >= 3) verdict = 'Barely worth it';
-                else verdict = 'This project cost you money in real terms';
+                if      (score >= 8) verdict = 'Strong project';
+                else if (score >= 6) verdict = 'Acceptable, but review your pricing';
+                else if (score >= 3) verdict = 'Barely worth it — raise your rates';
+                else                 verdict = 'This project cost you money in real terms';
 
                 let scoreColorClass = 'score-theme-red';
-                if (score >= 7) scoreColorClass = 'score-theme-green';
-                else if (score >= 4) scoreColorClass = 'score-theme-amber';
+                if      (score >= 8) scoreColorClass = 'score-theme-green';
+                else if (score >= 5) scoreColorClass = 'score-theme-amber';
 
                 const targetRate = Math.max(trueHourlyRate * 1.25, 20);
                 const recommendedFee = totalHours * targetRate;
@@ -2790,6 +2820,10 @@
                 </table>
             </div>
         `;
+            const wrapper = container.querySelector('.comparison-table-wrapper');
+            if (wrapper) {
+                wrapper.style.overflowX = isPremium ? 'auto' : 'hidden';
+            }
         }
 
         let chartFilter = 'all';
@@ -3242,270 +3276,360 @@
             const r = computeProjectResults(s);
             const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
 
-            const accent = [146, 64, 14];
-            const dk = [31, 41, 55];
-            const md = [75, 85, 99];
-            const lt = [156, 163, 175];
-            const bg = [248, 246, 242];
+            // Cozy parchment/warm-light colors from website's theme
+            const accent = [146, 64, 14];       // Brand accent: #92400e (terracotta/burnt amber)
+            const gold = [202, 138, 4];         // Brand gold: #ca8a04
+            const dk = [69, 26, 3];             // Dark text: #451a03
+            const md = [120, 53, 15];           // Muted text: #78350f
+            const lt = [217, 203, 187];         // Soft separator/light-gray: #d9cbb8
+            const page_bg = [243, 237, 226];     // Cozy parchment page background: #f3ede2
+            const card_bg = [254, 252, 247];     // Cozy card background: #fefcf7
+            const card_border = [225, 214, 196]; // Card border: #e1d6c4
+            const banner_bg = [250, 240, 228];   // Subtly filled banner: #faf0e4
+            const banner_border = [238, 215, 190]; // Banner border
 
+            // Helper to draw structured cards with data rows
+            function drawCardTable(title, xStart, yStart, w, h, rows) {
+                // Background & border
+                doc.setFillColor(card_bg[0], card_bg[1], card_bg[2]);
+                doc.setDrawColor(card_border[0], card_border[1], card_border[2]);
+                doc.setLineWidth(0.35);
+                doc.roundedRect(xStart, yStart, w, h, 4, 4, 'FD');
+
+                // Decorative top bar matching standard site theme
+                doc.setFillColor(accent[0], accent[1], accent[2]);
+                doc.rect(xStart, yStart, w, 2.2, 'F');
+
+                // Card Title
+                doc.setFont('helvetica', 'bold');
+                doc.setFontSize(10.5);
+                doc.setTextColor(accent[0], accent[1], accent[2]);
+                doc.text(title, xStart + 5, yStart + 8.5);
+
+                // Divider line
+                doc.setDrawColor(card_border[0], card_border[1], card_border[2]);
+                doc.setLineWidth(0.25);
+                doc.line(xStart + 5, yStart + 11, xStart + w - 5, yStart + 11);
+
+                let y = yStart + 17.5;
+                const rowHeight = (h - 20) / rows.length;
+
+                rows.forEach((p, idx) => {
+                    // Label
+                    doc.setFont('helvetica', 'bold');
+                    doc.setFontSize(8.5);
+                    doc.setTextColor(md[0], md[1], md[2]);
+                    doc.text(p[0], xStart + 5, y);
+
+                    // Value
+                    doc.setFont('helvetica', 'normal');
+                    doc.setFontSize(8.5);
+                    doc.setTextColor(dk[0], dk[1], dk[2]);
+                    doc.text(p[1], xStart + w - 5, y, { align: 'right' });
+
+                    // Divider between rows (not on the last one)
+                    if (idx < rows.length - 1) {
+                        doc.setDrawColor(card_border[0], card_border[1], card_border[2]);
+                        doc.setLineWidth(0.15);
+                        // Line placed exactly halfway to the next row
+                        const lineY = y + (rowHeight / 2) - 1.2;
+                        doc.line(xStart + 5, lineY, xStart + w - 5, lineY);
+                    }
+                    y += rowHeight;
+                });
+            }
+
+            // 1. Paint page background (cozy parchment)
+            doc.setFillColor(page_bg[0], page_bg[1], page_bg[2]);
+            doc.rect(0, 0, 210, 297, 'F');
+
+            // 2. Top primary decorative strip
             doc.setFillColor(accent[0], accent[1], accent[2]);
             doc.rect(0, 0, 210, 6, 'F');
 
+            // 3. Header Logo & Title
+            const logoImg = document.getElementById('logo_img');
+            if (logoImg) {
+                try {
+                    doc.addImage(logoImg, 'PNG', 20, 14, 10, 10);
+                } catch (e) {
+                    console.warn('Failed to embed logo in PDF:', e);
+                }
+            }
+
             doc.setFont('helvetica', 'bold');
-            doc.setFontSize(22);
+            doc.setFontSize(19);
             doc.setTextColor(accent[0], accent[1], accent[2]);
-            doc.text('Loomrate Freelance Analyzer', 20, 22);
+            doc.text('Loomrate Freelance Analyzer', logoImg ? 33 : 20, 21);
 
-            doc.setFont('helvetica', 'normal');
-            doc.setFontSize(9);
-            doc.setTextColor(md[0], md[1], md[2]);
-            doc.text('Profitability analysis and performance report.', 20, 27);
+            doc.setFont('helvetica', 'bold');
+            doc.setFontSize(7.5);
+            doc.setTextColor(gold[0], gold[1], gold[2]);
+            doc.text('PROFITABILITY & PERFORMANCE REPORT', logoImg ? 33 : 20, 26);
 
+            // Sleek horizontal separator
             doc.setDrawColor(lt[0], lt[1], lt[2]);
             doc.setLineWidth(0.3);
-            doc.line(20, 32, 190, 32);
+            doc.line(20, 29, 190, 29);
+
+            // 4. Metadata Details
+            doc.setFont('helvetica', 'bold');
+            doc.setFontSize(12);
+            doc.setTextColor(dk[0], dk[1], dk[2]);
+            doc.text('Project Details', 20, 37);
 
             doc.setFont('helvetica', 'bold');
-            doc.setFontSize(14);
+            doc.setFontSize(9);
+            doc.setTextColor(md[0], md[1], md[2]);
+            doc.text('Name:', 20, 42);
+            doc.setFont('helvetica', 'normal');
             doc.setTextColor(dk[0], dk[1], dk[2]);
-            const titleText = clientName ? `Client: ${clientName} | Project: ${projectName}` : `Project: ${projectName}`;
-            doc.text(titleText, 20, 42);
+            doc.text(projectName, 32, 42);
 
+            if (clientName) {
+                doc.setFont('helvetica', 'bold');
+                doc.setTextColor(md[0], md[1], md[2]);
+                doc.text('Client:', 20, 46);
+                doc.setFont('helvetica', 'normal');
+                doc.setTextColor(dk[0], dk[1], dk[2]);
+                doc.text(clientName, 32, 46);
+            }
+
+            // Mode Badge (on the right)
+            const modeLabel = r.mode === 'quote' ? 'QUOTE ESTIMATE' : 'COMPLETED PROJECT';
+            const modeBgColor = r.mode === 'quote' ? gold : accent;
+            doc.setFillColor(modeBgColor[0], modeBgColor[1], modeBgColor[2]);
+            doc.roundedRect(150, 34, 40, 6, 1, 1, 'F');
+            doc.setFont('helvetica', 'bold');
+            doc.setFontSize(7);
+            doc.setTextColor(255, 255, 255);
+            doc.text(modeLabel, 170, 38.2, { align: 'center' });
+
+            // Date
             doc.setFont('helvetica', 'normal');
             doc.setFontSize(8.5);
             doc.setTextColor(md[0], md[1], md[2]);
-            doc.text('Generated: ' + new Date().toLocaleString(), 20, 47);
+            doc.text('Date: ' + new Date().toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' }), 190, 45, { align: 'right' });
 
+            doc.setDrawColor(lt[0], lt[1], lt[2]);
+            doc.setLineWidth(0.2);
+            doc.line(20, 49, 190, 49);
+
+            // 5. Main Card Grid
             if (r.mode === 'analyze') {
-                doc.setFillColor(bg[0], bg[1], bg[2]);
-                doc.rect(20, 54, 80, 84, 'F');
-                doc.setDrawColor(229, 231, 235);
-                doc.rect(20, 54, 80, 84, 'D');
-
-                doc.setFont('helvetica', 'bold');
-                doc.setFontSize(10);
-                doc.setTextColor(accent[0], accent[1], accent[2]);
-                doc.text('Project Inputs', 25, 61);
-                doc.line(25, 63, 95, 63);
-
-                doc.setFont('helvetica', 'normal');
-                doc.setFontSize(8.5);
-                doc.setTextColor(dk[0], dk[1], dk[2]);
-                let y = 70;
-
                 const inputsData = [
                     ['Project Fee:', formatCurrency(s.fee)],
                     ['Quoted Hours:', formatHours(s.quotedHours)],
-                    ['Actual Hours:', formatHours(s.actualHours)],
-                    ['Non-Billable:', formatHours(s.nonBillableHours)],
-                    ['Expenses:', formatCurrency(s.expenses)],
-                    ['Platform:', s.platformType.toUpperCase() + ' (' + s.platformPercent + '%)'],
+                    ['Actual Hours worked:', formatHours(s.actualHours)],
+                    ['Non-Billable hours:', formatHours(s.nonBillableHours)],
+                    ['Direct Expenses:', formatCurrency(s.expenses)],
+                    ['Platform Cut:', s.platformType.toUpperCase() + ' (' + s.platformPercent + '%)'],
                     ['Tax Rate:', formatPercent(s.taxRate)],
-                    ['Mo. Overhead:', formatCurrency(s.monthlyOverhead)]
+                    ['Monthly Overhead:', formatCurrency(s.monthlyOverhead)]
                 ];
-
-                inputsData.forEach(p => {
-                    doc.setFont('helvetica', 'bold');
-                    doc.text(p[0], 25, y);
-                    doc.setFont('helvetica', 'normal');
-                    doc.text(p[1], 95, y, { align: 'right' });
-                    y += 8;
-                });
-
-                doc.setFillColor(255, 255, 255);
-                doc.rect(110, 54, 80, 84, 'FD');
-
-                doc.setFont('helvetica', 'bold');
-                doc.setFontSize(10);
-                doc.setTextColor(accent[0], accent[1], accent[2]);
-                doc.text('Performance', 115, 61);
-                doc.line(115, 63, 185, 63);
-
-                doc.setFont('helvetica', 'normal');
-                doc.setFontSize(8.5);
-                doc.setTextColor(dk[0], dk[1], dk[2]);
-                y = 70;
 
                 const perfData = [
                     ['Gross Profit:', formatCurrency(r.grossProfit)],
                     ['Net Profit:', formatCurrency(r.netProfit)],
-                    ['True Rate:', formatCurrency(r.trueHourlyRate) + '/hr'],
-                    ['Quoted Rate:', formatCurrency(r.quotedHourlyRate) + '/hr'],
-                    [r.hasCreep ? 'Scope Creep:' : 'No creep:', formatCurrency(r.scopeCreepCost)],
-                    ['Platform Fee:', formatCurrency(r.platformFeeTotal)],
+                    ['True Hourly Rate:', formatCurrency(r.trueHourlyRate) + '/hr'],
+                    ['Quoted Hourly Rate:', formatCurrency(r.quotedHourlyRate) + '/hr'],
+                    [r.hasCreep ? 'Scope Creep Cost:' : 'No scope creep:', formatCurrency(r.scopeCreepCost)],
+                    ['Platform Fee Total:', formatCurrency(r.platformFeeTotal)],
                     ['Tax Set Aside:', formatCurrency(r.taxSetAside)],
-                    ['Overhead Cost:', formatCurrency(r.overheadAllocation)]
+                    ['Overhead Allocated:', formatCurrency(r.overheadAllocation)]
                 ];
 
-                perfData.forEach(p => {
-                    doc.setFont('helvetica', 'bold');
-                    doc.text(p[0], 115, y);
-                    doc.setFont('helvetica', 'normal');
-                    doc.text(p[1], 185, y, { align: 'right' });
-                    y += 8;
-                });
+                drawCardTable('Project Inputs', 20, 54, 80, 84, inputsData);
+                drawCardTable('Performance Metrics', 110, 54, 80, 84, perfData);
 
-                let sc = [22, 101, 52];
-                if (r.score < 4) sc = [159, 18, 57];
-                else if (r.score < 7) sc = [133, 77, 14];
+                // 6. Scoreboard Card (Y = 146) — height 52pt to fit long verdicts
+                let sc = [22, 101, 52];       // green
+                let sc_bg = [243, 248, 244];
+                let sc_badge = [22, 101, 52];
+                if (r.score < 4) {
+                    sc = [159, 18, 57];       // red
+                    sc_bg = [252, 242, 244];
+                    sc_badge = [159, 18, 57];
+                } else if (r.score < 8) {
+                    sc = [133, 77, 14];       // amber
+                    sc_bg = [250, 247, 239];
+                    sc_badge = [133, 77, 14];
+                }
 
-                doc.setFillColor(bg[0], bg[1], bg[2]);
-                doc.rect(20, 146, 170, 40, 'F');
-                doc.setDrawColor(229, 231, 235);
-                doc.rect(20, 146, 170, 40, 'D');
+                const cardY = 146;
+                const cardH = 52;
+                doc.setFillColor(sc_bg[0], sc_bg[1], sc_bg[2]);
+                doc.setDrawColor(sc[0], sc[1], sc[2]);
+                doc.setLineWidth(0.4);
+                doc.roundedRect(20, cardY, 170, cardH, 4, 4, 'FD');
 
-                doc.setFillColor(sc[0], sc[1], sc[2]);
-                doc.rect(26, 152, 28, 28, 'F');
+                // Score badge square (left side)
+                const badgeX = 26, badgeY = cardY + 6, badgeSize = 34;
+                doc.setFillColor(sc_badge[0], sc_badge[1], sc_badge[2]);
+                doc.roundedRect(badgeX, badgeY, badgeSize, badgeSize, 3, 3, 'F');
+
+                // Big score number
+                doc.setFont('helvetica', 'bold');
+                doc.setFontSize(22);
+                doc.setTextColor(255, 255, 255);
+                doc.text(r.score.toString(), badgeX + badgeSize / 2, badgeY + 21, { align: 'center' });
+
+                // "/ 10" sub-label
+                doc.setFontSize(8);
+                doc.setFont('helvetica', 'normal');
+                doc.text('/ 10', badgeX + badgeSize / 2, badgeY + 29, { align: 'center' });
+
+                // Verdict headline — wrap if too long
+                const verdictX = badgeX + badgeSize + 8;   // 68
+                const verdictMaxW = 190 - verdictX - 4;     // room to right margin
+                doc.setFont('helvetica', 'bold');
+                doc.setFontSize(11);
+                doc.setTextColor(sc_badge[0], sc_badge[1], sc_badge[2]);
+                const verdictLines = doc.splitTextToSize(r.verdict, verdictMaxW);
+                doc.text(verdictLines, verdictX, cardY + 15);
+
+                // Description text — two fixed lines below verdict
+                const descY = cardY + 15 + verdictLines.length * 6.5;
+                doc.setFont('helvetica', 'normal');
+                doc.setFontSize(8.5);
+                doc.setTextColor(dk[0], dk[1], dk[2]);
+                const descText = 'Scored ' + r.score + '/10 based on profitability, effective rate, scope creep, platform cut and non-billable time.';
+                const descLines = doc.splitTextToSize(descText, verdictMaxW);
+                doc.text(descLines, verdictX, descY);
+
+                // 7. Recommended Fee Banner Card (Y = 206, pushed down to clear taller score card)
+                doc.setFillColor(banner_bg[0], banner_bg[1], banner_bg[2]);
+                doc.setDrawColor(banner_border[0], banner_border[1], banner_border[2]);
+                doc.setLineWidth(0.35);
+                doc.roundedRect(20, 206, 170, 32, 4, 4, 'FD');
+
+                // Left decorative amber bar
+                doc.setFillColor(gold[0], gold[1], gold[2]);
+                doc.rect(20, 206, 2.5, 32, 'F');
 
                 doc.setFont('helvetica', 'bold');
-                doc.setFontSize(18);
-                doc.setTextColor(255, 255, 255);
-                doc.text(r.score.toString(), 40, 167, { align: 'center' });
-                doc.setFontSize(8);
-                doc.text('/ 10', 40, 173, { align: 'center' });
+                doc.setFontSize(10);
+                doc.setTextColor(accent[0], accent[1], accent[2]);
+                doc.text('Recommended minimum fee for a similar project', 26, 213);
 
                 doc.setFont('helvetica', 'bold');
                 doc.setFontSize(13);
-                doc.setTextColor(sc[0], sc[1], sc[2]);
-                doc.text(r.verdict, 62, 159);
-
-                doc.setFont('helvetica', 'normal');
-                doc.setFontSize(9);
                 doc.setTextColor(dk[0], dk[1], dk[2]);
-                doc.text('Based on estimation accuracy, platform costs, overhead,', 62, 166);
-                doc.text('non-billable time, and tax set asides.', 62, 170);
-
-                doc.setDrawColor(accent[0], accent[1], accent[2]);
-                doc.setLineWidth(0.8);
-                doc.line(20, 194, 20, 224);
-                doc.setLineWidth(0.3);
-
-                doc.setFont('helvetica', 'bold');
-                doc.setFontSize(11);
-                doc.setTextColor(accent[0], accent[1], accent[2]);
-                doc.text('Recommended Fee For Similar Projects', 25, 200);
-
-                doc.setFontSize(16);
-                doc.setTextColor(dk[0], dk[1], dk[2]);
-                doc.text(formatCurrency(r.recommendedFee), 25, 210);
+                doc.text(formatCurrency(r.recommendedFee), 184, 213, { align: 'right' });
 
                 doc.setFont('helvetica', 'normal');
                 doc.setFontSize(8.5);
                 doc.setTextColor(md[0], md[1], md[2]);
-                doc.text('Target rate: ' + formatCurrency(Math.max(r.trueHourlyRate * 1.25, 20)) + '/hr across ' + formatHours(s.actualHours + s.nonBillableHours) + ' total effort.', 25, 216);
+                doc.text('Calculated to secure a target rate of ' + formatCurrency(Math.max(r.trueHourlyRate * 1.25, 20)) + '/hr across ' + formatHours(s.actualHours + s.nonBillableHours) + ' of total estimated effort', 26, 223);
+                doc.text('accounting for expenses, taxes, and platform cuts.', 26, 227.5);
 
             } else {
-                doc.setFillColor(bg[0], bg[1], bg[2]);
-                doc.rect(20, 54, 80, 84, 'F');
-                doc.setDrawColor(229, 231, 235);
-                doc.rect(20, 54, 80, 84, 'D');
-
-                doc.setFont('helvetica', 'bold');
-                doc.setFontSize(10);
-                doc.setTextColor(accent[0], accent[1], accent[2]);
-                doc.text('Quote Parameters', 25, 61);
-                doc.line(25, 63, 95, 63);
-
-                doc.setFont('helvetica', 'normal');
-                doc.setFontSize(8.5);
-                doc.setTextColor(dk[0], dk[1], dk[2]);
-                let y = 70;
-
+                // Quote Mode
                 const inputsData = [
                     ['Target Net Rate:', formatCurrency(s.targetTakeHomeRate) + '/hr'],
-                    ['Est. Hours:', formatHours(s.estHours)],
+                    ['Estimated Hours:', formatHours(s.estHours)],
                     ['Est. Non-Billable:', formatHours(s.estNonBillableHours)],
-                    ['Expenses:', formatCurrency(s.expenses)],
-                    ['Platform:', s.platformType.toUpperCase() + ' (' + s.platformPercent + '%)'],
+                    ['Direct Expenses:', formatCurrency(s.expenses)],
+                    ['Platform Cut:', s.platformType.toUpperCase() + ' (' + s.platformPercent + '%)'],
                     ['Tax Rate:', formatPercent(s.taxRate)],
-                    ['Mo. Overhead:', formatCurrency(s.monthlyOverhead)]
+                    ['Monthly Overhead:', formatCurrency(s.monthlyOverhead)]
                 ];
-
-                inputsData.forEach(p => {
-                    doc.setFont('helvetica', 'bold');
-                    doc.text(p[0], 25, y);
-                    doc.setFont('helvetica', 'normal');
-                    doc.text(p[1], 95, y, { align: 'right' });
-                    y += 8;
-                });
-
-                doc.setFillColor(255, 255, 255);
-                doc.rect(110, 54, 80, 84, 'FD');
-
-                doc.setFont('helvetica', 'bold');
-                doc.setFontSize(10);
-                doc.setTextColor(accent[0], accent[1], accent[2]);
-                doc.text('Calculated Outputs', 115, 61);
-                doc.line(115, 63, 185, 63);
-
-                doc.setFont('helvetica', 'normal');
-                doc.setFontSize(8.5);
-                doc.setTextColor(dk[0], dk[1], dk[2]);
-                y = 70;
 
                 const perfData = [
                     ['Quote Required Fee:', formatCurrency(r.requiredFee)],
                     ['Hourly Rate to Quote:', formatCurrency(r.quotedHourlyRate) + '/hr'],
                     ['Gross Profit:', formatCurrency(r.grossProfit)],
                     ['Net Profit (Take-Home):', formatCurrency(r.netProfit)],
-                    ['Overhead Cost:', formatCurrency(r.overheadAllocation)],
-                    ['Platform Fee:', formatCurrency(r.platformFeeTotal)],
+                    ['Overhead Allocated:', formatCurrency(r.overheadAllocation)],
+                    ['Platform Fee Total:', formatCurrency(r.platformFeeTotal)],
                     ['Tax Set Aside:', formatCurrency(r.taxSetAside)]
                 ];
 
-                perfData.forEach(p => {
-                    doc.setFont('helvetica', 'bold');
-                    doc.text(p[0], 115, y);
-                    doc.setFont('helvetica', 'normal');
-                    doc.text(p[1], 185, y, { align: 'right' });
-                    y += 8;
-                });
+                drawCardTable('Quote Parameters', 20, 54, 80, 84, inputsData);
+                drawCardTable('Calculated Outputs', 110, 54, 80, 84, perfData);
 
-                doc.setFillColor(bg[0], bg[1], bg[2]);
-                doc.rect(20, 146, 170, 40, 'F');
-                doc.setDrawColor(229, 231, 235);
-                doc.rect(20, 146, 170, 40, 'D');
+                // 6. Recommended Quote scoreboard card starting at Y = 146
+                let qc = [146, 64, 14];      // Accent burnt amber
+                let qc_bg = [253, 246, 240];  // Cozy warm light orange card bg
+                let qc_badge = [146, 64, 14];
+                if (r.scoreColorClass === 'score-theme-amber') {
+                    qc = [133, 77, 14];
+                    qc_bg = [250, 247, 239];
+                    qc_badge = [133, 77, 14];
+                }
 
-                doc.setFillColor(accent[0], accent[1], accent[2]);
-                doc.rect(26, 152, 40, 28, 'F');
+                doc.setFillColor(qc_bg[0], qc_bg[1], qc_bg[2]);
+                doc.setDrawColor(qc[0], qc[1], qc[2]);
+                doc.setLineWidth(0.4);
+                doc.roundedRect(20, 146, 170, 40, 4, 4, 'FD');
+
+                // Badge
+                doc.setFillColor(qc_badge[0], qc_badge[1], qc_badge[2]);
+                doc.roundedRect(26, 152, 36, 28, 3, 3, 'F');
+
+                const feeStr = formatCurrency(r.requiredFee);
+                if (feeStr.length > 8) doc.setFontSize(9.5);
+                else if (feeStr.length > 6) doc.setFontSize(10.5);
+                else doc.setFontSize(12);
 
                 doc.setFont('helvetica', 'bold');
-                doc.setFontSize(14);
                 doc.setTextColor(255, 255, 255);
-                doc.text(formatCurrency(r.requiredFee), 46, 169, { align: 'center' });
+                doc.text(feeStr, 44, 167, { align: 'center' });
+                doc.setFontSize(7.5);
+                doc.text('REQ. FEE', 44, 173, { align: 'center' });
 
+                // Recommendation text
                 doc.setFont('helvetica', 'bold');
                 doc.setFontSize(13);
-                doc.setTextColor(accent[0], accent[1], accent[2]);
-                doc.text('Recommended Quote', 72, 159);
+                doc.setTextColor(qc_badge[0], qc_badge[1], qc_badge[2]);
+                doc.text('Recommended Quote', 68, 160);
 
                 doc.setFont('helvetica', 'normal');
                 doc.setFontSize(9);
                 doc.setTextColor(dk[0], dk[1], dk[2]);
-                doc.text(`Required fee to secure a ${formatCurrency(s.targetTakeHomeRate)}/hr net take-home rate.`, 72, 166);
-                doc.text(`Estimated total effort: ${formatHours(s.estHours + s.estNonBillableHours)}.`, 72, 171);
+                doc.text(`Required fee to secure a ${formatCurrency(s.targetTakeHomeRate)}/hr net take-home rate.`, 68, 167);
+                doc.text(`Estimated total effort: ${formatHours(s.estHours + s.estNonBillableHours)} (billable + non-billable).`, 68, 171.5);
 
-                doc.setDrawColor(accent[0], accent[1], accent[2]);
-                doc.setLineWidth(0.8);
-                doc.line(20, 194, 20, 214);
-                doc.setLineWidth(0.3);
+                // 7. Quote Confidence Card starting at Y = 194
+                doc.setFillColor(banner_bg[0], banner_bg[1], banner_bg[2]);
+                doc.setDrawColor(banner_border[0], banner_border[1], banner_border[2]);
+                doc.setLineWidth(0.35);
+                doc.roundedRect(20, 194, 170, 32, 4, 4, 'FD');
+
+                // Left decorative bar
+                doc.setFillColor(gold[0], gold[1], gold[2]);
+                doc.rect(20, 194, 2.5, 32, 'F');
 
                 doc.setFont('helvetica', 'bold');
-                doc.setFontSize(11);
+                doc.setFontSize(10);
                 doc.setTextColor(accent[0], accent[1], accent[2]);
-                doc.text('Quote Confidence & Notes', 25, 200);
+                doc.text('Quote Confidence & Notes', 26, 201);
 
                 doc.setFont('helvetica', 'normal');
-                doc.setFontSize(9.5);
+                doc.setFontSize(8.5);
                 doc.setTextColor(dk[0], dk[1], dk[2]);
-                doc.text(r.desc, 25, 208);
+                const splitNotes = doc.splitTextToSize(r.desc, 155);
+                doc.text(splitNotes, 26, 211);
             }
 
-            doc.setFont('helvetica', 'normal');
+            // Footer
+            doc.setDrawColor(lt[0], lt[1], lt[2]);
+            doc.setLineWidth(0.2);
+            doc.line(20, 266, 190, 266);
+
+            doc.setFont('helvetica', 'bold');
             doc.setFontSize(8);
-            doc.setTextColor(lt[0], lt[1], lt[2]);
-            doc.text('Loomrate Freelance Analyzer', 20, 275);
-            doc.text('Page 1 of 1', 190, 275, { align: 'right' });
+            doc.setTextColor(accent[0], accent[1], accent[2]);
+            doc.text('Loomrate', 20, 273);
+
+            doc.setFont('helvetica', 'normal');
+            doc.setTextColor(md[0], md[1], md[2]);
+            doc.text(' · For informational purposes only. Not financial or legal advice.', 33, 273);
+
+            doc.setFont('helvetica', 'normal');
+            doc.setFontSize(8.5);
+            doc.setTextColor(md[0], md[1], md[2]);
+            doc.text('Page 1 of 1', 190, 273, { align: 'right' });
 
             doc.save(projectName.toLowerCase().replace(/\s+/g, '_') + '_profit_analysis.pdf');
         }
@@ -3796,9 +3920,15 @@
         }
 
         /* ---- PREMIUM SUBSCRIPTION & UPGRADE GATING ---- */
-        let isPremium = false;
+        let isPremium = (typeof CONFIG !== 'undefined' && CONFIG.DEV_MODE_PREMIUM) ? true : false;
 
         async function checkPremiumStatus() {
+            if (typeof CONFIG !== 'undefined' && CONFIG.DEV_MODE_PREMIUM) {
+                isPremium = true;
+                updatePremiumUI();
+                return;
+            }
+
             if (!supabaseClient || !currentUser) {
                 isPremium = false;
                 updatePremiumUI();
@@ -3849,6 +3979,10 @@
             }
             if (summaryContainer) {
                 summaryContainer.style.filter = isPremium ? 'none' : 'blur(4px)';
+                const wrapper = summaryContainer.querySelector('.comparison-table-wrapper');
+                if (wrapper) {
+                    wrapper.style.overflowX = isPremium ? 'auto' : 'hidden';
+                }
             }
             if (nbInputs) {
                 nbInputs.style.filter = isPremium ? 'none' : 'blur(2.5px)';
@@ -3938,6 +4072,9 @@
             loadTheme();
             const dateEl = document.getElementById('project_date');
             if (dateEl) dateEl.value = getLocalDateString(new Date());
+
+            // Initialize premium UI status immediately
+            updatePremiumUI();
 
             initSupabase();
             checkUserSession();
