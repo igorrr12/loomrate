@@ -7,7 +7,39 @@
     <title>Loomrate: Freelance Profit &amp; Quote Analyzer</title>
     <meta name="description"
         content="Stop guessing your freelance margins. Discover your true hourly take-home wage with Loomrate.">
+    <meta name="robots" content="index, follow">
     <link rel="canonical" href="https://www.loomrate.com/">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.loomrate.com/">
+    <meta property="og:title" content="Loomrate: Freelance Profit &amp; Quote Analyzer">
+    <meta property="og:description" content="Stop guessing your freelance margins. Discover your true hourly take-home wage with Loomrate.">
+    <meta property="og:image" content="https://www.loomrate.com/loomrate_logo.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://www.loomrate.com/">
+    <meta property="twitter:title" content="Loomrate: Freelance Profit &amp; Quote Analyzer">
+    <meta property="twitter:description" content="Stop guessing your freelance margins. Discover your true hourly take-home wage with Loomrate.">
+    <meta property="twitter:image" content="https://www.loomrate.com/loomrate_logo.png">
+
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "Loomrate",
+      "url": "https://www.loomrate.com/",
+      "description": "Stop guessing your freelance margins. Discover your true hourly take-home wage with Loomrate.",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://www.loomrate.com/calculator?q={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
+    }
+    </script>
+
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -995,7 +1027,7 @@
                             <span>Project Fee</span>
                             <span id="preview_val_fee" class="value-display">$3,000</span>
                         </div>
-                        <input type="range" id="preview_fee" class="preview-slider" min="500" max="15000" step="250" value="3000" oninput="updatePreview()">
+                        <input type="range" id="preview_fee" class="preview-slider" min="500" max="15000" step="250" value="3000" oninput="updatePreview()" aria-label="Project Fee Slider">
                     </div>
 
                     <div class="preview-input-group">
@@ -1003,7 +1035,7 @@
                             <span>Quoted Billable Hours</span>
                             <span id="preview_val_hours" class="value-display">40 hrs</span>
                         </div>
-                        <input type="range" id="preview_hours" class="preview-slider" min="10" max="150" step="5" value="40" oninput="updatePreview()">
+                        <input type="range" id="preview_hours" class="preview-slider" min="10" max="150" step="5" value="40" oninput="updatePreview()" aria-label="Quoted Billable Hours Slider">
                     </div>
 
                     <div class="preview-input-group">
@@ -1011,7 +1043,7 @@
                             <span>Unpaid Overhead Time <span style="font-weight:normal; font-size:0.75rem; color:var(--text-muted);">(meetings, emails, revisions)</span></span>
                             <span id="preview_val_unpaid" class="value-display">10 hrs</span>
                         </div>
-                        <input type="range" id="preview_unpaid" class="preview-slider" min="0" max="40" step="2" value="10" oninput="updatePreview()">
+                        <input type="range" id="preview_unpaid" class="preview-slider" min="0" max="40" step="2" value="10" oninput="updatePreview()" aria-label="Unpaid Overhead Time Slider">
                     </div>
 
                     <div class="preview-input-group">
@@ -1019,7 +1051,7 @@
                             <span>Deductions <span style="font-weight:normal; font-size:0.75rem; color:var(--text-muted);">(tax reserves & platform fees)</span></span>
                             <span id="preview_val_deductions" class="value-display">25%</span>
                         </div>
-                        <input type="range" id="preview_deductions" class="preview-slider" min="0" max="50" step="5" value="25" oninput="updatePreview()">
+                        <input type="range" id="preview_deductions" class="preview-slider" min="0" max="50" step="5" value="25" oninput="updatePreview()" aria-label="Deductions Percent Slider">
                     </div>
                 </div>
 
@@ -1083,6 +1115,8 @@
                     <p style="margin: 0;">&copy; 2026 Loomrate. All rights reserved.</p>
                 </div>
                 <div class="footer-links">
+                    <a href="/faq">FAQ</a>
+                    <span class="separator">&middot;</span>
                     <a href="#terms" onclick="showModal('terms', event)">Terms of Use</a>
                     <span class="separator">&middot;</span>
                     <a href="#privacy" onclick="showModal('privacy', event)">Privacy Policy</a>

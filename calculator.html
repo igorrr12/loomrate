@@ -7,7 +7,50 @@
     <title>Loomrate: Premium Freelance Profit &amp; Quote Analyzer</title>
     <meta name="description"
         content="Calculate your true hourly rate, net profit, scope creep costs, monthly overheads, client analytics, and plan quotes.">
+    <meta name="robots" content="index, follow">
     <link rel="canonical" href="https://www.loomrate.com/calculator">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.loomrate.com/calculator">
+    <meta property="og:title" content="Loomrate: Premium Freelance Profit &amp; Quote Analyzer">
+    <meta property="og:description" content="Calculate your true hourly rate, net profit, scope creep costs, monthly overheads, client analytics, and plan quotes.">
+    <meta property="og:image" content="https://www.loomrate.com/loomrate_logo.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://www.loomrate.com/calculator">
+    <meta property="twitter:title" content="Loomrate: Premium Freelance Profit &amp; Quote Analyzer">
+    <meta property="twitter:description" content="Calculate your true hourly rate, net profit, scope creep costs, monthly overheads, client analytics, and plan quotes.">
+    <meta property="twitter:image" content="https://www.loomrate.com/loomrate_logo.png">
+
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "Loomrate Freelance Profit & Quote Analyzer",
+      "operatingSystem": "All",
+      "applicationCategory": "BusinessApplication",
+      "url": "https://www.loomrate.com/calculator",
+      "description": "Calculate your true hourly rate, net profit, scope creep costs, monthly overheads, client analytics, and plan quotes.",
+      "offers": {
+        "@type": "Offer",
+        "price": "5.99",
+        "priceCurrency": "USD",
+        "priceSpecification": {
+          "@type": "UnitPriceSpecification",
+          "priceType": "https://schema.org/Recurring",
+          "referenceQuantity": {
+            "@type": "QuantitativeValue",
+            "value": "1",
+            "unitCode": "MON"
+          }
+        }
+      }
+    }
+    </script>
+
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1397,13 +1440,13 @@
                             <div class="non-billable-grid" id="non_billable_inputs_container"
                                 style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; transition: filter 0.3s ease;">
                                 <input type="number" id="nb_emails" class="input-control" placeholder="Emails" min="0"
-                                    step="any" oninput="calculate()" title="Emails & Comms">
+                                    step="any" oninput="calculate()" title="Emails & Comms" aria-label="Non-Billable Emails and Communications hours">
                                 <input type="number" id="nb_revisions" class="input-control" placeholder="Revisions"
-                                    min="0" step="any" oninput="calculate()" title="Revisions">
+                                    min="0" step="any" oninput="calculate()" title="Revisions" aria-label="Non-Billable Revisions hours">
                                 <input type="number" id="nb_meetings" class="input-control" placeholder="Meetings"
-                                    min="0" step="any" oninput="calculate()" title="Meetings & Calls">
+                                    min="0" step="any" oninput="calculate()" title="Meetings & Calls" aria-label="Non-Billable Meetings and Calls hours">
                                 <input type="number" id="nb_admin" class="input-control" placeholder="Admin" min="0"
-                                    step="any" oninput="calculate()" title="Admin & Other">
+                                    step="any" oninput="calculate()" title="Admin & Other" aria-label="Non-Billable Admin and Other hours">
                             </div>
                             <div id="nb_paywall_overlay" class="paywall-overlay"
                                 style="display: none; border-radius: 6px;">
@@ -1643,10 +1686,10 @@
         <div class="action-bar">
             <div class="save-controls">
                 <input type="text" id="client_name" class="input-control" placeholder="Client (e.g. Acme Corp)..."
-                    style="margin-bottom:0">
+                    style="margin-bottom:0" aria-label="Client Name">
                 <input type="text" id="project_name" class="input-control" placeholder="Project name..."
-                    style="margin-bottom:0">
-                <input type="date" id="project_date" class="input-control" style="margin-bottom:0" title="Project Date">
+                    style="margin-bottom:0" aria-label="Project Name">
+                <input type="date" id="project_date" class="input-control" style="margin-bottom:0" title="Project Date" aria-label="Project Date">
                 <button onclick="saveProject()" class="btn btn-primary" style="width:100%"><svg
                         xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none"
                         stroke="currentColor" stroke-width="2">
@@ -1684,7 +1727,7 @@
                         <polyline points="17 8 12 3 7 8" />
                         <line x1="12" y1="3" x2="12" y2="15" />
                     </svg> Import CSV</button>
-                <input type="file" id="csv_import_file" accept=".csv" class="hidden" onchange="importFromCSV(event)">
+                <input type="file" id="csv_import_file" accept=".csv" class="hidden" onchange="importFromCSV(event)" aria-label="CSV file selector for import">
             </div>
         </div>
 
@@ -1810,6 +1853,8 @@
                     <p style="margin: 0;">&copy; 2026 Loomrate. All rights reserved.</p>
                 </div>
                 <div class="footer-links">
+                    <a href="/faq">FAQ</a>
+                    <span class="separator">&middot;</span>
                     <a href="#terms" onclick="showModal('terms', event)">Terms of Use</a>
                     <span class="separator">&middot;</span>
                     <a href="#privacy" onclick="showModal('privacy', event)">Privacy Policy</a>
