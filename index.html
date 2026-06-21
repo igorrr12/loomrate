@@ -4,39 +4,55 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Loomrate: Freelance Profit &amp; Quote Analyzer</title>
+    <title>Loomrate | Freelance Hourly Rate &amp; Project Quote Calculator</title>
     <meta name="description"
-        content="Stop guessing your freelance margins. Discover your true hourly take-home wage with Loomrate.">
+        content="Determine your true freelance hourly rate and profit margins. Calculate project quotes after taxes, platform fees, and unpaid admin hours. Try Loomrate free.">
     <meta name="robots" content="index, follow">
     <link rel="canonical" href="https://www.loomrate.com/">
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://www.loomrate.com/">
-    <meta property="og:title" content="Loomrate: Freelance Profit &amp; Quote Analyzer">
-    <meta property="og:description" content="Stop guessing your freelance margins. Discover your true hourly take-home wage with Loomrate.">
+    <meta property="og:title" content="Loomrate | Freelance Hourly Rate &amp; Project Quote Calculator">
+    <meta property="og:description" content="Determine your true freelance hourly rate and profit margins. Calculate project quotes after taxes, platform fees, and unpaid admin hours. Try Loomrate free.">
     <meta property="og:image" content="https://www.loomrate.com/loomrate_logo.png">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="https://www.loomrate.com/">
-    <meta property="twitter:title" content="Loomrate: Freelance Profit &amp; Quote Analyzer">
-    <meta property="twitter:description" content="Stop guessing your freelance margins. Discover your true hourly take-home wage with Loomrate.">
+    <meta property="twitter:title" content="Loomrate | Freelance Hourly Rate &amp; Project Quote Calculator">
+    <meta property="twitter:description" content="Determine your true freelance hourly rate and profit margins. Calculate project quotes after taxes, platform fees, and unpaid admin hours. Try Loomrate free.">
     <meta property="twitter:image" content="https://www.loomrate.com/loomrate_logo.png">
 
     <!-- JSON-LD Structured Data -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "WebSite",
-      "name": "Loomrate",
-      "url": "https://www.loomrate.com/",
-      "description": "Stop guessing your freelance margins. Discover your true hourly take-home wage with Loomrate.",
-      "potentialAction": {
-        "@type": "SearchAction",
-        "target": "https://www.loomrate.com/calculator?q={search_term_string}",
-        "query-input": "required name=search_term_string"
-      }
+      "@graph": [
+        {
+          "@type": "WebSite",
+          "@id": "https://www.loomrate.com/#website",
+          "name": "Loomrate",
+          "url": "https://www.loomrate.com/",
+          "description": "Determine your true freelance hourly rate and profit margins. Calculate project quotes after taxes, platform fees, and unpaid admin hours.",
+          "potentialAction": {
+            "@type": "SearchAction",
+            "target": "https://www.loomrate.com/calculator?q={search_term_string}",
+            "query-input": "required name=search_term_string"
+          }
+        },
+        {
+          "@type": "WebApplication",
+          "@id": "https://www.loomrate.com/#webapplication",
+          "name": "Loomrate Freelance Rate &amp; Quote Calculator",
+          "url": "https://www.loomrate.com/",
+          "applicationCategory": "BusinessApplication",
+          "operatingSystem": "All",
+          "browserRequirements": "Requires HTML5 compatible browser",
+          "description": "Calculate true freelance hourly rates, project quotes, self-employment taxes, and monthly overhead. Optimize your pricing strategy.",
+          "featureList": "True hourly rate calculation, project quote planning, platform fee deductions (Upwork, Fiverr), tax reserve estimates, monthly overhead allocation, scope creep tracking, comparison matrix."
+        }
+      ]
     }
     </script>
 
@@ -968,6 +984,8 @@
     <main class="container">
 
         <div class="header-actions">
+            <a href="/calculator" class="btn btn-secondary btn-sm">Calculator</a>
+            <a href="/faq" class="btn btn-secondary btn-sm">FAQ</a>
             <button id="auth_btn" class="btn btn-secondary btn-sm" onclick="handleAuthClick()"
                 style="font-size: 0.8rem; padding: 0.5rem 1rem;">Sign In</button>
             <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode" title="Toggle dark mode">
@@ -994,15 +1012,15 @@
         <div id="landing_page" class="landing-page-wrapper">
             <div class="landing-bg-pattern"></div>
             <img src="/favicons/apple-touch-icon.png" alt="Loomrate Logo" class="landing-logo">
-            <h1 class="landing-title">Loomrate</h1>
-            <p class="landing-tagline">Analyze a quote or find your real hourly rate — all in one place.</p>
+            <h1 class="landing-title">Loomrate <span>Freelance Rate Calculator</span></h1>
+            <p class="landing-tagline">Analyze project quotes and find your true hourly rate in seconds.</p>
 
             <p class="landing-description">
                 Loomrate is the professional calculator for freelancers and consultants. Reveal your true take-home pay after platform fees, taxes, overhead, and non-billable hours.
             </p>
 
             <div class="landing-btn-container" style="margin-bottom: 3.5rem;">
-                <button onclick="launchApp()" class="btn btn-primary btn-giant">
+                <a href="/calculator" onclick="launchApp(event)" class="btn btn-primary btn-giant" style="text-decoration: none;">
                     Calculate my real rate
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
@@ -1010,7 +1028,7 @@
                         <line x1="5" y1="12" x2="19" y2="12"></line>
                         <polyline points="12 5 19 12 12 19"></polyline>
                     </svg>
-                </button>
+                </a>
                 <span class="landing-btn-sub">Use it instantly without an account, or sign in to sync your data across devices.</span>
             </div>
 
@@ -1105,6 +1123,35 @@
                     </div>
                 </div>
             </div>
+
+            <!-- GUIDES AND RESOURCES SECTION -->
+            <div class="explainer-section" style="margin-top: 5rem; text-align: left;">
+                <h2 class="explainer-title" style="text-align: center; margin-bottom: 0.75rem;">Freelance Pricing &amp; Rate Guide</h2>
+                <p class="explainer-subtitle" style="text-align: center; margin-bottom: 3rem;">Understand the mathematics of profitable freelancing. Learn how to calculate quotes, set income targets, and optimize your rates.</p>
+                
+                <div style="display: flex; flex-direction: column; gap: 2rem;">
+                    <div class="explainer-card" style="width: 100%;">
+                        <h3 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 0.75rem;">How Much Should I Charge as a Freelancer?</h3>
+                        <p style="font-size: 0.95rem; line-height: 1.6; color: var(--text-muted);">
+                            Determining your freelance hourly rate is one of the most critical decisions you make for your business. Many freelancers make the mistake of setting rates based solely on what they want to earn per hour, without accounting for self-employment taxes, business overhead, and unpaid work. To find your ideal rate, start with your annual income target, add your expected business expenses and tax liabilities, and divide the total by your billable hours. Using a dedicated <a href="/calculator" style="color: var(--accent); text-decoration: none; font-weight: 600; border-bottom: 1px dashed var(--accent);">freelancer hourly rate calculator</a> helps automate this analysis and ensures you remain profitable.
+                        </p>
+                    </div>
+                    
+                    <div class="explainer-card" style="width: 100%;">
+                        <h3 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 0.75rem;">Project Pricing vs. Hourly Rate Calculator</h3>
+                        <p style="font-size: 0.95rem; line-height: 1.6; color: var(--text-muted);">
+                            Fixed-fee project pricing can yield high margins but carries the risk of scope creep—where client revisions and extra calls consume your hours without increasing your pay. Loomrate acts as a <a href="/calculator" style="color: var(--accent); text-decoration: none; font-weight: 600; border-bottom: 1px dashed var(--accent);">project quote calculator</a>, helping you translate any fixed project fee into an equivalent hourly rate. By comparing your gross quoted rate to your true net take-home rate, you can make informed decisions before signing contracts and ensure your pricing strategies match realistic income targets.
+                        </p>
+                    </div>
+
+                    <div class="explainer-card" style="width: 100%;">
+                        <h3 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 0.75rem;">Accounting for Self-Employment Taxes &amp; Overhead</h3>
+                        <p style="font-size: 0.95rem; line-height: 1.6; color: var(--text-muted);">
+                            Unlike traditional employees, freelancers are responsible for 100% of their operational expenses and tax allocations. These include platform commissions (e.g., Upwork or Fiverr fees), software subscriptions, hardware depreciation, and tax reserves. Loomrate's <a href="/calculator" style="color: var(--accent); text-decoration: none; font-weight: 600; border-bottom: 1px dashed var(--accent);">freelance pricing calculator</a> automatically subtracts these overhead costs from your gross billing fee, exposing what you actually keep. Understanding your net income per project is key to scaling your consulting business.
+                        </p>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <!-- FOOTER -->
@@ -1115,6 +1162,10 @@
                     <p style="margin: 0;">&copy; 2026 Loomrate. All rights reserved.</p>
                 </div>
                 <div class="footer-links">
+                    <a href="/">Home</a>
+                    <span class="separator">&middot;</span>
+                    <a href="/calculator">Calculator</a>
+                    <span class="separator">&middot;</span>
                     <a href="/faq">FAQ</a>
                     <span class="separator">&middot;</span>
                     <a href="#terms" onclick="showModal('terms', event)">Terms of Use</a>
@@ -1269,7 +1320,8 @@
             if (saved === 'dark') document.body.setAttribute('data-theme', 'dark');
         }
 
-        function launchApp() {
+        function launchApp(event) {
+            if (event) event.preventDefault();
             const landing = document.getElementById('landing_page');
             landing.style.opacity = '0';
             landing.style.transform = 'translateY(-20px)';

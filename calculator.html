@@ -4,50 +4,87 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Loomrate: Premium Freelance Profit &amp; Quote Analyzer</title>
+    <title>Freelance Hourly Rate Calculator &amp; Quote Planner | Loomrate</title>
     <meta name="description"
-        content="Calculate your true hourly rate, net profit, scope creep costs, monthly overheads, client analytics, and plan quotes.">
+        content="Calculate your true freelance hourly rate, set income targets, plan project quotes, and track scope creep. Factoring taxes, platform fees, and overhead.">
     <meta name="robots" content="index, follow">
     <link rel="canonical" href="https://www.loomrate.com/calculator">
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://www.loomrate.com/calculator">
-    <meta property="og:title" content="Loomrate: Premium Freelance Profit &amp; Quote Analyzer">
-    <meta property="og:description" content="Calculate your true hourly rate, net profit, scope creep costs, monthly overheads, client analytics, and plan quotes.">
+    <meta property="og:title" content="Freelance Hourly Rate Calculator &amp; Quote Planner | Loomrate">
+    <meta property="og:description" content="Calculate your true freelance hourly rate, set income targets, plan project quotes, and track scope creep. Factoring taxes, platform fees, and overhead.">
     <meta property="og:image" content="https://www.loomrate.com/loomrate_logo.png">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="https://www.loomrate.com/calculator">
-    <meta property="twitter:title" content="Loomrate: Premium Freelance Profit &amp; Quote Analyzer">
-    <meta property="twitter:description" content="Calculate your true hourly rate, net profit, scope creep costs, monthly overheads, client analytics, and plan quotes.">
+    <meta property="twitter:title" content="Freelance Hourly Rate Calculator &amp; Quote Planner | Loomrate">
+    <meta property="twitter:description" content="Calculate your true freelance hourly rate, set income targets, plan project quotes, and track scope creep. Factoring taxes, platform fees, and overhead.">
     <meta property="twitter:image" content="https://www.loomrate.com/loomrate_logo.png">
 
     <!-- JSON-LD Structured Data -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "SoftwareApplication",
-      "name": "Loomrate Freelance Profit & Quote Analyzer",
-      "operatingSystem": "All",
-      "applicationCategory": "BusinessApplication",
-      "url": "https://www.loomrate.com/calculator",
-      "description": "Calculate your true hourly rate, net profit, scope creep costs, monthly overheads, client analytics, and plan quotes.",
-      "offers": {
-        "@type": "Offer",
-        "price": "5.99",
-        "priceCurrency": "USD",
-        "priceSpecification": {
-          "@type": "UnitPriceSpecification",
-          "priceType": "https://schema.org/Recurring",
-          "referenceQuantity": {
-            "@type": "QuantitativeValue",
-            "value": "1",
-            "unitCode": "MON"
+      "@graph": [
+        {
+          "@type": "WebApplication",
+          "@id": "https://www.loomrate.com/calculator#webapplication",
+          "name": "Loomrate Freelance Rate Calculator",
+          "url": "https://www.loomrate.com/calculator",
+          "applicationCategory": "BusinessApplication",
+          "operatingSystem": "All",
+          "browserRequirements": "Requires HTML5 compatible browser",
+          "description": "Calculate your true freelance hourly rate, set income targets, plan project quotes, and track scope creep. Factoring taxes, platform fees, and overhead.",
+          "featureList": "True hourly rate calculation, project quote planning, platform fee deductions (Upwork, Fiverr), tax reserve estimates, monthly overhead allocation, scope creep tracking, comparison matrix.",
+          "offers": {
+            "@type": "Offer",
+            "price": "5.99",
+            "priceCurrency": "USD",
+            "priceSpecification": {
+              "@type": "UnitPriceSpecification",
+              "priceType": "https://schema.org/Recurring",
+              "referenceQuantity": {
+                "@type": "QuantitativeValue",
+                "value": "1",
+                "unitCode": "MON"
+              }
+            }
           }
+        },
+        {
+          "@type": "FAQPage",
+          "@id": "https://www.loomrate.com/calculator#faq",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "How does this freelance rate calculator work?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Our calculator performs multi-step analysis on your project fees and quotes in two modes. Analyze Project: Input your project fee, billable hours, non-billable time, and deductions to see your true take-home hourly rate. Plan a Quote: Input your target hourly pay, hours, and deductions to determine the exact project fee you should quote."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Why is your \"True Hourly Rate\" lower than your quoted rate?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Your quoted rate is your gross rate. Your true hourly rate accounts for all unpaid work (like emails, meetings, and administration), monthly business expenses, and self-employment taxes. This gives a realistic view of your actual net profit."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "How to set freelancer income targets and project pricing",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Set your rates to cover both billable and unpaid overhead hours. Factor in a safety buffer for scope creep when quoting fixed-fee projects. Loomrate allows you to compare projects side-by-side using the comparison matrix to find your most profitable clients."
+              }
+            }
+          ]
         }
-      }
+      ]
     }
     </script>
 
@@ -1339,6 +1376,8 @@
     <main class="container">
 
         <div class="header-actions">
+            <a href="/" class="btn btn-secondary btn-sm">Home</a>
+            <a href="/faq" class="btn btn-secondary btn-sm">FAQ</a>
             <button id="auth_btn" class="btn btn-secondary btn-sm" onclick="handleAuthClick()"
                 style="font-size: 0.8rem; padding: 0.5rem 1rem;">Sign In</button>
             <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode" title="Toggle dark mode">
@@ -1367,9 +1406,9 @@
                     <img id="logo_img" src="/favicons/apple-touch-icon.png" alt="Loomrate Logo" style="width: 38px; height: 38px; filter: drop-shadow(0 2px 6px var(--accent-glow));">
                     Loomrate
                 </a>
-                <span>Freelance Analyzer</span>
+                <span>Freelance Rate Calculator</span>
             </h1>
-            <p>Find out what you actually made &amp; what you should quote next</p>
+            <p>Analyze freelance hourly rates, plan project quotes, and track profit margins.</p>
         </header>
 
         <div class="calculator-grid">
@@ -1842,6 +1881,34 @@
                             to Premium</button>
                     </div>
                 </div>
+        </div>
+
+        <!-- SEO EXPLANATORY CONTENT SECTION -->
+        <div class="card" style="margin-top: 2.5rem; text-align: left;">
+            <h2>
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                    <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                </svg>
+                Understanding Freelance Rate &amp; Quote Calculation
+            </h2>
+            <div class="guide-content" style="display: grid; grid-template-columns: 1fr; gap: 1.5rem; margin-top: 1rem; font-size: 0.9rem; line-height: 1.6; color: var(--text-dim);">
+                <div>
+                    <h3 style="font-size: 1.05rem; font-weight: 700; color: var(--text); margin-bottom: 0.5rem;">How does this freelance rate calculator work?</h3>
+                    <p>Our calculator performs multi-step analysis on your project fees and quotes. It helps you see your true earning power in two modes:
+                        <br><strong>1. Analyze Project:</strong> Input your project fee, estimated billable hours, unpaid overhead time, and deductions (like taxes or platform commissions) to reveal your true hourly take-home rate.
+                        <br><strong>2. Plan a Quote:</strong> Enter your target hourly take-home pay, expected billable hours, overhead hours, and deductions to discover the exact project fee you should quote to the client.
+                    </p>
+                </div>
+                <div>
+                    <h3 style="font-size: 1.05rem; font-weight: 700; color: var(--text); margin-bottom: 0.5rem;">Why is your "True Hourly Rate" lower than your quoted rate?</h3>
+                    <p>Your quoted rate is your gross billable rate (e.g. Project Fee / Billable Hours). However, your true hourly rate accounts for all the unpaid hours you spend on emails, client meetings, accounting, and proposal writing, as well as business overhead expenses and self-employment tax reserves. By calculating your true take-home rate, you ensure your freelance business is actually profitable and sustainable. Learn more on our <a href="/faq" style="color: var(--accent); text-decoration: none; font-weight: 600; border-bottom: 1px dashed var(--accent);">frequently asked questions page</a>.</p>
+                </div>
+                <div>
+                    <h3 style="font-size: 1.05rem; font-weight: 700; color: var(--text); margin-bottom: 0.5rem;">How to set freelancer income targets and project pricing</h3>
+                    <p>To hit your freelancer income goals, you must price your services to cover both billable and non-billable hours. Use our tool to calculate quotes for fixed-price contracts by factoring in a safety margin for potential scope creep. Compare different project structures using the comparison matrix to see which clients or contracts yield the highest net return for your time.</p>
+                </div>
             </div>
         </div>
 
@@ -1853,6 +1920,10 @@
                     <p style="margin: 0;">&copy; 2026 Loomrate. All rights reserved.</p>
                 </div>
                 <div class="footer-links">
+                    <a href="/">Home</a>
+                    <span class="separator">&middot;</span>
+                    <a href="/calculator">Calculator</a>
+                    <span class="separator">&middot;</span>
                     <a href="/faq">FAQ</a>
                     <span class="separator">&middot;</span>
                     <a href="#terms" onclick="showModal('terms', event)">Terms of Use</a>
