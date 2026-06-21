@@ -1844,6 +1844,15 @@
                         <path d="M3 6h18" />
                         <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
                     </svg> Clear</button>
+                <button onclick="shareScoreCard()" class="btn btn-secondary" title="Share your score as an image"><svg
+                        xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2">
+                        <circle cx="18" cy="5" r="3" />
+                        <circle cx="6" cy="12" r="3" />
+                        <circle cx="18" cy="19" r="3" />
+                        <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" />
+                        <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
+                    </svg> Share Score</button>
                 <button onclick="exportToPDF()" class="btn btn-secondary" title="Export report as PDF"><svg
                         xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none"
                         stroke="currentColor" stroke-width="2">
@@ -2029,6 +2038,10 @@
                     <span class="separator">&middot;</span>
                     <a href="/glossary">Glossary</a>
                     <span class="separator">&middot;</span>
+                    <a href="/tools">Tools</a>
+                    <span class="separator">&middot;</span>
+                    <a href="/blog">Blog</a>
+                    <span class="separator">&middot;</span>
                     <a href="#terms" onclick="showModal('terms', event)">Terms of Use</a>
                     <span class="separator">&middot;</span>
                     <a href="#privacy" onclick="showModal('privacy', event)">Privacy Policy</a>
@@ -2148,46 +2161,52 @@
                 <div
                     style="background: var(--input-bg); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; text-align: left; margin-bottom: 2rem;">
                     <div
-                        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.1rem;">
                         <span style="font-weight: 700; font-size: 1.1rem; color: var(--text);">Loomrate Premium</span>
                         <span style="font-size: 1.4rem; font-weight: 700; color: var(--accent);">$5.99 <span
                                 style="font-size: 0.85rem; font-weight: 500; color: var(--text-muted);">/month</span></span>
                     </div>
-                    <ul
-                        style="list-style: none; font-size: 0.85rem; color: var(--text-dim); display: flex; flex-direction: column; gap: 0.5rem;">
-                        <li style="display: flex; align-items: center; gap: 0.5rem;">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
-                                fill="none" stroke="#22c55e" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round">
-                                <polyline points="20 6 9 17 4 12"></polyline>
-                            </svg>
-                            Unlimited projects synced to the cloud
-                        </li>
-                        <li style="display: flex; align-items: center; gap: 0.5rem;">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
-                                fill="none" stroke="#22c55e" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round">
-                                <polyline points="20 6 9 17 4 12"></polyline>
-                            </svg>
-                            Detailed Client Summary & performance ranking
-                        </li>
-                        <li style="display: flex; align-items: center; gap: 0.5rem;">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
-                                fill="none" stroke="#22c55e" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round">
-                                <polyline points="20 6 9 17 4 12"></polyline>
-                            </svg>
-                            Interactive trend charts & historical logs
-                        </li>
-                        <li style="display: flex; align-items: center; gap: 0.5rem;">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
-                                fill="none" stroke="#22c55e" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round">
-                                <polyline points="20 6 9 17 4 12"></polyline>
-                            </svg>
-                            Export reports to PDF & CSV backup formats
-                        </li>
-                    </ul>
+                    <table style="width: 100%; border-collapse: collapse; font-size: 0.82rem;">
+                        <thead>
+                            <tr style="border-bottom: 1px solid var(--border);">
+                                <th style="text-align: left; padding: 0.4rem 0.25rem; color: var(--text-dim); font-weight: 600;">Feature</th>
+                                <th style="text-align: center; padding: 0.4rem 0.25rem; color: var(--text-muted); font-weight: 600;">Free</th>
+                                <th style="text-align: center; padding: 0.4rem 0.25rem; color: var(--accent); font-weight: 700;">Premium</th>
+                            </tr>
+                        </thead>
+                        <tbody style="color: var(--text-dim);">
+                            <tr style="border-bottom: 1px solid var(--border);">
+                                <td style="padding: 0.55rem 0.25rem;">Saved projects</td>
+                                <td style="text-align: center; padding: 0.55rem 0.25rem;">3</td>
+                                <td style="text-align: center; padding: 0.55rem 0.25rem; font-weight: 700; color: var(--text);">Unlimited</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid var(--border);">
+                                <td style="padding: 0.55rem 0.25rem;">Cloud sync across devices</td>
+                                <td style="text-align: center; padding: 0.55rem 0.25rem;">&ndash;</td>
+                                <td style="text-align: center; padding: 0.55rem 0.25rem;">✓</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid var(--border);">
+                                <td style="padding: 0.55rem 0.25rem;">Non-billable hour breakdown</td>
+                                <td style="text-align: center; padding: 0.55rem 0.25rem;">&ndash;</td>
+                                <td style="text-align: center; padding: 0.55rem 0.25rem;">✓</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid var(--border);">
+                                <td style="padding: 0.55rem 0.25rem;">Client analytics & trend charts</td>
+                                <td style="text-align: center; padding: 0.55rem 0.25rem;">&ndash;</td>
+                                <td style="text-align: center; padding: 0.55rem 0.25rem;">✓</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid var(--border);">
+                                <td style="padding: 0.55rem 0.25rem;">CSV import/export</td>
+                                <td style="text-align: center; padding: 0.55rem 0.25rem;">&ndash;</td>
+                                <td style="text-align: center; padding: 0.55rem 0.25rem;">✓</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 0.55rem 0.25rem;">PDF report export</td>
+                                <td style="text-align: center; padding: 0.55rem 0.25rem;">1 free trial</td>
+                                <td style="text-align: center; padding: 0.55rem 0.25rem;">Unlimited</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
 
                 <button onclick="redirectToUpgrade()" class="btn btn-primary"
@@ -2350,7 +2369,7 @@
             }
         }
 
-        function calculate() { const s = getInputsState(); const r = computeProjectResults(s); renderResults(r); }
+        function calculate() { const s = getInputsState(); const r = computeProjectResults(s); window.lastComputedResult = r; renderResults(r); }
 
         function getInputsState() {
             const expenses = parseFloat(document.getElementById('expenses').value) || 0;
@@ -3487,10 +3506,109 @@
             reader.readAsText(file);
         }
 
-        function exportToPDF() {
-            if (!isPremium) {
-                showPremiumUpgradeModal("Exporting project reports to PDF is a Premium feature. Upgrade to print custom invoices and summaries.");
+        /* ---- SHAREABLE SCORE CARD (free, virality feature) ---- */
+        function shareScoreCard() {
+            const r = window.lastComputedResult;
+            if (!r || r.isEmpty || (r.mode === 'analyze' && !r.score)) {
+                alert('Enter your project details first to generate a score to share.');
                 return;
+            }
+
+            const W = 1200, H = 630;
+            const canvas = document.createElement('canvas');
+            canvas.width = W; canvas.height = H;
+            const ctx = canvas.getContext('2d');
+
+            // Parchment background gradient (brand palette, theme-independent)
+            const bg = ctx.createLinearGradient(0, 0, W, H);
+            bg.addColorStop(0, '#f3ede2');
+            bg.addColorStop(1, '#fbf3e6');
+            ctx.fillStyle = bg;
+            ctx.fillRect(0, 0, W, H);
+
+            // Ambient accent glow
+            const glow = ctx.createRadialGradient(W * 0.85, H * 0.1, 50, W * 0.85, H * 0.1, 520);
+            glow.addColorStop(0, 'rgba(202, 138, 4, 0.18)');
+            glow.addColorStop(1, 'rgba(202, 138, 4, 0)');
+            ctx.fillStyle = glow;
+            ctx.fillRect(0, 0, W, H);
+
+            // Card border
+            ctx.strokeStyle = 'rgba(146, 64, 14, 0.18)';
+            ctx.lineWidth = 3;
+            ctx.strokeRect(20, 20, W - 40, H - 40);
+
+            // Wordmark
+            ctx.fillStyle = '#92400e';
+            ctx.font = '700 32px Georgia, serif';
+            ctx.textAlign = 'left';
+            ctx.fillText('Loomrate', 64, 100);
+
+            // Score color by tier
+            const isAnalyze = r.mode === 'analyze';
+            const scoreVal = isAnalyze ? r.score : null;
+            let scoreColor = '#92400e';
+            if (isAnalyze) {
+                if (scoreVal >= 8) scoreColor = '#16653f';
+                else if (scoreVal >= 5) scoreColor = '#b45309';
+                else scoreColor = '#b91c1c';
+            }
+
+            if (isAnalyze) {
+                ctx.fillStyle = scoreColor;
+                ctx.font = '700 220px Georgia, serif';
+                ctx.textAlign = 'center';
+                ctx.fillText(String(scoreVal), W / 2, 400);
+
+                ctx.font = '600 28px Georgia, serif';
+                ctx.fillStyle = '#78350f';
+                ctx.fillText('/ 10 PROFITABILITY SCORE', W / 2, 440);
+            }
+
+            ctx.textAlign = 'center';
+            ctx.font = '600 30px "Segoe UI", sans-serif';
+            ctx.fillStyle = '#451a03';
+            const verdictY = isAnalyze ? 495 : 320;
+            ctx.fillText(r.verdict, W / 2, verdictY);
+
+            ctx.font = '500 24px "Segoe UI", sans-serif';
+            ctx.fillStyle = '#836558';
+            ctx.fillText(`True hourly rate: ${formatCurrency(r.trueHourlyRate)}/hr`, W / 2, verdictY + 45);
+
+            ctx.font = '600 22px "Segoe UI", sans-serif';
+            ctx.fillStyle = '#92400e';
+            ctx.fillText('Calculate your true rate free at loomrate.com', W / 2, H - 56);
+
+            canvas.toBlob(async (blob) => {
+                const file = new File([blob], 'loomrate-score.png', { type: 'image/png' });
+                if (navigator.canShare && navigator.canShare({ files: [file] })) {
+                    try {
+                        await navigator.share({
+                            files: [file],
+                            title: 'My Loomrate Score',
+                            text: `My freelance profitability score: ${isAnalyze ? scoreVal + '/10' : r.verdict}. Check yours free at loomrate.com`
+                        });
+                        return;
+                    } catch (e) { /* user cancelled or share failed, fall through to download */ }
+                }
+                const link = document.createElement('a');
+                link.href = URL.createObjectURL(blob);
+                link.download = 'loomrate-score.png';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }, 'image/png');
+        }
+
+        function exportToPDF() {
+            let usedFreeTrial = false;
+            if (!isPremium) {
+                if (localStorage.getItem('fpa_pdf_trial_used')) {
+                    showPremiumUpgradeModal("You've used your free PDF export. Upgrade to Premium for unlimited PDF reports.");
+                    return;
+                }
+                localStorage.setItem('fpa_pdf_trial_used', '1');
+                usedFreeTrial = true;
             }
             const { jsPDF } = window.jspdf;
             const projectName = document.getElementById('project_name').value.trim() || 'Untitled Project';
@@ -3855,6 +3973,12 @@
             doc.text('Page 1 of 1', 190, 273, { align: 'right' });
 
             doc.save(projectName.toLowerCase().replace(/\s+/g, '_') + '_profit_analysis.pdf');
+
+            if (usedFreeTrial) {
+                setTimeout(() => {
+                    showPremiumUpgradeModal("That was your free PDF export trial. Upgrade to Premium for unlimited PDF reports, CSV exports, and client analytics.");
+                }, 600);
+            }
         }
 
         /* ---- SUPABASE & AUTH INTEGRATION ON CALCULATOR ---- */

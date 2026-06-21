@@ -33,4 +33,74 @@
     <priority>0.7</priority>
   </url>
 
+  <!-- Free Tools hub -->
+  <url>
+    <loc>https://www.loomrate.com/tools</loc>
+    <lastmod>2026-06-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Salary to Hourly converter -->
+  <url>
+    <loc>https://www.loomrate.com/salary-to-hourly</loc>
+    <lastmod>2026-06-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- Freelance vs Employee comparator -->
+  <url>
+    <loc>https://www.loomrate.com/freelance-vs-employee</loc>
+    <lastmod>2026-06-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- Quarterly Tax Estimator -->
+  <url>
+    <loc>https://www.loomrate.com/quarterly-tax-estimator</loc>
+    <lastmod>2026-06-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- Day Rate Calculator -->
+  <url>
+    <loc>https://www.loomrate.com/day-rate-calculator</loc>
+    <lastmod>2026-06-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- Blog index -->
+  <url>
+    <loc>https://www.loomrate.com/blog</loc>
+    <lastmod>2026-06-21</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- Blog posts -->
+  <url>
+    <loc>https://www.loomrate.com/blog/how-much-to-charge-freelance-web-developer</loc>
+    <lastmod>2026-06-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
+    <loc>https://www.loomrate.com/blog/how-to-raise-freelance-rates-without-losing-clients</loc>
+    <lastmod>2026-06-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
+    <loc>https://www.loomrate.com/blog/real-cost-of-scope-creep</loc>
+    <lastmod>2026-06-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
 </urlset>

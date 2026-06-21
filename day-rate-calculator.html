@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day Rate to Hourly Rate Calculator (Free) | Loomrate</title>
+    <meta name="description"
+        content="Convert an hourly rate to a day rate, or a day rate to an hourly rate, with weekly and monthly projections. Free, no signup — built for consultants.">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://www.loomrate.com/day-rate-calculator">
+
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.loomrate.com/day-rate-calculator">
+    <meta property="og:title" content="Day Rate to Hourly Rate Calculator (Free) | Loomrate">
+    <meta property="og:description" content="Convert an hourly rate to a day rate, or a day rate to an hourly rate, with weekly and monthly projections.">
+    <meta property="og:image" content="https://www.loomrate.com/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:type" content="image/png">
+
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://www.loomrate.com/day-rate-calculator">
+    <meta property="twitter:title" content="Day Rate to Hourly Rate Calculator (Free) | Loomrate">
+    <meta property="twitter:description" content="Convert an hourly rate to a day rate, or a day rate to an hourly rate, with weekly and monthly projections.">
+    <meta property="twitter:image" content="https://www.loomrate.com/og-image.png">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&display=swap" rel="stylesheet">
+
+    <link rel="shortcut icon" href="/favicon.ico?v=1" type="image/x-icon">
+    <link rel="icon" href="/favicon.ico?v=1" type="image/x-icon" sizes="any">
+    <link rel="icon" type="image/svg+xml" href="/favicons/favicon.svg?v=1">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicons/favicon-32x32.png?v=1">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicons/favicon-16x16.png?v=1">
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicons/apple-touch-icon.png?v=1">
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "WebApplication",
+          "@id": "https://www.loomrate.com/day-rate-calculator#app",
+          "name": "Day Rate to Hourly Rate Calculator",
+          "url": "https://www.loomrate.com/day-rate-calculator",
+          "applicationCategory": "BusinessApplication",
+          "operatingSystem": "Any (Web Browser)",
+          "isPartOf": { "@id": "https://www.loomrate.com/#website" },
+          "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+        },
+        {
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.loomrate.com/" },
+            { "@type": "ListItem", "position": 2, "name": "Tools", "item": "https://www.loomrate.com/tools" },
+            { "@type": "ListItem", "position": 3, "name": "Day Rate Calculator", "item": "https://www.loomrate.com/day-rate-calculator" }
+          ]
+        }
+      ]
+    }
+    </script>
+
+    <svg style="position:absolute;width:0;height:0" aria-hidden="true">
+        <filter id="grain"><feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch" /><feColorMatrix type="saturate" values="0" /></filter>
+    </svg>
+
+    <style>
+        :root {
+            --bg: #f3ede2; --card: #fefcf7; --card-raised: #ffffff; --card-border: rgba(146, 64, 14, 0.09);
+            --card-border-hover: rgba(146, 64, 14, 0.22); --accent: #92400e; --accent-hover: #78350f;
+            --accent-dim: rgba(146, 64, 14, 0.08); --accent-glow: rgba(146, 64, 14, 0.16); --gold: #ca8a04;
+            --gold-dim: rgba(202, 138, 4, 0.08); --text: #451a03; --text-dim: #78350f; --text-muted: #836558;
+            --border: rgba(120, 53, 15, 0.08); --shadow: 0 1px 3px rgba(69, 26, 3, 0.04), 0 4px 16px rgba(69, 26, 3, 0.05);
+            --shadow-md: 0 4px 12px rgba(69, 26, 3, 0.06), 0 12px 40px rgba(69, 26, 3, 0.08);
+            --gradient-line: linear-gradient(90deg, var(--accent), var(--gold), transparent);
+            --bg-glow1: rgba(146, 64, 14, 0.04); --bg-glow2: rgba(202, 138, 4, 0.035); --bg-glow3: rgba(22, 101, 52, 0.015);
+            --toggle-bg: rgba(120, 53, 15, 0.06); --toggle-hover: rgba(120, 53, 15, 0.12);
+            --sun-display: none; --moon-display: inline; --grain-opacity: 0.03;
+            --input-bg: #faf5eb; --input-border: rgba(120, 53, 15, 0.12);
+        }
+
+        [data-theme="dark"] {
+            --bg: #0a0d1a; --card: #12162a; --card-raised: #181d35; --card-border: rgba(249, 115, 22, 0.08);
+            --card-border-hover: rgba(249, 115, 22, 0.20); --accent: #f97316; --accent-hover: #ea580c;
+            --accent-dim: rgba(249, 115, 22, 0.12); --accent-glow: rgba(249, 115, 22, 0.22); --gold: #eab308;
+            --gold-dim: rgba(234, 179, 8, 0.10); --text: #fef3c7; --text-dim: #a8a0b8; --text-muted: #7b7894;
+            --border: rgba(255, 255, 255, 0.05); --shadow: 0 2px 8px rgba(0, 0, 0, 0.3), 0 8px 32px rgba(0, 0, 0, 0.4);
+            --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.4), 0 16px 48px rgba(0, 0, 0, 0.5);
+            --gradient-line: linear-gradient(90deg, #f97316, #eab308, transparent);
+            --bg-glow1: rgba(249, 115, 22, 0.05); --bg-glow2: rgba(234, 179, 8, 0.04); --bg-glow3: rgba(52, 211, 153, 0.02);
+            --toggle-bg: rgba(255, 255, 255, 0.05); --toggle-hover: rgba(255, 255, 255, 0.10);
+            --sun-display: inline; --moon-display: none; --grain-opacity: 0.015;
+            --input-bg: rgba(8, 10, 22, 0.65); --input-border: rgba(255, 255, 255, 0.07);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body { font-family: 'DM Sans', system-ui, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; -webkit-font-smoothing: antialiased; padding: 3.5rem 1.5rem; min-height: 100vh; position: relative; transition: background-color 0.35s ease, color 0.35s ease; }
+        body::before { content: ''; position: fixed; inset: 0; background: radial-gradient(ellipse 55% 45% at 12% 8%, var(--bg-glow1) 0%, transparent 65%), radial-gradient(ellipse 45% 35% at 88% 15%, var(--bg-glow2) 0%, transparent 55%), radial-gradient(ellipse 35% 50% at 50% 92%, var(--bg-glow3) 0%, transparent 45%); pointer-events: none; z-index: 0; transition: background 0.35s ease; }
+        body::after { content: ''; position: fixed; inset: 0; filter: url(#grain); opacity: var(--grain-opacity); pointer-events: none; z-index: 0; }
+
+        .container { max-width: 760px; margin: 0 auto; position: relative; z-index: 1; }
+
+        .breadcrumb-nav { display: flex; align-items: center; justify-content: center; gap: 0.4rem; font-size: 0.78rem; color: var(--text-muted); margin-bottom: 1rem; flex-wrap: wrap; }
+        .breadcrumb-nav a { color: var(--text-muted); text-decoration: none; }
+        .breadcrumb-nav a:hover { color: var(--accent); }
+        .breadcrumb-nav [aria-current="page"] { color: var(--text-dim); font-weight: 600; }
+
+        header { margin-bottom: 2.5rem; padding-top: 3.25rem; text-align: center; position: relative; animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        header h1 { font-family: 'Fraunces', 'DM Sans', serif; font-weight: 600; font-size: 2.2rem; color: var(--text); letter-spacing: -0.02em; line-height: 1.15; margin-bottom: 0.5rem; }
+        header h1 a { text-decoration: none; color: inherit; }
+        header h1 span { background: linear-gradient(135deg, var(--accent), var(--gold)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        header p { font-size: 1rem; color: var(--text-muted); font-weight: 500; max-width: 560px; margin: 0 auto; }
+        header::after { content: ''; display: block; width: 56px; height: 3px; margin: 0.85rem auto 0; background: var(--gradient-line); border-radius: 2px; opacity: 0; transform: scaleX(0); animation: growLine 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.25s forwards; }
+
+        .header-actions { position: absolute; top: 0.25rem; right: 0; z-index: 1000; display: flex; align-items: center; gap: 0.75rem; }
+        .theme-toggle { position: relative; width: 42px; height: 42px; border-radius: 50%; border: 1px solid var(--border); background: var(--toggle-bg); color: var(--text-dim); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease; }
+        .theme-toggle:hover { background: var(--toggle-hover); color: var(--text); border-color: var(--card-border-hover); }
+        .theme-toggle:active { transform: scale(0.93); }
+        .theme-toggle .icon-sun { display: var(--sun-display); }
+        .theme-toggle .icon-moon { display: var(--moon-display); }
+
+        .btn { display: inline-flex; align-items: center; justify-content: center; gap: 0.45rem; font-family: inherit; font-size: 0.85rem; font-weight: 600; padding: 0.8rem 1.3rem; border-radius: 8px; cursor: pointer; border: 1px solid transparent; transition: all 0.15s ease; white-space: nowrap; text-decoration: none; }
+        .btn:active { transform: scale(0.97); }
+        .btn-primary { background: linear-gradient(135deg, var(--accent), var(--accent-hover)); color: #fff; box-shadow: 0 4px 18px var(--accent-dim); }
+        .btn-primary:hover { box-shadow: 0 6px 24px var(--accent-glow); filter: brightness(1.08); }
+        .btn-secondary { background: var(--toggle-bg); border-color: var(--border); color: var(--text); }
+        .btn-secondary:hover { background: var(--toggle-hover); border-color: var(--card-border-hover); }
+        .btn-sm { padding: 0.5rem 1rem; font-size: 0.8rem; }
+
+        .card { background: var(--card); border-radius: 14px; border: 1px solid var(--card-border); padding: 2rem 2.25rem; box-shadow: var(--shadow); margin-bottom: 1.5rem; }
+
+        .calc-tabs { display: flex; gap: 0.5rem; margin-bottom: 1.5rem; background: var(--input-bg); border: 1px solid var(--input-border); border-radius: 10px; padding: 0.3rem; }
+        .calc-tab { flex: 1; text-align: center; padding: 0.6rem; border-radius: 7px; font-size: 0.85rem; font-weight: 700; cursor: pointer; color: var(--text-muted); transition: all 0.2s ease; }
+        .calc-tab.active { background: var(--accent); color: #fff; box-shadow: 0 2px 10px var(--accent-dim); }
+
+        .input-group { margin-bottom: 1.25rem; }
+        .input-group label { display: flex; align-items: center; gap: 0.45rem; font-size: 0.8rem; font-weight: 600; color: var(--text-dim); margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.04em; }
+        .input-control { width: 100%; padding: 0.75rem 1rem; font-size: 0.95rem; font-family: inherit; font-weight: 500; color: var(--text); background: var(--input-bg); border: 1px solid var(--input-border); border-bottom: 2px solid var(--input-border); border-radius: 8px; transition: border-color 0.2s ease; }
+        .input-control:focus { outline: none; border-color: var(--accent); }
+
+        .outputs-subgrid { display: grid; grid-template-columns: 1fr; gap: 1rem; margin-top: 1.5rem; }
+        @media (min-width: 560px) { .outputs-subgrid { grid-template-columns: 1fr 1fr; } }
+        .output-card { border: 1px solid var(--border); border-radius: 10px; padding: 1.2rem 1.25rem; background: var(--input-bg); }
+        .output-card.featured { grid-column: 1 / -1; border-left: 3px solid var(--gold); background: linear-gradient(to right, var(--gold-dim), transparent); }
+        .output-card-label { font-size: 0.68rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-muted); margin-bottom: 0.4rem; }
+        .output-card-value { font-size: 1.5rem; font-weight: 700; color: var(--text); letter-spacing: -0.01em; }
+        .output-card.featured .output-card-value { font-size: 2.1rem; color: var(--accent); }
+        .output-card-sublabel { font-size: 0.72rem; color: var(--text-muted); margin-top: 0.3rem; font-weight: 500; }
+
+        .explainer { font-size: 0.92rem; color: var(--text-dim); line-height: 1.7; margin-bottom: 1.25rem; }
+        .explainer a { color: var(--accent); text-decoration: none; font-weight: 600; border-bottom: 1px dashed var(--accent); }
+        .explainer h2 { font-size: 1.2rem; color: var(--text); margin: 1.75rem 0 0.75rem; font-family: 'Fraunces', serif; }
+
+        .app-footer { margin-top: 4rem; padding-top: 1.5rem; border-top: 1px solid var(--border); text-align: center; font-size: 0.8rem; color: var(--text-muted); }
+        .footer-content { display: flex; flex-direction: column; align-items: center; gap: 0.5rem; }
+        @media (min-width: 600px) { .footer-content { flex-direction: row; justify-content: space-between; } }
+        .footer-links { display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; justify-content: center; }
+        .footer-links a { color: var(--text-muted); text-decoration: none; font-weight: 500; }
+        .footer-links a:hover { color: var(--accent); }
+        .footer-links .separator { color: var(--border); user-select: none; }
+
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes growLine { to { opacity: 1; transform: scaleX(1); } }
+
+        @media (max-width: 640px) {
+            .header-actions { position: static; justify-content: flex-end; flex-wrap: wrap; margin-bottom: 1.5rem; }
+            header { padding-top: 0; }
+            header h1 { font-size: 1.7rem; }
+        }
+        @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; } }
+    </style>
+</head>
+
+<body>
+
+    <main class="container">
+
+        <div class="header-actions">
+            <a href="/tools" class="btn btn-secondary btn-sm">Tools</a>
+            <a href="/calculator" class="btn btn-secondary btn-sm">Calculator</a>
+            <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode" title="Toggle dark mode">
+                <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" /></svg>
+                <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5" /><line x1="12" y1="1" x2="12" y2="3" /><line x1="12" y1="21" x2="12" y2="23" /><line x1="4.22" y1="4.22" x2="5.64" y2="5.64" /><line x1="18.36" y1="18.36" x2="19.78" y2="19.78" /><line x1="1" y1="12" x2="3" y2="12" /><line x1="21" y1="12" x2="23" y2="12" /><line x1="4.22" y1="19.78" x2="5.64" y2="18.36" /><line x1="18.36" y1="5.64" x2="19.78" y2="4.22" /></svg>
+            </button>
+        </div>
+
+        <header>
+            <nav class="breadcrumb-nav" aria-label="Breadcrumb">
+                <a href="/">Home</a><span aria-hidden="true">/</span>
+                <a href="/tools">Tools</a><span aria-hidden="true">/</span>
+                <span aria-current="page">Day Rate Calculator</span>
+            </nav>
+            <h1>
+                <a href="/" style="text-decoration: none; color: inherit; display: inline-flex; align-items: center; gap: 0.6rem;">
+                    <img src="/favicons/apple-touch-icon.png" alt="Loomrate Logo" style="width: 34px; height: 34px; filter: drop-shadow(0 2px 6px var(--accent-glow));">
+                    Day Rate <span>↔ Hourly Rate</span>
+                </a>
+            </h1>
+            <p>Switch between hourly and day-rate pricing instantly, with weekly and monthly projections.</p>
+        </header>
+
+        <div class="card">
+            <div class="calc-tabs">
+                <div class="calc-tab active" id="tab_h2d" onclick="setMode('h2d')">Hourly → Day Rate</div>
+                <div class="calc-tab" id="tab_d2h" onclick="setMode('d2h')">Day Rate → Hourly</div>
+            </div>
+
+            <div id="panel_h2d">
+                <div class="input-group">
+                    <label for="hourly_rate">Hourly Rate (USD)</label>
+                    <input type="number" id="hourly_rate" class="input-control" value="65" min="0" step="any" oninput="render()">
+                </div>
+                <div class="input-group">
+                    <label for="hours_day_h">Billable Hours per Day</label>
+                    <input type="number" id="hours_day_h" class="input-control" value="8" min="1" max="24" step="any" oninput="render()">
+                </div>
+            </div>
+
+            <div id="panel_d2h" style="display:none;">
+                <div class="input-group">
+                    <label for="day_rate">Day Rate (USD)</label>
+                    <input type="number" id="day_rate" class="input-control" value="500" min="0" step="any" oninput="render()">
+                </div>
+                <div class="input-group">
+                    <label for="hours_day_d">Billable Hours per Day</label>
+                    <input type="number" id="hours_day_d" class="input-control" value="8" min="1" max="24" step="any" oninput="render()">
+                </div>
+            </div>
+
+            <div class="outputs-subgrid">
+                <div class="output-card featured" id="result_card">
+                    <div class="output-card-label" id="result_label">Equivalent Day Rate</div>
+                    <div class="output-card-value" id="result_value">$520</div>
+                </div>
+                <div class="output-card">
+                    <div class="output-card-label">Weekly (5 days)</div>
+                    <div class="output-card-value" id="out_weekly">$2,600</div>
+                </div>
+                <div class="output-card">
+                    <div class="output-card-label">Monthly (~21.7 days)</div>
+                    <div class="output-card-value" id="out_monthly">$11,267</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="explainer">
+            <h2>Hourly vs. day rate — which should you quote?</h2>
+            <p>Day rates are common for consulting and on-site work where a client books your full focus for the day, regardless of exact hours logged. They simplify invoicing but carry the same scope-creep risk as any fixed structure if "a day" quietly stretches longer. This converter assumes a constant hours-per-day input — for a full risk-adjusted profitability view of a real project, run it through the <a href="/calculator">main rate calculator</a>.</p>
+        </div>
+
+        <div style="text-align: center; margin-bottom: 5rem;">
+            <a href="/calculator" class="btn btn-primary">Analyze a Real Project</a>
+        </div>
+
+        <footer class="app-footer">
+            <div class="footer-content">
+                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                    <img src="/favicons/favicon-32x32.png" alt="Loomrate Logo" style="width: 20px; height: 20px; opacity: 0.6;">
+                    <p style="margin: 0;">&copy; 2026 Loomrate. All rights reserved.</p>
+                </div>
+                <div class="footer-links">
+                    <a href="/">Home</a><span class="separator">&middot;</span>
+                    <a href="/calculator">Calculator</a><span class="separator">&middot;</span>
+                    <a href="/tools">Tools</a><span class="separator">&middot;</span>
+                    <a href="/faq">FAQ</a><span class="separator">&middot;</span>
+                    <a href="/glossary">Glossary</a>
+                </div>
+            </div>
+        </footer>
+    </main>
+
+    <script>
+        let mode = 'h2d';
+        function setMode(m) {
+            mode = m;
+            document.getElementById('tab_h2d').classList.toggle('active', m === 'h2d');
+            document.getElementById('tab_d2h').classList.toggle('active', m === 'd2h');
+            document.getElementById('panel_h2d').style.display = m === 'h2d' ? 'block' : 'none';
+            document.getElementById('panel_d2h').style.display = m === 'd2h' ? 'block' : 'none';
+            render();
+        }
+
+        function render() {
+            const fmt = n => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 2 }).format(n || 0);
+            let dayRate, hourlyRate;
+
+            if (mode === 'h2d') {
+                hourlyRate = parseFloat(document.getElementById('hourly_rate').value) || 0;
+                const hoursDay = parseFloat(document.getElementById('hours_day_h').value) || 0;
+                dayRate = hourlyRate * hoursDay;
+                document.getElementById('result_label').innerText = 'Equivalent Day Rate';
+                document.getElementById('result_value').innerText = fmt(dayRate);
+            } else {
+                dayRate = parseFloat(document.getElementById('day_rate').value) || 0;
+                const hoursDay = parseFloat(document.getElementById('hours_day_d').value) || 1;
+                hourlyRate = dayRate / hoursDay;
+                document.getElementById('result_label').innerText = 'Equivalent Hourly Rate';
+                document.getElementById('result_value').innerText = fmt(hourlyRate) + '/hr';
+            }
+
+            document.getElementById('out_weekly').innerText = fmt(dayRate * 5);
+            document.getElementById('out_monthly').innerText = fmt(dayRate * 21.7);
+        }
+
+        function toggleTheme() {
+            const isDark = document.body.getAttribute('data-theme') === 'dark';
+            document.body.setAttribute('data-theme', isDark ? 'light' : 'dark');
+            localStorage.setItem('fpa_theme', isDark ? 'light' : 'dark');
+        }
+        function loadTheme() {
+            const saved = localStorage.getItem('fpa_theme');
+            if (saved === 'dark') document.body.setAttribute('data-theme', 'dark');
+        }
+
+        window.addEventListener('DOMContentLoaded', () => { loadTheme(); render(); });
+    </script>
+</body>
+
+</html>
