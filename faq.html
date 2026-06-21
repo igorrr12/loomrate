@@ -15,26 +15,34 @@
     <meta property="og:url" content="https://www.loomrate.com/faq">
     <meta property="og:title" content="Freelance Pricing FAQ | Rate &amp; Quote Calculation Guide">
     <meta property="og:description" content="Find answers to common questions about freelance hourly rates, project pricing, taxes, scope creep, and how to use Loomrate's calculators.">
-    <meta property="og:image" content="https://www.loomrate.com/loomrate_logo.png">
+    <meta property="og:image" content="https://www.loomrate.com/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:type" content="image/png">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="https://www.loomrate.com/faq">
     <meta property="twitter:title" content="Freelance Pricing FAQ | Rate &amp; Quote Calculation Guide">
     <meta property="twitter:description" content="Find answers to common questions about freelance hourly rates, project pricing, taxes, scope creep, and how to use Loomrate's calculators.">
-    <meta property="twitter:image" content="https://www.loomrate.com/loomrate_logo.png">
+    <meta property="twitter:image" content="https://www.loomrate.com/og-image.png">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap"
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&display=swap"
         rel="stylesheet">
 
     <!-- JSON-LD FAQPage Schema -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "FAQPage",
-      "mainEntity": [
+      "@graph": [
+        {
+          "@type": "FAQPage",
+          "@id": "https://www.loomrate.com/faq#faq",
+          "isPartOf": { "@id": "https://www.loomrate.com/#website" },
+          "mainEntity": [
         {
           "@type": "Question",
           "name": "How do I calculate my freelance hourly rate?",
@@ -83,6 +91,15 @@
             "text": "Yes. Loomrate is built with a local-first philosophy. If you use the app as a guest, 100% of your inputs, calculations, and saved projects remain stored directly in your browser's local database (localStorage) and are never sent to any servers. If you choose to sign up for an account, your data is securely encrypted and synced to our secure database so you can access it across devices."
           }
         }
+          ]
+        },
+        {
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.loomrate.com/" },
+            { "@type": "ListItem", "position": 2, "name": "FAQ", "item": "https://www.loomrate.com/faq" }
+          ]
+        }
       ]
     }
     </script>
@@ -113,7 +130,7 @@
             --gold-dim: rgba(202, 138, 4, 0.08);
             --text: #451a03;
             --text-dim: #78350f;
-            --text-muted: #a18072;
+            --text-muted: #836558;
             --border: rgba(120, 53, 15, 0.08);
             --shadow: 0 1px 3px rgba(69, 26, 3, 0.04), 0 4px 16px rgba(69, 26, 3, 0.05);
             --shadow-md: 0 4px 12px rgba(69, 26, 3, 0.06), 0 12px 40px rgba(69, 26, 3, 0.08);
@@ -148,7 +165,7 @@
             --gold-dim: rgba(234, 179, 8, 0.10);
             --text: #fef3c7;
             --text-dim: #a8a0b8;
-            --text-muted: #636079;
+            --text-muted: #7b7894;
             --border: rgba(255, 255, 255, 0.05);
             --shadow: 0 2px 8px rgba(0, 0, 0, 0.3), 0 8px 32px rgba(0, 0, 0, 0.4);
             --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.4), 0 16px 48px rgba(0, 0, 0, 0.5);
@@ -216,19 +233,46 @@
             z-index: 1;
         }
 
+        /* ---- BREADCRUMB ---- */
+        .breadcrumb-nav {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+        }
+
+        .breadcrumb-nav a {
+            color: var(--text-muted);
+            text-decoration: none;
+        }
+
+        .breadcrumb-nav a:hover {
+            color: var(--accent);
+        }
+
+        .breadcrumb-nav [aria-current="page"] {
+            color: var(--text-dim);
+            font-weight: 600;
+        }
+
         /* ---- HEADER ---- */
         header {
             margin-bottom: 3rem;
+            padding-top: 3.25rem;
             text-align: center;
             position: relative;
             animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
 
         header h1 {
-            font-weight: 700;
+            font-family: 'Fraunces', 'DM Sans', serif;
+            font-weight: 600;
             font-size: 2.5rem;
             color: var(--text);
-            letter-spacing: -0.035em;
+            letter-spacing: -0.02em;
             line-height: 1.12;
             margin-bottom: 0.5rem;
         }
@@ -353,6 +397,12 @@
             margin-bottom: 4rem;
             animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.1s forwards;
             opacity: 0;
+        }
+
+        .faq-question {
+            margin: 0;
+            font-size: inherit;
+            font-weight: inherit;
         }
 
         .faq-item {
@@ -586,6 +636,53 @@
                 transform: translateY(0);
             }
         }
+
+        @keyframes growLine {
+            to {
+                opacity: 1;
+                transform: scaleX(1);
+            }
+        }
+
+        header::after {
+            content: '';
+            display: block;
+            width: 56px;
+            height: 3px;
+            margin: 0.85rem auto 0;
+            background: var(--gradient-line);
+            border-radius: 2px;
+            opacity: 0;
+            transform: scaleX(0);
+            animation: growLine 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.25s forwards;
+        }
+
+        /* ---- MOBILE LAYOUT FIXES ---- */
+        @media (max-width: 640px) {
+            .header-actions {
+                position: static;
+                justify-content: flex-end;
+                flex-wrap: wrap;
+                margin-bottom: 1.5rem;
+            }
+
+            header {
+                padding-top: 0;
+            }
+
+            header h1 {
+                font-size: 1.85rem;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
+        }
     </style>
 </head>
 
@@ -617,6 +714,11 @@
         </div>
 
         <header>
+            <nav class="breadcrumb-nav" aria-label="Breadcrumb">
+                <a href="/">Home</a>
+                <span aria-hidden="true">/</span>
+                <span aria-current="page">FAQ</span>
+            </nav>
             <h1>
                 <a href="/" style="text-decoration: none; color: inherit; display: inline-flex; align-items: center; gap: 0.6rem;">
                     <img src="/favicons/apple-touch-icon.png" alt="Loomrate Logo" style="width: 38px; height: 38px; filter: drop-shadow(0 2px 6px var(--accent-glow));">
@@ -630,10 +732,12 @@
         <div class="faq-list">
             
             <div class="faq-item">
-                <button class="faq-trigger" onclick="toggleFaq(this)" aria-expanded="false" aria-controls="faq_panel_1">
-                    How do I calculate my freelance hourly rate?
-                    <svg class="faq-chevron" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                </button>
+                <h2 class="faq-question">
+                    <button class="faq-trigger" onclick="toggleFaq(this)" aria-expanded="false" aria-controls="faq_panel_1">
+                        How do I calculate my freelance hourly rate?
+                        <svg class="faq-chevron" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                    </button>
+                </h2>
                 <div id="faq_panel_1" class="faq-panel">
                     <div class="faq-content">
                         <p>Your true take-home hourly rate is the net income you actually pocket per hour after subtracting taxes, expenses, and platform fees (like Upwork or Fiverr commissions), divided by the total hours worked (including unpaid overhead/non-billable hours like revisions, calls, and email administration).</p>
@@ -643,10 +747,12 @@
             </div>
 
             <div class="faq-item">
-                <button class="faq-trigger" onclick="toggleFaq(this)" aria-expanded="false" aria-controls="faq_panel_2">
-                    How does Loomrate calculate the true hourly rate?
-                    <svg class="faq-chevron" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                </button>
+                <h2 class="faq-question">
+                    <button class="faq-trigger" onclick="toggleFaq(this)" aria-expanded="false" aria-controls="faq_panel_2">
+                        How does Loomrate calculate the true hourly rate?
+                        <svg class="faq-chevron" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                    </button>
+                </h2>
                 <div id="faq_panel_2" class="faq-panel">
                     <div class="faq-content">
                         <p>We take your gross Project Fee and subtract direct project expenses, platform commission fees, and allocated monthly overhead costs. This gives your Gross Profit. We then subtract self-employment income taxes to find your Net Take-Home Pay. Finally, we divide this net pay by your <em>total</em> hours worked (both billable hours and unpaid non-billable hours) to determine your True hourly rate. You can run these calculations for your own projects using our <a href="/calculator" style="color: var(--accent); text-decoration: none; font-weight: 600; border-bottom: 1px dashed var(--accent);">freelancer rate calculator</a>.</p>
@@ -655,10 +761,12 @@
             </div>
 
             <div class="faq-item">
-                <button class="faq-trigger" onclick="toggleFaq(this)" aria-expanded="false" aria-controls="faq_panel_3">
-                    What are freelance non-billable hours and how do they impact pricing?
-                    <svg class="faq-chevron" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                </button>
+                <h2 class="faq-question">
+                    <button class="faq-trigger" onclick="toggleFaq(this)" aria-expanded="false" aria-controls="faq_panel_3">
+                        What are freelance non-billable hours and how do they impact pricing?
+                        <svg class="faq-chevron" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                    </button>
+                </h2>
                 <div id="faq_panel_3" class="faq-panel">
                     <div class="faq-content">
                         <p>Non-billable hours are hours you work on your business that you cannot invoice directly to a client. This includes writing emails, client onboarding, status meetings, admin tasks, accounting, and revision loops. If a project requires 40 hours of billable coding and 10 hours of email correspondence and status meetings, your true effort is 50 hours. Factor this in to prevent underpricing. You can track unpaid hours using the non-billable inputs in our <a href="/calculator" style="color: var(--accent); text-decoration: none; font-weight: 600; border-bottom: 1px dashed var(--accent);">project quote calculator</a>.</p>
@@ -667,10 +775,12 @@
             </div>
 
             <div class="faq-item">
-                <button class="faq-trigger" onclick="toggleFaq(this)" aria-expanded="false" aria-controls="faq_panel_4">
-                    How do platform fees and taxes affect my freelance profit margin?
-                    <svg class="faq-chevron" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                </button>
+                <h2 class="faq-question">
+                    <button class="faq-trigger" onclick="toggleFaq(this)" aria-expanded="false" aria-controls="faq_panel_4">
+                        How do platform fees and taxes affect my freelance profit margin?
+                        <svg class="faq-chevron" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                    </button>
+                </h2>
                 <div id="faq_panel_4" class="faq-panel">
                     <div class="faq-content">
                         <p>Loomrate supports built-in calculations for major freelance platforms (Upwork, Fiverr) as well as custom percentages. For taxes, you input your average expected tax bracket or self-employment tax reserve percentage, and we automatically set aside that reserve from your gross profit before calculating your net take-home pay.</p>
@@ -679,22 +789,26 @@
             </div>
 
             <div class="faq-item">
-                <button class="faq-trigger" onclick="toggleFaq(this)" aria-expanded="false" aria-controls="faq_panel_5">
-                    What is freelance scope creep and how do I prevent it?
-                    <svg class="faq-chevron" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                </button>
+                <h2 class="faq-question">
+                    <button class="faq-trigger" onclick="toggleFaq(this)" aria-expanded="false" aria-controls="faq_panel_5">
+                        What is freelance scope creep and how do I prevent it?
+                        <svg class="faq-chevron" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                    </button>
+                </h2>
                 <div id="faq_panel_5" class="faq-panel">
                     <div class="faq-content">
-                        <p>Scope creep occurs when the actual effort or hours required to complete a project exceed the initial estimated billable hours without a corresponding increase in fee. Loomrate compares your estimated hours to your actual hours worked, calculates the effective value of that lost time, and displays a "Scope Creep Cost" representing your lost billing potential. Use our <a href="/calculator" style="color: var(--accent); text-decoration: none; font-weight: 600; border-bottom: 1px dashed var(--accent);">freelance pricing calculator</a> to audit your active contracts for scope creep.</p>
+                        <p>Scope creep occurs when the actual effort or hours required to complete a project exceed the initial estimated billable hours without a corresponding increase in fee. Loomrate compares your estimated hours to your actual hours worked, calculates the effective value of that lost time, and displays a "Scope Creep Cost" representing your lost billing potential. Use our <a href="/calculator" style="color: var(--accent); text-decoration: none; font-weight: 600; border-bottom: 1px dashed var(--accent);">freelance pricing calculator</a> to audit your active contracts for scope creep. See the full definition in our <a href="/glossary#scope-creep" style="color: var(--accent); text-decoration: none; font-weight: 600; border-bottom: 1px dashed var(--accent);">pricing glossary</a>.</p>
                     </div>
                 </div>
             </div>
 
             <div class="faq-item">
-                <button class="faq-trigger" onclick="toggleFaq(this)" aria-expanded="false" aria-controls="faq_panel_6">
-                    Is Loomrate secure for calculating private financial metrics?
-                    <svg class="faq-chevron" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                </button>
+                <h2 class="faq-question">
+                    <button class="faq-trigger" onclick="toggleFaq(this)" aria-expanded="false" aria-controls="faq_panel_6">
+                        Is Loomrate secure for calculating private financial metrics?
+                        <svg class="faq-chevron" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                    </button>
+                </h2>
                 <div id="faq_panel_6" class="faq-panel">
                     <div class="faq-content">
                         <p>Yes. Loomrate is built with a local-first philosophy. If you use the app as a guest, 100% of your inputs, calculations, and saved projects remain stored directly in your browser's local database (<code>localStorage</code>) and are never sent to any servers. If you choose to sign up for an account, your data is securely encrypted and synced to our secure database so you can access it across devices.</p>
@@ -723,6 +837,8 @@
                     <span class="separator">&middot;</span>
                     <a href="/faq">FAQ</a>
                     <span class="separator">&middot;</span>
+                    <a href="/glossary">Glossary</a>
+                    <span class="separator">&middot;</span>
                     <a href="#terms" onclick="showModal('terms', event)">Terms of Use</a>
                     <span class="separator">&middot;</span>
                     <a href="#privacy" onclick="showModal('privacy', event)">Privacy Policy</a>
@@ -747,8 +863,8 @@
     <script>
         /* ---- FAQ ACCORDION INTERACTIVITY ---- */
         function toggleFaq(btn) {
-            const item = btn.parentElement;
-            const panel = btn.nextElementSibling;
+            const item = btn.closest('.faq-item');
+            const panel = item.querySelector('.faq-panel');
             const isActive = item.classList.contains('active');
 
             // Close all items

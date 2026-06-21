@@ -15,14 +15,17 @@
     <meta property="og:url" content="https://www.loomrate.com/">
     <meta property="og:title" content="Loomrate | Freelance Hourly Rate &amp; Project Quote Calculator">
     <meta property="og:description" content="Determine your true freelance hourly rate and profit margins. Calculate project quotes after taxes, platform fees, and unpaid admin hours. Try Loomrate free.">
-    <meta property="og:image" content="https://www.loomrate.com/loomrate_logo.png">
+    <meta property="og:image" content="https://www.loomrate.com/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:type" content="image/png">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="https://www.loomrate.com/">
     <meta property="twitter:title" content="Loomrate | Freelance Hourly Rate &amp; Project Quote Calculator">
     <meta property="twitter:description" content="Determine your true freelance hourly rate and profit margins. Calculate project quotes after taxes, platform fees, and unpaid admin hours. Try Loomrate free.">
-    <meta property="twitter:image" content="https://www.loomrate.com/loomrate_logo.png">
+    <meta property="twitter:image" content="https://www.loomrate.com/og-image.png">
 
     <!-- JSON-LD Structured Data -->
     <script type="application/ld+json">
@@ -35,11 +38,14 @@
           "name": "Loomrate",
           "url": "https://www.loomrate.com/",
           "description": "Determine your true freelance hourly rate and profit margins. Calculate project quotes after taxes, platform fees, and unpaid admin hours.",
-          "potentialAction": {
-            "@type": "SearchAction",
-            "target": "https://www.loomrate.com/calculator?q={search_term_string}",
-            "query-input": "required name=search_term_string"
-          }
+          "publisher": { "@id": "https://www.loomrate.com/#organization" }
+        },
+        {
+          "@type": "Organization",
+          "@id": "https://www.loomrate.com/#organization",
+          "name": "Loomrate",
+          "url": "https://www.loomrate.com/",
+          "logo": "https://www.loomrate.com/favicons/apple-touch-icon.png"
         },
         {
           "@type": "WebApplication",
@@ -50,7 +56,43 @@
           "operatingSystem": "All",
           "browserRequirements": "Requires HTML5 compatible browser",
           "description": "Calculate true freelance hourly rates, project quotes, self-employment taxes, and monthly overhead. Optimize your pricing strategy.",
-          "featureList": "True hourly rate calculation, project quote planning, platform fee deductions (Upwork, Fiverr), tax reserve estimates, monthly overhead allocation, scope creep tracking, comparison matrix."
+          "featureList": "True hourly rate calculation, project quote planning, platform fee deductions (Upwork, Fiverr), tax reserve estimates, monthly overhead allocation, scope creep tracking, comparison matrix.",
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+          }
+        },
+        {
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.loomrate.com/" }
+          ]
+        },
+        {
+          "@type": "HowTo",
+          "name": "How to Calculate Your True Freelance Hourly Rate",
+          "description": "Find your real take-home hourly rate by accounting for project scope, overhead, taxes, and platform fees.",
+          "step": [
+            {
+              "@type": "HowToStep",
+              "position": 1,
+              "name": "Input Project Scope",
+              "text": "Define your project fee and quote hours. Track how unpaid admin tasks, client revisions, and status calls increase your total effort."
+            },
+            {
+              "@type": "HowToStep",
+              "position": 2,
+              "name": "Deduct Overhead & Taxes",
+              "text": "Automatically factor in platform commissions (Upwork, Fiverr), local taxes, monthly software expenses, and hardware overhead."
+            },
+            {
+              "@type": "HowToStep",
+              "position": 3,
+              "name": "See What You Keep",
+              "text": "Expose your true take-home hourly rate. Know exactly what you're making per hour and see if a project is worth your time."
+            }
+          ]
         }
       ]
     }
@@ -59,7 +101,8 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap"
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&display=swap"
         rel="stylesheet">
     <script src="config.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -96,9 +139,10 @@
             --accent-glow: rgba(146, 64, 14, 0.16);
             --gold: #ca8a04;
             --gold-dim: rgba(202, 138, 4, 0.08);
+            --gold-text: #8e6103;
             --text: #451a03;
             --text-dim: #78350f;
-            --text-muted: #a18072;
+            --text-muted: #836558;
             --border: rgba(120, 53, 15, 0.08);
             --input-bg: #faf5eb;
             --input-border: rgba(120, 53, 15, 0.12);
@@ -135,9 +179,10 @@
             --accent-glow: rgba(249, 115, 22, 0.22);
             --gold: #eab308;
             --gold-dim: rgba(234, 179, 8, 0.10);
+            --gold-text: var(--gold);
             --text: #fef3c7;
             --text-dim: #a8a0b8;
-            --text-muted: #636079;
+            --text-muted: #7b7894;
             --border: rgba(255, 255, 255, 0.05);
             --input-bg: rgba(8, 10, 22, 0.65);
             --input-border: rgba(255, 255, 255, 0.07);
@@ -268,6 +313,7 @@
             border: 1px solid transparent;
             transition: all 0.15s ease;
             white-space: nowrap;
+            text-decoration: none;
         }
 
         .btn:active {
@@ -294,6 +340,11 @@
         .btn-secondary:hover {
             background: var(--toggle-hover);
             border-color: var(--card-border-hover);
+        }
+
+        .btn-sm {
+            padding: 0.5rem 1rem;
+            font-size: 0.8rem;
         }
 
         /* ---- ANIMATIONS ---- */
@@ -372,12 +423,14 @@
         }
 
         .landing-title {
+            font-family: 'Fraunces', 'DM Sans', serif;
             font-size: 4.5rem;
-            font-weight: 700;
-            letter-spacing: -0.05em;
+            font-weight: 600;
+            letter-spacing: -0.03em;
             line-height: 1.05;
             margin-bottom: 1rem;
             color: var(--text);
+            word-wrap: break-word;
             animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
 
@@ -385,6 +438,24 @@
             background: linear-gradient(135deg, var(--accent), var(--gold));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+        }
+
+        .landing-accent-line {
+            width: 56px;
+            height: 3px;
+            margin: 0 auto 1.25rem auto;
+            background: var(--gradient-line);
+            border-radius: 2px;
+            opacity: 0;
+            transform: scaleX(0);
+            animation: growLine 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.35s forwards;
+        }
+
+        @keyframes growLine {
+            to {
+                opacity: 1;
+                transform: scaleX(1);
+            }
         }
 
         .landing-tagline {
@@ -777,6 +848,10 @@
             transition: background 0.15s ease;
         }
 
+        .preview-slider:focus-visible {
+            box-shadow: 0 0 0 3px var(--input-focus-shadow);
+        }
+
         .preview-slider::-webkit-slider-thumb {
             -webkit-appearance: none;
             appearance: none;
@@ -860,7 +935,7 @@
         }
 
         .result-compare-value.loss-val {
-            color: var(--gold);
+            color: var(--gold-text);
         }
 
         .verdict-badge {
@@ -908,9 +983,10 @@
         }
 
         .explainer-title {
+            font-family: 'Fraunces', 'DM Sans', serif;
             font-size: 2rem;
-            font-weight: 700;
-            letter-spacing: -0.03em;
+            font-weight: 600;
+            letter-spacing: -0.02em;
             margin-bottom: 0.5rem;
             color: var(--text);
         }
@@ -976,6 +1052,37 @@
             color: var(--text-muted);
             line-height: 1.5;
         }
+
+        /* ---- MOBILE LAYOUT FIXES ---- */
+        @media (max-width: 640px) {
+            .header-actions {
+                position: static;
+                justify-content: flex-end;
+                flex-wrap: wrap;
+                margin-bottom: 1.5rem;
+            }
+
+            .landing-page-wrapper {
+                padding-top: 1rem;
+            }
+
+            .landing-title {
+                font-size: 2.5rem;
+            }
+
+            .landing-tagline {
+                font-size: 1.15rem;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
+        }
     </style>
 </head>
 
@@ -986,8 +1093,7 @@
         <div class="header-actions">
             <a href="/calculator" class="btn btn-secondary btn-sm">Calculator</a>
             <a href="/faq" class="btn btn-secondary btn-sm">FAQ</a>
-            <button id="auth_btn" class="btn btn-secondary btn-sm" onclick="handleAuthClick()"
-                style="font-size: 0.8rem; padding: 0.5rem 1rem;">Sign In</button>
+            <button id="auth_btn" class="btn btn-secondary btn-sm" onclick="handleAuthClick()">Sign In</button>
             <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode" title="Toggle dark mode">
                 <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -1013,6 +1119,7 @@
             <div class="landing-bg-pattern"></div>
             <img src="/favicons/apple-touch-icon.png" alt="Loomrate Logo" class="landing-logo">
             <h1 class="landing-title">Loomrate <span>Freelance Rate Calculator</span></h1>
+            <div class="landing-accent-line"></div>
             <p class="landing-tagline">Analyze project quotes and find your true hourly rate in seconds.</p>
 
             <p class="landing-description">
@@ -1167,6 +1274,8 @@
                     <a href="/calculator">Calculator</a>
                     <span class="separator">&middot;</span>
                     <a href="/faq">FAQ</a>
+                    <span class="separator">&middot;</span>
+                    <a href="/glossary">Glossary</a>
                     <span class="separator">&middot;</span>
                     <a href="#terms" onclick="showModal('terms', event)">Terms of Use</a>
                     <span class="separator">&middot;</span>

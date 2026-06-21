@@ -15,14 +15,17 @@
     <meta property="og:url" content="https://www.loomrate.com/calculator">
     <meta property="og:title" content="Freelance Hourly Rate Calculator &amp; Quote Planner | Loomrate">
     <meta property="og:description" content="Calculate your true freelance hourly rate, set income targets, plan project quotes, and track scope creep. Factoring taxes, platform fees, and overhead.">
-    <meta property="og:image" content="https://www.loomrate.com/loomrate_logo.png">
+    <meta property="og:image" content="https://www.loomrate.com/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:type" content="image/png">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="https://www.loomrate.com/calculator">
     <meta property="twitter:title" content="Freelance Hourly Rate Calculator &amp; Quote Planner | Loomrate">
     <meta property="twitter:description" content="Calculate your true freelance hourly rate, set income targets, plan project quotes, and track scope creep. Factoring taxes, platform fees, and overhead.">
-    <meta property="twitter:image" content="https://www.loomrate.com/loomrate_logo.png">
+    <meta property="twitter:image" content="https://www.loomrate.com/og-image.png">
 
     <!-- JSON-LD Structured Data -->
     <script type="application/ld+json">
@@ -34,6 +37,7 @@
           "@id": "https://www.loomrate.com/calculator#webapplication",
           "name": "Loomrate Freelance Rate Calculator",
           "url": "https://www.loomrate.com/calculator",
+          "isPartOf": { "@id": "https://www.loomrate.com/#website" },
           "applicationCategory": "BusinessApplication",
           "operatingSystem": "All",
           "browserRequirements": "Requires HTML5 compatible browser",
@@ -83,6 +87,13 @@
               }
             }
           ]
+        },
+        {
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.loomrate.com/" },
+            { "@type": "ListItem", "position": 2, "name": "Calculator", "item": "https://www.loomrate.com/calculator" }
+          ]
         }
       ]
     }
@@ -91,7 +102,8 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap"
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&display=swap"
         rel="stylesheet">
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -131,9 +143,10 @@
             --accent-glow: rgba(146, 64, 14, 0.16);
             --gold: #ca8a04;
             --gold-dim: rgba(202, 138, 4, 0.08);
+            --gold-text: #8e6103;
             --text: #451a03;
             --text-dim: #78350f;
-            --text-muted: #a18072;
+            --text-muted: #836558;
             --border: rgba(120, 53, 15, 0.08);
             --input-bg: #faf5eb;
             --input-border: rgba(120, 53, 15, 0.12);
@@ -190,9 +203,10 @@
             --accent-glow: rgba(249, 115, 22, 0.22);
             --gold: #eab308;
             --gold-dim: rgba(234, 179, 8, 0.10);
+            --gold-text: var(--gold);
             --text: #fef3c7;
             --text-dim: #a8a0b8;
-            --text-muted: #636079;
+            --text-muted: #7b7894;
             --border: rgba(255, 255, 255, 0.05);
             --input-bg: rgba(8, 10, 22, 0.65);
             --input-border: rgba(255, 255, 255, 0.07);
@@ -284,18 +298,45 @@
             z-index: 1;
         }
 
+        /* ---- BREADCRUMB ---- */
+        .breadcrumb-nav {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+        }
+
+        .breadcrumb-nav a {
+            color: var(--text-muted);
+            text-decoration: none;
+        }
+
+        .breadcrumb-nav a:hover {
+            color: var(--accent);
+        }
+
+        .breadcrumb-nav [aria-current="page"] {
+            color: var(--text-dim);
+            font-weight: 600;
+        }
+
         /* ---- HEADER ---- */
         header {
             margin-bottom: 3.5rem;
+            padding-top: 3.25rem;
             text-align: center;
             position: relative;
         }
 
         header h1 {
-            font-weight: 700;
+            font-family: 'Fraunces', 'DM Sans', serif;
+            font-weight: 600;
             font-size: 2.5rem;
             color: var(--text);
-            letter-spacing: -0.035em;
+            letter-spacing: -0.02em;
             line-height: 1.12;
             margin-bottom: 0.5rem;
         }
@@ -750,6 +791,7 @@
             border: 1px solid transparent;
             transition: all 0.15s ease;
             white-space: nowrap;
+            text-decoration: none;
         }
 
         .btn:active {
@@ -953,6 +995,26 @@
             }
         }
 
+        @keyframes growLine {
+            to {
+                opacity: 1;
+                transform: scaleX(1);
+            }
+        }
+
+        header::after {
+            content: '';
+            display: block;
+            width: 56px;
+            height: 3px;
+            margin: 0.85rem auto 0;
+            background: var(--gradient-line);
+            border-radius: 2px;
+            opacity: 0;
+            transform: scaleX(0);
+            animation: growLine 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.25s forwards;
+        }
+
         @keyframes fadeIn {
             from {
                 opacity: 0;
@@ -1051,6 +1113,12 @@
         details.chart-details summary {
             list-style: none;
             outline: none;
+        }
+
+        details.overhead-details summary:focus-visible,
+        details.chart-details summary:focus-visible {
+            box-shadow: 0 0 0 3px var(--input-focus-shadow);
+            border-radius: 6px;
         }
 
         details.overhead-details {
@@ -1368,6 +1436,33 @@
             line-height: 1.4;
             margin: 0 0 0.4rem 0;
         }
+
+        /* ---- MOBILE LAYOUT FIXES ---- */
+        @media (max-width: 640px) {
+            .header-actions {
+                position: static;
+                justify-content: flex-end;
+                flex-wrap: wrap;
+                margin-bottom: 1.5rem;
+            }
+
+            header {
+                padding-top: 0;
+            }
+
+            header h1 {
+                font-size: 1.85rem;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
+        }
     </style>
 </head>
 
@@ -1401,6 +1496,11 @@
         </div>
 
         <header>
+            <nav class="breadcrumb-nav" aria-label="Breadcrumb">
+                <a href="/">Home</a>
+                <span aria-hidden="true">/</span>
+                <span aria-current="page">Calculator</span>
+            </nav>
             <h1 style="display: flex; align-items: center; justify-content: center; gap: 0.75rem; flex-wrap: wrap;">
                 <a href="/" style="display: inline-flex; align-items: center; gap: 0.6rem;">
                     <img id="logo_img" src="/favicons/apple-touch-icon.png" alt="Loomrate Logo" style="width: 38px; height: 38px; filter: drop-shadow(0 2px 6px var(--accent-glow));">
@@ -1881,6 +1981,7 @@
                             to Premium</button>
                     </div>
                 </div>
+            </div>
         </div>
 
         <!-- SEO EXPLANATORY CONTENT SECTION -->
@@ -1925,6 +2026,8 @@
                     <a href="/calculator">Calculator</a>
                     <span class="separator">&middot;</span>
                     <a href="/faq">FAQ</a>
+                    <span class="separator">&middot;</span>
+                    <a href="/glossary">Glossary</a>
                     <span class="separator">&middot;</span>
                     <a href="#terms" onclick="showModal('terms', event)">Terms of Use</a>
                     <span class="separator">&middot;</span>
@@ -2761,7 +2864,7 @@
             c.innerHTML = sorted.map(p => {
                 const r = computeProjectResults(p.inputs);
                 const clientPrefix = p.client ? `<strong style="color: var(--accent);">${p.client}</strong> · ` : '';
-                const modeIndicator = r.mode === 'quote' ? ' <span style="font-size:0.7rem; background: var(--gold-dim); color: var(--gold); padding: 0.1rem 0.3rem; border-radius:4px; font-weight:700;">Quote</span>' : '';
+                const modeIndicator = r.mode === 'quote' ? ' <span style="font-size:0.7rem; background: var(--gold-dim); color: var(--gold-text); padding: 0.1rem 0.3rem; border-radius:4px; font-weight:700;">Quote</span>' : '';
                 const pDate = parseDateSafe(p.timestamp);
                 const dateStr = pDate.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' });
                 return '<div class="project-item" onclick="loadProject(\'' + p.id + '\')"><div><span class="project-info-name">' + clientPrefix + p.name + modeIndicator + '</span><div class="project-info-meta">Net: <strong>' + formatCurrency(r.netProfit) + '</strong> · Rate: <strong>' + formatCurrency(r.trueHourlyRate) + '/hr</strong> · <span style="opacity: 0.8;">' + dateStr + '</span></div></div><div class="project-item-actions"><button class="btn btn-secondary btn-sm" onclick="loadProject(\'' + p.id + '\')">Load</button><button class="btn btn-danger btn-sm" onclick="deleteProject(\'' + p.id + '\', event)">Delete</button></div></div>';
