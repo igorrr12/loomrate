@@ -1,45 +1,53 @@
 # 🪙 Loomrate
 
-> **Loomrate** is a premium, local-first freelance profitability and quote analyzer designed to help independent professionals, contractors, and agencies calculate their **true hourly rate**, model scope creep, analyze client overheads, and plan quotes with a reverse pricing engine.
+> **Loomrate** is a freelance profitability and quote calculator that helps independent professionals, contractors, and agencies find their **true hourly rate**, model scope creep, and plan quotes with a reverse pricing engine.
 
-Built entirely as a modern client-side application, it features a warm, paper-like tactile design system with a seamless Dark Mode toggle, interactive analytics, and professional PDF report exporting.
+It's a fully static, client-side site — no build step, no backend server, no framework. Every page is a self-contained `.html` file with inline styles and scripts, deployed as static files on Vercel.
 
 ---
 
 ## ✨ Features
 
-*   **True Hourly Rate Calculator**: Account for platform fees, tax brackets, and unpaid administrative/business hours to uncover what you *actually* make.
-*   **Scope Creep Cost Visualizer**: See exactly how hours added past the original estimate degrade your margins and drive down your effective hourly wage.
-*   **Reverse Quote Planner**: Enter your desired net profit and hours to instantly receive the exact quote rate required to get you there.
-*   **Overhead & Expense Allocator**: Distribute your recurring business overhead costs and software subscriptions proportionally across your billing rates.
-*   **Local Project Dashboard & Comparisons**: Save quotes locally using `localStorage` to contrast metrics and client performance over time.
-*   **Dynamic Client Analytics**: Sleek charts (powered by Chart.js) that map and visualize key freelance profit ratios.
-*   **PDF Export Engine**: Export beautiful, clean PDF rate sheets and project summaries via jsPDF to share or archive.
+- **True Hourly Rate Calculator** — account for platform fees, taxes, and unpaid admin/business hours to see what you actually make per billable hour.
+- **Scope Creep Cost Visualizer** — see how hours added past the original estimate erode your margins and effective hourly wage.
+- **Reverse Quote Planner** — enter your target net profit and hours to get the exact quote rate required.
+- **Overhead & Expense Allocator** — distribute recurring business costs and subscriptions proportionally across your billing rates.
+- **Local & Cloud Project Dashboard** — save and compare quotes via `localStorage`, with optional Supabase-backed cloud sync once signed in.
+- **Client Analytics Chart** — Chart.js-powered visualization of freelance profit ratios.
+- **CSV & PDF Export** — export project data to CSV or generate clean PDF rate sheets via jsPDF.
+- **Single-purpose SEO calculators** — salary-to-hourly, freelance-vs-employee, quarterly tax estimator, and day-rate calculator tools for quick, focused conversions.
 
 ---
 
-## 🎨 Design System & Aesthetics
+## 📄 Site Structure
 
-Loomrate uses a bespoke design language characterized by high-contrast typography, interactive hover micro-animations, and a subtle SVG noise filter overlay for a tactile, high-end paper texture.
-
-*   **Light Mode (Parchment & Amber)**: A warm, analog layout using a color palette of rich amber (`#92400e`), gold, and soft parchment paper tones.
-*   **Dark Mode (Midnight Coral)**: A sleek, dark interface featuring deep navy (`#0a0d1a`), neon-coral highlights (`#f97316`), and amber accents.
-*   **Animations**: Built with hardware-accelerated transitions and interactive pop/pulse states for dynamic input responses.
+| Page | Purpose |
+|---|---|
+| `index.html` | Landing/marketing page with interactive preview and auth modal |
+| `calculator.html` | The core calculator app — charts, CSV/PDF export, premium gating, saved projects |
+| `tools.html` | Hub page linking the single-purpose calculator tools |
+| `salary-to-hourly.html` | Convert salary to an equivalent hourly rate |
+| `freelance-vs-employee.html` | Compare freelance vs. employee compensation |
+| `quarterly-tax-estimator.html` | Estimate quarterly self-employment taxes |
+| `day-rate-calculator.html` | Calculate a freelance day rate |
+| `faq.html` | FAQ accordion page |
+| `glossary.html` | Glossary of freelance/pricing terms |
+| `blog/` | Static blog posts on freelance pricing and rates |
+| `config.js` | Runtime config (Supabase keys, checkout URL, dev flags) |
 
 ---
 
 ## 🚀 Getting Started
 
-Since Loomrate is fully serverless and runs entirely in the browser, there are no complicated installation steps or server configurations required.
+Loomrate runs entirely in the browser — no install or server required.
 
 ### Quick Start
-Simply open [index.html](file:///Users/29matysiak_i/Desktop/loomrate/index.html) in any modern web browser:
 ```bash
 open index.html
 ```
 
-### Run Locally (Optional)
-To run with a lightweight local web server:
+### Run Locally (recommended)
+Auth and cloud-sync flows behave better served over `http://localhost` than opened directly as a file:
 ```bash
 # Using Python
 python3 -m http.server 8000
@@ -47,13 +55,21 @@ python3 -m http.server 8000
 # Using Node.js
 npx serve .
 ```
-Then navigate to `http://localhost:8000` or the port provided.
+Then open `http://localhost:8000` (or the port shown).
 
 ---
 
 ## 🛠️ Built With
 
-*   **HTML5 & Vanilla CSS3**: Fully responsive fluid layout, custom CSS custom properties (variables), and an SVG turbulence grain filter.
-*   **Vanilla JavaScript**: Real-time reactive calculator calculations and state synchronization.
-*   **Chart.js**: Premium interactive client analytics and charts.
-*   **jsPDF**: Client-side vector PDF document generation.
+- **HTML5 & CSS3** — responsive layouts, CSS custom properties, dark mode
+- **Vanilla JavaScript** — calculator logic, theming, modals, auth flows
+- **Supabase** — authentication and cloud sync for saved projects
+- **Chart.js** — interactive client analytics charts
+- **jsPDF** — client-side PDF rate-sheet generation
+- **Lemon Squeezy** — premium checkout
+
+---
+
+## 🌐 Deployment
+
+Deployed to [Vercel](https://vercel.com) as static files. `vercel.json` enforces clean URLs (no trailing slash) and permanently redirects `loomrate.com` → `www.loomrate.com`.
