@@ -1,0 +1,289 @@
+/* ============================================================
+   Loomrate — shared visual enhancement layer
+   Loaded AFTER each page's inline <style>, so it layers polish
+   on top of the existing design system using its own tokens.
+   Purely additive: no structural/behavioural changes.
+   ============================================================ */
+
+/* ============================================================
+   1. NEW PALETTE — "Verdant Capital"
+   Premium near-black + vivid emerald/lime (money & profit) with
+   gold as the luxury secondary. Overrides the original amber/navy
+   tokens site-wide. Defined here (loaded after each page's inline
+   <style>) so one edit re-skins all 13 pages in both themes.
+   ============================================================ */
+
+/* ---- LIGHT: Quiet luxury, cool paper ---- */
+:root {
+    --bg: #F4F7F4;
+    --card: #FFFFFF;
+    --card-raised: #FFFFFF;
+    --card-border: rgba(4, 120, 87, 0.12);
+    --card-border-hover: rgba(4, 120, 87, 0.32);
+    --accent: #047857;
+    --accent-hover: #065F46;
+    --accent-dim: rgba(4, 120, 87, 0.08);
+    --accent-glow: rgba(4, 120, 87, 0.18);
+    --on-accent: #FFFFFF;
+    --gold: #B7791F;
+    --gold-dim: rgba(183, 121, 31, 0.10);
+    --gold-text: #8A5A12;
+    --text: #0B1F18;
+    --text-dim: #3A4D45;
+    --text-muted: #5E6F67;
+    --border: rgba(11, 31, 24, 0.08);
+    --input-bg: #EEF3EE;
+    --input-border: rgba(11, 31, 24, 0.12);
+    --input-focus-border: var(--accent);
+    --input-focus-shadow: rgba(4, 120, 87, 0.15);
+    --shadow: 0 1px 3px rgba(7, 24, 17, 0.04), 0 6px 20px rgba(7, 24, 17, 0.06);
+    --shadow-md: 0 6px 18px rgba(7, 24, 17, 0.07), 0 18px 50px rgba(7, 24, 17, 0.10);
+    --gradient-line: linear-gradient(90deg, var(--accent), #65A30D, transparent);
+    --bg-glow1: rgba(4, 120, 87, 0.08);
+    --bg-glow2: rgba(101, 163, 13, 0.06);
+    --bg-glow3: rgba(183, 121, 31, 0.045);
+    --toggle-bg: rgba(11, 31, 24, 0.05);
+    --toggle-hover: rgba(11, 31, 24, 0.10);
+    --grain-opacity: 0.022;
+    --lr-sheen: rgba(255, 255, 255, 0.6);
+    --lr-ring: var(--accent-glow);
+    --lr-accent2: #65A30D;
+}
+
+/* ---- DARK: Near-black, electric emerald ---- */
+[data-theme="dark"] {
+    --bg: #07080B;
+    --card: #111319;
+    --card-raised: #161922;
+    --card-border: rgba(52, 211, 153, 0.10);
+    --card-border-hover: rgba(52, 211, 153, 0.34);
+    --accent: #34D399;
+    --accent-hover: #6EE7B7;
+    --accent-dim: rgba(52, 211, 153, 0.14);
+    --accent-glow: rgba(52, 211, 153, 0.32);
+    --on-accent: #052E22;
+    --gold: #FBBF24;
+    --gold-dim: rgba(251, 191, 36, 0.12);
+    --gold-text: #FCD34D;
+    --text: #E9F3EC;
+    --text-dim: #9DB0A6;
+    --text-muted: #6B7C73;
+    --border: rgba(255, 255, 255, 0.07);
+    --input-bg: rgba(255, 255, 255, 0.035);
+    --input-border: rgba(255, 255, 255, 0.10);
+    --input-focus-border: var(--accent);
+    --input-focus-shadow: rgba(52, 211, 153, 0.20);
+    --shadow: 0 2px 8px rgba(0, 0, 0, 0.35), 0 10px 36px rgba(0, 0, 0, 0.45);
+    --shadow-md: 0 6px 20px rgba(0, 0, 0, 0.45), 0 20px 60px rgba(0, 0, 0, 0.55);
+    --gradient-line: linear-gradient(90deg, #34D399, #A3E635, transparent);
+    --bg-glow1: rgba(52, 211, 153, 0.13);
+    --bg-glow2: rgba(163, 230, 53, 0.07);
+    --bg-glow3: rgba(251, 191, 36, 0.05);
+    --toggle-bg: rgba(255, 255, 255, 0.05);
+    --toggle-hover: rgba(255, 255, 255, 0.10);
+    --grain-opacity: 0.016;
+    --lr-sheen: rgba(255, 255, 255, 0.18);
+    --lr-ring: var(--accent-glow);
+    --lr-accent2: #A3E635;
+}
+
+/* Keep text legible on the now-vivid accent fills (buttons, active tabs).
+   Light = white on deep emerald; dark = near-black on electric emerald. */
+.btn-primary,
+.btn-giant,
+.calc-tab.active,
+.tab.active,
+.preview-slider::-webkit-slider-thumb,
+.preview-slider::-moz-range-thumb { color: var(--on-accent); }
+
+/* A second, larger drifting glow layer for extra dimension.
+   Sits behind everything; never intercepts pointer events. */
+body::before {
+    animation: lrGlowDrift 22s ease-in-out infinite alternate;
+}
+
+@keyframes lrGlowDrift {
+    0%   { transform: translate3d(0, 0, 0) scale(1); }
+    100% { transform: translate3d(0, -1.4%, 0) scale(1.05); }
+}
+
+/* ---------- 2. Global niceties ---------- */
+html { scroll-behavior: smooth; }
+
+::selection {
+    background: var(--accent);
+    color: #fff;
+}
+
+/* Refined scrollbar (WebKit + Firefox) */
+* { scrollbar-width: thin; scrollbar-color: var(--card-border-hover) transparent; }
+*::-webkit-scrollbar { width: 11px; height: 11px; }
+*::-webkit-scrollbar-track { background: transparent; }
+*::-webkit-scrollbar-thumb {
+    background: var(--card-border-hover);
+    border-radius: 99px;
+    border: 3px solid transparent;
+    background-clip: padding-box;
+}
+*::-webkit-scrollbar-thumb:hover { background: var(--accent); background-clip: padding-box; }
+
+/* Consistent keyboard focus ring everywhere */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+[tabindex]:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+    border-radius: 6px;
+}
+
+/* ---------- 3. Buttons: depth + animated sheen ---------- */
+.btn-primary,
+.btn-giant {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+}
+
+/* Diagonal light sweep on hover */
+.btn-primary::after,
+.btn-giant::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(115deg, transparent 30%, var(--lr-sheen) 48%, transparent 66%);
+    transform: translateX(-120%);
+    transition: transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: -1;
+    pointer-events: none;
+}
+
+.btn-primary:hover::after,
+.btn-giant:hover::after { transform: translateX(120%); }
+
+.btn-primary { transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease, filter 0.2s ease; }
+.btn-primary:hover { transform: translateY(-1px); }
+
+.btn-secondary { transition: transform 0.18s ease, background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease; }
+.btn-secondary:hover { transform: translateY(-1px); box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06); }
+
+/* ---------- 4. Cards: layered elevation ---------- */
+/* Generic panels — richer resting shadow, smoother transitions.
+   No transform, so large form panels (calculator) stay put. */
+.card {
+    transition: box-shadow 0.28s cubic-bezier(0.16, 1, 0.3, 1),
+                border-color 0.28s ease, transform 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.card:hover { box-shadow: var(--shadow-md); }
+
+/* Clickable / marketing content cards — lift + accent crown */
+.tool-card,
+.post-card,
+.explainer-card {
+    position: relative;
+    overflow: hidden;
+}
+.tool-card::before,
+.post-card::before,
+.explainer-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent), var(--gold));
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.tool-card:hover,
+.post-card:hover,
+.explainer-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--card-border-hover);
+    box-shadow: var(--shadow-md);
+}
+.tool-card:hover::before,
+.post-card:hover::before,
+.explainer-card:hover::before { transform: scaleX(1); }
+
+/* Tool-page result tiles & content items — gentle, no jump */
+.output-card,
+.faq-item,
+.glossary-item {
+    transition: border-color 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+}
+.output-card:hover {
+    border-color: var(--card-border-hover);
+    box-shadow: var(--shadow);
+}
+.faq-item:hover,
+.glossary-item:hover { border-color: var(--card-border-hover); }
+
+/* Tool-page hero/preview widgets feel a touch more premium */
+.preview-widget { box-shadow: var(--shadow-md); }
+
+/* ---------- 5. Inputs: soft focus glow ---------- */
+input:not([type="range"]):focus,
+select:focus,
+textarea:focus {
+    box-shadow: 0 0 0 4px var(--lr-ring);
+}
+
+/* ---------- 6. Links: animated underline for inline content links ---------- */
+.lr-link, .prose a, .content a:not(.btn) {
+    background-image: linear-gradient(var(--accent), var(--accent));
+    background-size: 0% 1.5px;
+    background-position: 0 100%;
+    background-repeat: no-repeat;
+    transition: background-size 0.3s ease;
+    text-decoration: none;
+}
+.lr-link:hover, .prose a:hover, .content a:not(.btn):hover { background-size: 100% 1.5px; }
+
+/* ---------- 7. Section headings: subtle gradient sheen on display titles ---------- */
+.explainer-title,
+.section-title {
+    background: linear-gradient(120deg, var(--text) 30%, var(--accent) 130%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Page-title accent spans: solid emerald (no gold gradient — the brand
+   identity now lives in the logo, so headings stay clean). */
+header h1 span {
+    background: none;
+    -webkit-text-fill-color: var(--accent);
+    color: var(--accent);
+}
+
+/* ---------- 8. Scroll-reveal (driven by loomrate-enhance.js) ---------- */
+@media (prefers-reduced-motion: no-preference) {
+    .lr-in {
+        opacity: 0;
+        transform: translateY(18px);
+        transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+                    transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+        will-change: opacity, transform;
+    }
+    .lr-in.lr-shown {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+/* ---------- 9. Responsive polish ---------- */
+@media (max-width: 640px) {
+    /* Keep the giant hero title from overflowing on phones */
+    .landing-title { font-size: clamp(2.5rem, 11vw, 3.25rem) !important; }
+    .landing-tagline { font-size: 1.2rem !important; }
+    .btn-giant { width: 100%; }
+    .preview-widget { box-shadow: var(--shadow); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    body::before { animation: none; }
+}

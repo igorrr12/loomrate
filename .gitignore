@@ -1,0 +1,16 @@
+# Local Claude Code data (sessions, local settings, dev launch config)
+.claude/
+
+# Build / dependency artifacts
+node_modules/
+.iconbuild/
+
+# Environment / secrets
+.env
+.env.*
+!.env.example
+
+# OS / editor cruft
+.DS_Store
+Thumbs.db
+*.log
