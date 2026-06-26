@@ -110,6 +110,12 @@ body::before {
 /* ---------- 2. Global niceties ---------- */
 html { scroll-behavior: smooth; }
 
+/* Paint the root canvas with the themed background so there's no flash of
+   white/light before <body> renders. The theme is applied to <html> by a
+   blocking inline script in each page's <head>, before first paint. */
+html { background-color: var(--bg); }
+[data-theme="dark"] { color-scheme: dark; }
+
 ::selection {
     background: var(--accent);
     color: #fff;

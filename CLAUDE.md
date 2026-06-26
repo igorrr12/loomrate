@@ -30,6 +30,8 @@ fetch()/auth flows behave better over `http://localhost` than `file://`.
 
 All ~13 HTML pages each implement their **own copy** of `toggleTheme()`/`loadTheme()` (shared `localStorage` key `fpa_theme`, keeps theme in sync across pages) and the `showModal()`/`closeModal()` pattern — none of this is a shared module/include. `index.html` and `calculator.html` additionally each implement their own auth modal + Supabase sign-in/up/reset flow.
 
+**Theme lives on `<html>`, not `<body>`** (the site defaults to dark). To avoid a flash of the wrong theme on load, every page has a small **blocking inline `<script>` in `<head>`** (just before the `loomrate-enhance.css` link) that reads `fpa_theme` and sets `data-theme` on `document.documentElement` *before first paint*. `toggleTheme()`/`loadTheme()` therefore read/write `document.documentElement` (not `document.body`), and `<body>` carries no `data-theme` attribute (it inherits the theme tokens). `loomrate-enhance.css` paints the root canvas with `html { background-color: var(--bg); }` so there's no white flash before `<body>` renders. New pages must include the same pre-paint `<head>` script and must **not** hard-code `data-theme` on `<body>`.
+
 When changing shared behavior (theme, modals, auth UX), grep across **all** HTML files and update each copy — fixing it in one page silently leaves the others stale.
 
 ## calculator.html internals (the core app)

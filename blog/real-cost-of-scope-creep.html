@@ -100,11 +100,23 @@
         .footer-links .separator { color: var(--border); }
     </style>
     <!-- Loomrate shared enhancement layer -->
+    <script>
+        /* Apply the saved theme to <html> before first paint to prevent a
+           flash of the wrong theme on load. Site default is dark. */
+        (function () {
+            try {
+                document.documentElement.setAttribute('data-theme',
+                    localStorage.getItem('fpa_theme') === 'light' ? 'light' : 'dark');
+            } catch (e) {
+                document.documentElement.setAttribute('data-theme', 'dark');
+            }
+        })();
+    </script>
     <link rel="stylesheet" href="/assets/loomrate-enhance.css">
     <script src="/assets/loomrate-enhance.js" defer></script>
 </head>
 
-<body data-theme="dark">
+<body>
     <main class="container">
         <div class="header-actions">
             <a href="/blog" class="btn btn-secondary">Blog</a>
@@ -157,12 +169,12 @@
 
     <script>
         function toggleTheme() {
-            const isDark = document.body.getAttribute('data-theme') === 'dark';
-            document.body.setAttribute('data-theme', isDark ? 'light' : 'dark');
+            const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+            document.documentElement.setAttribute('data-theme', isDark ? 'light' : 'dark');
             localStorage.setItem('fpa_theme', isDark ? 'light' : 'dark');
         }
         window.addEventListener('DOMContentLoaded', () => {
-            if (localStorage.getItem('fpa_theme') === 'dark') document.body.setAttribute('data-theme', 'dark');
+            if (localStorage.getItem('fpa_theme') === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
         });
     </script>
 </body>

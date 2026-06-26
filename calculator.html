@@ -1469,11 +1469,23 @@
         }
     </style>
     <!-- Loomrate shared enhancement layer -->
+    <script>
+        /* Apply the saved theme to <html> before first paint to prevent a
+           flash of the wrong theme on load. Site default is dark. */
+        (function () {
+            try {
+                document.documentElement.setAttribute('data-theme',
+                    localStorage.getItem('fpa_theme') === 'light' ? 'light' : 'dark');
+            } catch (e) {
+                document.documentElement.setAttribute('data-theme', 'dark');
+            }
+        })();
+    </script>
     <link rel="stylesheet" href="/assets/loomrate-enhance.css">
     <script src="/assets/loomrate-enhance.js" defer></script>
 </head>
 
-<body data-theme="dark">
+<body>
 
     <main class="container">
 
@@ -2278,14 +2290,14 @@
 
         /* ---- THEME TOGGLE ---- */
         function toggleTheme() {
-            const isDark = document.body.getAttribute('data-theme') === 'dark';
-            document.body.setAttribute('data-theme', isDark ? 'light' : 'dark');
+            const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+            document.documentElement.setAttribute('data-theme', isDark ? 'light' : 'dark');
             localStorage.setItem('fpa_theme', isDark ? 'light' : 'dark');
             setTimeout(renderProfitabilityChart, 100);
         }
         function loadTheme() {
             const saved = localStorage.getItem('fpa_theme');
-            if (saved === 'light') document.body.setAttribute('data-theme', 'light');
+            if (saved === 'light') document.documentElement.setAttribute('data-theme', 'light');
         }
 
         function parseDateSafe(dateStr) {
